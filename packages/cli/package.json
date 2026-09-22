@@ -1,0 +1,17 @@
+{
+  "name": "ctxroom",
+  "version": "0.1.0",
+  "description": "CLI: run the compression proxy, wrap Copilot CLI, inspect savings.",
+  "type": "module",
+  "bin": {
+    "ctxroom": "src/index.ts"
+  },
+  "main": "src/index.ts",
+  "dependencies": {
+    "@ctxroom/core": "0.1.0",
+    "@ctxroom/proxy": "0.1.0"
+  },
+  "engines": {
+    "node": ">=23.6"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "ctxroom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first context compression engine for AI coding agents: content-routed compression, reversible retrieval (CCR), KV-cache stability. Node.js, zero runtime dependencies.",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "node --test packages/*/test/ --test-reporter=spec",
+    "test:core": "node --test packages/core/test/",
+    "test:proxy": "node --test packages/proxy/test/",
+    "test:cli": "node --test packages/cli/test/",
+    "test:mcp": "node --test packages/mcp/test/",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "bench": "node benchmarks/run.ts",
+    "e2e": "node e2e/run.ts",
+    "ctxroom": "node packages/cli/src/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=23.6"
+  }
+}

@@ -1,0 +1,1235 @@
+diff --git a/packages/core/src/compress.ts b/packages/core/src/compress.ts
+--- a/packages/core/src/compress.ts
++++ b/packages/core/src/compress.ts
+@@ -1,28 +1,30 @@
+     for (const item of arr) {85
+     totals.push(v);81
+     }49
+     // helper58
+     const x = resolve(i);7
+     }2
+     totals.push(v);40
+     if (n > 0) continue;9
+     const x = resolve(i);35
+     }52
+     await store(value);24
+     const x = resolve(i);17
+     return out;53
+     totals.push(v);66
+     // helper39
+     const k = key + suffix;47
+     for (const item of arr) {64
+     for (const item of arr) {14
+     for (const item of arr) {4
+     if (a && b) merge(a, b);5
+     for (const item of arr) {68
+     if (n > 0) continue;56
+     await store(value);30
+     return out;52
+-  return null;
++    bar()
++  const t = Date.now();
+     // helper85
+     return out;36
+@@ -61,13 +61,15 @@
+     // helper91
+     for (const item of arr) {11
+     for (const item of arr) {13
+     await store(value);83
+     if (a && b) merge(a, b);28
+     if (n > 0) continue;46
+     const k = key + suffix;22
+     for (const item of arr) {4
+     }37
+     if (a && b) merge(a, b);54
+-  const old = legacy(i);
++  return result;
++    check()
+     }33
+@@ -106,16 +106,18 @@
+     await store(value);13
+     for (const item of arr) {62
+     totals.push(v);7
+     // helper6
+     // helper78
+     if (n > 0) continue;44
+     totals.push(v);65
+     if (n > 0) continue;38
+     return out;82
+     const k = key + suffix;11
+     for (const item of arr) {10
+-    foo()
++  const fresh = compress(i);
++  // new: kv-cache stable
+     for (const item of arr) {93
+     // helper32
+     return out;61
+diff --git a/packages/core/src/livezone.ts b/packages/core/src/livezone.ts
+--- a/packages/core/src/livezone.ts
++++ b/packages/core/src/livezone.ts
+@@ -1,24 +1,26 @@
+     return out;13
+     const x = resolve(i);23
+     }14
+     }22
+     for (const item of arr) {76
+     await store(value);50
+     }75
+     // helper63
+     await store(value);74
+     // helper73
+     return out;62
+     if (n > 0) continue;85
+     totals.push(v);17
+     return out;41
+     totals.push(v);78
+     await store(value);99
+     if (a && b) merge(a, b);75
+     totals.push(v);97
+     for (const item of arr) {5
+-    foo()
++    bar()
++    check()
+     if (n > 0) continue;83
+     await store(value);19
+     totals.push(v);38
+@@ -57,15 +57,17 @@
+     const k = key + suffix;22
+     const k = key + suffix;39
+     const x = resolve(i);58
+     const k = key + suffix;73
+     if (n > 0) continue;37
+     totals.push(v);87
+     totals.push(v);41
+     return out;90
+     // helper56
+     }64
+     // helper13
+-  const old = legacy(i);
++  const fresh = compress(i);
++  const t = Date.now();
+     await store(value);79
+     return out;67
+@@ -104,18 +104,20 @@
+     if (a && b) merge(a, b);36
+     totals.push(v);37
+     const k = key + suffix;20
+     const x = resolve(i);17
+     const x = resolve(i);85
+     for (const item of arr) {20
+     const k = key + suffix;20
+     }98
+     if (a && b) merge(a, b);67
+     if (n > 0) continue;60
+     // helper95
+     if (a && b) merge(a, b);13
+     if (n > 0) continue;91
+-  const old = legacy(i);
++    bar()
++    check()
+     if (n > 0) continue;94
+     await store(value);67
+     const k = key + suffix;19
+diff --git a/packages/core/src/ccr.ts b/packages/core/src/ccr.ts
+--- a/packages/core/src/ccr.ts
++++ b/packages/core/src/ccr.ts
+@@ -1,18 +1,20 @@
+     // helper72
+     return out;97
+     const k = key + suffix;26
+     const k = key + suffix;72
+     // helper67
+     const k = key + suffix;73
+     await store(value);44
+     if (n > 0) continue;47
+     totals.push(v);88
+     for (const item of arr) {64
+     // helper25
+     await store(value);58
+     const x = resolve(i);38
+     }24
+-  const old = legacy(i);
++  const fresh = compress(i);
++    check()
+     }15
+     for (const item of arr) {15
+@@ -51,25 +51,27 @@
+     return out;49
+     // helper62
+     // helper61
+     if (n > 0) continue;53
+     for (const item of arr) {76
+     totals.push(v);15
+     for (const item of arr) {95
+     // helper85
+     if (n > 0) continue;75
+     }37
+     if (n > 0) continue;98
+     if (n > 0) continue;41
+     }18
+     totals.push(v);39
+     for (const item of arr) {20
+     if (n > 0) continue;95
+     const k = key + suffix;44
+     }59
+     const k = key + suffix;39
+     }15
+     const x = resolve(i);90
+-  return null;
++    bar()
++  const t = Date.now();
+     await store(value);29
+     await store(value);46
+@@ -108,22 +108,24 @@
+     return out;1
+     await store(value);23
+     for (const item of arr) {7
+     const x = resolve(i);11
+     const k = key + suffix;72
+     for (const item of arr) {85
+     // helper22
+     if (n > 0) continue;66
+     // helper49
+     const k = key + suffix;15
+     // helper10
+     const k = key + suffix;65
+     await store(value);10
+     // helper76
+     if (a && b) merge(a, b);25
+     const x = resolve(i);44
+     const k = key + suffix;45
+     return out;55
+     if (a && b) merge(a, b);98
+-  return null;
++  const fresh = compress(i);
++  // new: kv-cache stable
+     for (const item of arr) {64
+@@ -162,21 +162,23 @@
+     return out;51
+     for (const item of arr) {23
+     const x = resolve(i);65
+     for (const item of arr) {33
+     await store(value);80
+     }60
+     return out;94
+     for (const item of arr) {38
+     }39
+     if (a && b) merge(a, b);72
+     const x = resolve(i);33
+     return out;96
+     // helper94
+     // helper44
+     if (n > 0) continue;94
+     const k = key + suffix;65
+     totals.push(v);36
+     if (a && b) merge(a, b);99
+-  const old = legacy(i);
++    bar()
++  // new: kv-cache stable
+     if (n > 0) continue;20
+diff --git a/packages/proxy/src/server.ts b/packages/proxy/src/server.ts
+--- a/packages/proxy/src/server.ts
++++ b/packages/proxy/src/server.ts
+@@ -1,28 +1,30 @@
+     totals.push(v);57
+     // helper66
+     }61
+     if (n > 0) continue;60
+     if (n > 0) continue;20
+     }98
+     const x = resolve(i);66
+     if (a && b) merge(a, b);94
+     if (n > 0) continue;63
+     return out;45
+     // helper59
+     totals.push(v);87
+     return out;43
+     }93
+     totals.push(v);8
+     for (const item of arr) {35
+     await store(value);78
+     const x = resolve(i);89
+     }2
+     if (n > 0) continue;13
+     }37
+     }10
+     if (a && b) merge(a, b);48
+-  const old = legacy(i);
++  return result;
++    check()
+     const k = key + suffix;71
+     return out;81
+     }18
+@@ -61,20 +61,22 @@
+     }55
+     for (const item of arr) {51
+     return out;74
+     for (const item of arr) {91
+     }34
+     if (n > 0) continue;85
+     // helper16
+     }75
+     }82
+     const k = key + suffix;16
+     if (a && b) merge(a, b);53
+     totals.push(v);56
+     // helper20
+     await store(value);54
+     totals.push(v);63
+     // helper38
+-  return null;
++  return result;
++  const t = Date.now();
+     await store(value);70
+     }5
+@@ -113,20 +113,22 @@
+     if (a && b) merge(a, b);96
+     totals.push(v);60
+     totals.push(v);32
+     const k = key + suffix;87
+     for (const item of arr) {72
+     const x = resolve(i);7
+     // helper44
+     if (a && b) merge(a, b);27
+     const x = resolve(i);20
+     if (n > 0) continue;62
+     const k = key + suffix;15
+     }98
+     const k = key + suffix;9
+     const k = key + suffix;38
+     totals.push(v);2
+     await store(value);24
+     const x = resolve(i);86
+-  return null;
++    bar()
++  // new: kv-cache stable
+     const x = resolve(i);80
+@@ -165,14 +165,16 @@
+     // helper26
+     return out;21
+     const x = resolve(i);73
+     totals.push(v);49
+     await store(value);25
+     if (a && b) merge(a, b);39
+     const k = key + suffix;17
+     await store(value);60
+     totals.push(v);82
+-    foo()
++  const fresh = compress(i);
++  // new: kv-cache stable
+     return out;33
+     const k = key + suffix;3
+     // helper5
+@@ -211,17 +211,19 @@
+     totals.push(v);46
+     const x = resolve(i);19
+     const x = resolve(i);74
+     // helper55
+     return out;18
+     return out;49
+     for (const item of arr) {20
+     for (const item of arr) {84
+     }44
+     await store(value);77
+     return out;33
+     const x = resolve(i);14
+-    foo()
++  const fresh = compress(i);
++  const t = Date.now();
+     // helper73
+     if (a && b) merge(a, b);64
+     totals.push(v);84
+diff --git a/packages/cli/src/copilot.ts b/packages/cli/src/copilot.ts
+--- a/packages/cli/src/copilot.ts
++++ b/packages/cli/src/copilot.ts
+@@ -1,29 +1,31 @@
+     }78
+     for (const item of arr) {75
+     }17
+     // helper34
+     }73
+     const x = resolve(i);17
+     }4
+     if (a && b) merge(a, b);90
+     const k = key + suffix;55
+     for (const item of arr) {21
+     if (n > 0) continue;62
+     await store(value);43
+     }64
+     return out;30
+     if (n > 0) continue;90
+     if (a && b) merge(a, b);74
+     totals.push(v);87
+     const x = resolve(i);18
+     const x = resolve(i);57
+     if (a && b) merge(a, b);51
+     // helper78
+     const k = key + suffix;4
+     if (a && b) merge(a, b);87
+     if (n > 0) continue;8
+-  return null;
++  return result;
++  const t = Date.now();
+     if (n > 0) continue;35
+     if (a && b) merge(a, b);3
+     if (a && b) merge(a, b);86
+@@ -62,28 +62,30 @@
+     const x = resolve(i);51
+     await store(value);24
+     if (n > 0) continue;66
+     const k = key + suffix;46
+     const x = resolve(i);63
+     if (a && b) merge(a, b);63
+     if (n > 0) continue;32
+     const k = key + suffix;42
+     await store(value);60
+     }15
+     return out;64
+     }1
+     const k = key + suffix;29
+     }20
+     const k = key + suffix;4
+     if (n > 0) continue;71
+     for (const item of arr) {17
+     for (const item of arr) {52
+     if (a && b) merge(a, b);44
+     const x = resolve(i);82
+     totals.push(v);54
+     if (n > 0) continue;49
+     if (a && b) merge(a, b);86
+     if (n > 0) continue;53
+-    foo()
++    bar()
++    check()
+     const k = key + suffix;52
+     await store(value);79
+diff --git a/packages/mcp/src/index.ts b/packages/mcp/src/index.ts
+--- a/packages/mcp/src/index.ts
++++ b/packages/mcp/src/index.ts
+@@ -1,26 +1,28 @@
+     }16
+     totals.push(v);22
+     // helper71
+     const k = key + suffix;36
+     totals.push(v);79
+     const k = key + suffix;13
+     totals.push(v);81
+     for (const item of arr) {76
+     totals.push(v);27
+     await store(value);51
+     }13
+     const k = key + suffix;31
+     // helper68
+     totals.push(v);69
+     await store(value);66
+     const x = resolve(i);9
+     if (a && b) merge(a, b);18
+     return out;30
+     totals.push(v);92
+     await store(value);28
+     const x = resolve(i);14
+-    foo()
++  const fresh = compress(i);
++  // new: kv-cache stable
+     // helper75
+     totals.push(v);90
+     const k = key + suffix;53
+@@ -59,12 +59,14 @@
+     await store(value);19
+     if (n > 0) continue;87
+     for (const item of arr) {64
+     const x = resolve(i);41
+     if (n > 0) continue;20
+     const k = key + suffix;92
+     if (n > 0) continue;57
+     for (const item of arr) {24
+     for (const item of arr) {87
+-    foo()
++  return result;
++  // new: kv-cache stable
+     return out;62
+@@ -103,29 +103,31 @@
+     const x = resolve(i);17
+     }64
+     for (const item of arr) {56
+     await store(value);96
+     const k = key + suffix;58
+     const x = resolve(i);68
+     const x = resolve(i);79
+     if (a && b) merge(a, b);73
+     await store(value);37
+     totals.push(v);48
+     const k = key + suffix;99
+     const x = resolve(i);17
+     if (a && b) merge(a, b);69
+     for (const item of arr) {59
+     if (n > 0) continue;35
+     const k = key + suffix;59
+     const x = resolve(i);35
+     if (n > 0) continue;40
+     await store(value);12
+     // helper62
+     const k = key + suffix;19
+     const k = key + suffix;19
+     }52
+     }29
+-    foo()
++  return result;
++    check()
+     const k = key + suffix;63
+     return out;53
+     if (a && b) merge(a, b);10
+diff --git a/packages/core/src/config.ts b/packages/core/src/config.ts
+--- a/packages/core/src/config.ts
++++ b/packages/core/src/config.ts
+@@ -1,13 +1,15 @@
+     totals.push(v);97
+     if (n > 0) continue;97
+     await store(value);34
+     if (n > 0) continue;55
+     if (a && b) merge(a, b);13
+     }50
+     }56
+     if (n > 0) continue;82
+-  return null;
++  const fresh = compress(i);
++  const t = Date.now();
+     const k = key + suffix;87
+     if (n > 0) continue;65
+     for (const item of arr) {95
+@@ -46,25 +46,27 @@
+     const k = key + suffix;50
+     const x = resolve(i);25
+     // helper26
+     }9
+     return out;78
+     await store(value);3
+     for (const item of arr) {17
+     if (a && b) merge(a, b);75
+     // helper7
+     const x = resolve(i);44
+     if (n > 0) continue;54
+     const x = resolve(i);15
+     const k = key + suffix;92
+     return out;73
+     if (a && b) merge(a, b);93
+     const k = key + suffix;34
+     // helper63
+     return out;42
+     return out;1
+     const k = key + suffix;28
+-    foo()
++    bar()
++    check()
+     totals.push(v);6
+     for (const item of arr) {43
+     }34
+@@ -103,29 +103,31 @@
+     }79
+     if (n > 0) continue;13
+     }15
+     }46
+     totals.push(v);85
+     if (a && b) merge(a, b);76
+     const k = key + suffix;6
+     if (a && b) merge(a, b);43
+     totals.push(v);23
+     const k = key + suffix;83
+     // helper94
+     if (n > 0) continue;44
+     // helper15
+     }91
+     // helper47
+     // helper63
+     if (n > 0) continue;39
+     await store(value);38
+     }99
+     const x = resolve(i);32
+     const x = resolve(i);57
+     await store(value);47
+     for (const item of arr) {94
+     if (a && b) merge(a, b);87
+-    foo()
++    bar()
++  const t = Date.now();
+     await store(value);10
+     // helper69
+     const x = resolve(i);22
+@@ -164,23 +164,25 @@
+     for (const item of arr) {44
+     totals.push(v);40
+     }19
+     if (a && b) merge(a, b);56
+     const k = key + suffix;13
+     // helper25
+     if (n > 0) continue;77
+     const x = resolve(i);28
+     if (a && b) merge(a, b);74
+     for (const item of arr) {88
+     if (a && b) merge(a, b);91
+     const x = resolve(i);22
+     await store(value);41
+     await store(value);21
+     const k = key + suffix;68
+     }97
+     await store(value);50
+     totals.push(v);48
+     totals.push(v);27
+-  return null;
++  return result;
++    check()
+     const x = resolve(i);37
+     for (const item of arr) {47
+@@ -219,13 +219,15 @@
+     const k = key + suffix;35
+     // helper37
+     const x = resolve(i);43
+     await store(value);42
+     const x = resolve(i);33
+     const x = resolve(i);19
+     }79
+     if (n > 0) continue;82
+-  const old = legacy(i);
++  return result;
++    check()
+     await store(value);41
+     await store(value);83
+     totals.push(v);85
+diff --git a/packages/core/src/estimate.ts b/packages/core/src/estimate.ts
+--- a/packages/core/src/estimate.ts
++++ b/packages/core/src/estimate.ts
+@@ -1,12 +1,14 @@
+     const k = key + suffix;19
+     if (a && b) merge(a, b);7
+     }22
+     return out;35
+     }33
+     if (n > 0) continue;49
+     if (a && b) merge(a, b);76
+     totals.push(v);24
+-  return null;
++    bar()
++    check()
+     const x = resolve(i);61
+     return out;9
+@@ -45,18 +45,20 @@
+     const k = key + suffix;67
+     totals.push(v);4
+     totals.push(v);38
+     if (n > 0) continue;63
+     if (a && b) merge(a, b);36
+     const k = key + suffix;73
+     const x = resolve(i);51
+     totals.push(v);57
+     await store(value);47
+     }78
+     for (const item of arr) {88
+     // helper16
+     if (a && b) merge(a, b);81
+-    foo()
++  const fresh = compress(i);
++  const t = Date.now();
+     const k = key + suffix;17
+     const x = resolve(i);25
+     if (a && b) merge(a, b);62
+@@ -95,17 +95,19 @@
+     const x = resolve(i);66
+     }93
+     // helper11
+     const x = resolve(i);39
+     totals.push(v);47
+     return out;46
+     for (const item of arr) {53
+     // helper33
+     }80
+     }24
+     // helper95
+     // helper51
+     }65
+     const k = key + suffix;45
+-    foo()
++  const fresh = compress(i);
++  const t = Date.now();
+     await store(value);71
+@@ -144,14 +144,16 @@
+     return out;71
+     if (a && b) merge(a, b);86
+     if (n > 0) continue;41
+     const k = key + suffix;95
+     }17
+     for (const item of arr) {97
+     if (n > 0) continue;27
+     }30
+     // helper8
+     return out;15
+-    foo()
++  const fresh = compress(i);
++  const t = Date.now();
+     for (const item of arr) {97
+     }31
+diff --git a/packages/proxy/src/upstream.ts b/packages/proxy/src/upstream.ts
+--- a/packages/proxy/src/upstream.ts
++++ b/packages/proxy/src/upstream.ts
+@@ -1,28 +1,30 @@
+     if (a && b) merge(a, b);52
+     const k = key + suffix;37
+     totals.push(v);96
+     const k = key + suffix;87
+     const x = resolve(i);69
+     if (n > 0) continue;15
+     if (n > 0) continue;35
+     const x = resolve(i);65
+     for (const item of arr) {35
+     return out;26
+     if (n > 0) continue;31
+     totals.push(v);91
+     // helper89
+     // helper51
+     }83
+     await store(value);2
+     const k = key + suffix;24
+     if (n > 0) continue;55
+     const k = key + suffix;61
+     }35
+     const x = resolve(i);6
+     return out;49
+     for (const item of arr) {90
+     if (a && b) merge(a, b);37
+-    foo()
++  const fresh = compress(i);
++  // new: kv-cache stable
+     }59
+     // helper2
+@@ -61,18 +61,20 @@
+     if (n > 0) continue;49
+     if (a && b) merge(a, b);59
+     totals.push(v);84
+     await store(value);75
+     if (a && b) merge(a, b);82
+     const k = key + suffix;33
+     await store(value);77
+     await store(value);3
+     if (a && b) merge(a, b);11
+     }86
+     totals.push(v);37
+     // helper53
+     return out;82
+     }66
+     return out;56
+-  return null;
++  const fresh = compress(i);
++    check()
+     }95
+@@ -111,23 +111,25 @@
+     const k = key + suffix;93
+     for (const item of arr) {89
+     for (const item of arr) {41
+     const k = key + suffix;14
+     const k = key + suffix;16
+     totals.push(v);10
+     totals.push(v);85
+     const k = key + suffix;67
+     const k = key + suffix;8
+     const x = resolve(i);76
+     const x = resolve(i);75
+     if (n > 0) continue;39
+     }54
+     totals.push(v);72
+     for (const item of arr) {7
+     if (n > 0) continue;47
+     await store(value);67
+     for (const item of arr) {65
+     const k = key + suffix;15
+     await store(value);41
+-    foo()
++    bar()
++    check()
+     // helper49
+@@ -166,17 +166,19 @@
+     const k = key + suffix;79
+     return out;81
+     if (a && b) merge(a, b);44
+     for (const item of arr) {25
+     }64
+     const x = resolve(i);85
+     totals.push(v);19
+     return out;94
+     // helper35
+     const x = resolve(i);12
+     return out;61
+     const k = key + suffix;15
+     if (n > 0) continue;22
+-  return null;
++  return result;
++  // new: kv-cache stable
+     if (n > 0) continue;82
+     const x = resolve(i);61
+@@ -215,18 +215,20 @@
+     // helper58
+     const k = key + suffix;9
+     // helper88
+     if (n > 0) continue;35
+     for (const item of arr) {8
+     return out;36
+     return out;95
+     // helper30
+     totals.push(v);97
+     for (const item of arr) {92
+     totals.push(v);66
+     totals.push(v);76
+     if (n > 0) continue;10
+     return out;26
+-  const old = legacy(i);
++  const fresh = compress(i);
++  const t = Date.now();
+     for (const item of arr) {47
+     const x = resolve(i);76
+diff --git a/packages/cli/src/doctor.ts b/packages/cli/src/doctor.ts
+--- a/packages/cli/src/doctor.ts
++++ b/packages/cli/src/doctor.ts
+@@ -1,26 +1,28 @@
+     if (n > 0) continue;64
+     // helper16
+     // helper38
+     await store(value);26
+     // helper24
+     totals.push(v);65
+     const k = key + suffix;69
+     return out;67
+     // helper2
+     }72
+     for (const item of arr) {57
+     return out;4
+     return out;40
+     if (n > 0) continue;60
+     // helper56
+     if (n > 0) continue;6
+     await store(value);10
+     return out;54
+     return out;54
+     const x = resolve(i);57
+     // helper39
+     }62
+-    foo()
++  const fresh = compress(i);
++  // new: kv-cache stable
+     if (n > 0) continue;89
+     // helper67
+@@ -59,27 +59,29 @@
+     totals.push(v);23
+     for (const item of arr) {62
+     await store(value);83
+     }96
+     for (const item of arr) {3
+     return out;99
+     }41
+     await store(value);65
+     return out;31
+     return out;80
+     return out;64
+     const x = resolve(i);27
+     for (const item of arr) {35
+     const x = resolve(i);67
+     for (const item of arr) {73
+     await store(value);52
+     const k = key + suffix;29
+     if (n > 0) continue;8
+     const k = key + suffix;18
+     }57
+     const k = key + suffix;83
+     const k = key + suffix;36
+     const x = resolve(i);37
+-  const old = legacy(i);
++    bar()
++  // new: kv-cache stable
+     return out;92
+     const k = key + suffix;60
+@@ -118,15 +118,17 @@
+     if (a && b) merge(a, b);40
+     const x = resolve(i);92
+     // helper32
+     const x = resolve(i);24
+     // helper20
+     totals.push(v);64
+     for (const item of arr) {29
+     totals.push(v);60
+     // helper4
+     return out;52
+     }91
+     if (n > 0) continue;86
+-  return null;
++  const fresh = compress(i);
++  // new: kv-cache stable
+     if (n > 0) continue;63
+@@ -165,12 +165,14 @@
+     // helper86
+     // helper79
+     return out;77
+     }81
+     const x = resolve(i);57
+     return out;56
+     const x = resolve(i);67
+     }54
+-    foo()
++  return result;
++  // new: kv-cache stable
+     const x = resolve(i);10
+     await store(value);33
+diff --git a/packages/core/src/compressors/json.ts b/packages/core/src/compressors/json.ts
+--- a/packages/core/src/compressors/json.ts
++++ b/packages/core/src/compressors/json.ts
+@@ -1,22 +1,24 @@
+     if (a && b) merge(a, b);86
+     return out;41
+     // helper79
+     return out;15
+     if (n > 0) continue;55
+     const k = key + suffix;92
+     totals.push(v);82
+     totals.push(v);48
+     const x = resolve(i);66
+     const x = resolve(i);87
+     for (const item of arr) {23
+     if (a && b) merge(a, b);44
+     for (const item of arr) {7
+     if (n > 0) continue;19
+     const x = resolve(i);97
+     for (const item of arr) {85
+     return out;22
+     const x = resolve(i);88
+-  const old = legacy(i);
++  return result;
++  // new: kv-cache stable
+     if (a && b) merge(a, b);31
+     const k = key + suffix;7
+@@ -55,14 +55,16 @@
+     totals.push(v);40
+     // helper14
+     totals.push(v);7
+     totals.push(v);61
+     for (const item of arr) {57
+     // helper97
+     }65
+     const k = key + suffix;65
+     const k = key + suffix;17
+     totals.push(v);19
+     return out;37
+-  const old = legacy(i);
++  const fresh = compress(i);
++    check()
+     if (a && b) merge(a, b);38
+diff --git a/packages/core/src/compressors/logs.ts b/packages/core/src/compressors/logs.ts
+--- a/packages/core/src/compressors/logs.ts
++++ b/packages/core/src/compressors/logs.ts
+@@ -1,26 +1,28 @@
+     return out;65
+     if (n > 0) continue;15
+     if (a && b) merge(a, b);91
+     const k = key + suffix;20
+     if (a && b) merge(a, b);64
+     }55
+     if (a && b) merge(a, b);73
+     }78
+     const x = resolve(i);13
+     return out;15
+     }24
+     await store(value);89
+     if (a && b) merge(a, b);9
+     }82
+     if (a && b) merge(a, b);15
+     if (n > 0) continue;80
+     }24
+     // helper61
+     const k = key + suffix;80
+     const x = resolve(i);76
+     const k = key + suffix;59
+     if (n > 0) continue;28
+     await store(value);82
+-    foo()
++    bar()
++    check()
+     if (a && b) merge(a, b);22
+@@ -59,13 +59,15 @@
+     await store(value);90
+     return out;4
+     return out;93
+     }52
+     const k = key + suffix;86
+     const k = key + suffix;41
+     totals.push(v);57
+     }59
+-  const old = legacy(i);
++  const fresh = compress(i);
++    check()
+     }92
+     const x = resolve(i);47
+     for (const item of arr) {36
+@@ -104,27 +104,29 @@
+     const k = key + suffix;75
+     await store(value);30
+     await store(value);56
+     if (a && b) merge(a, b);58
+     if (a && b) merge(a, b);38
+     for (const item of arr) {52
+     return out;57
+     totals.push(v);98
+     if (n > 0) continue;51
+     }52
+     // helper46
+     totals.push(v);98
+     const x = resolve(i);54
+     if (n > 0) continue;57
+     return out;69
+     await store(value);34
+     return out;41
+     for (const item of arr) {7
+     for (const item of arr) {19
+     if (a && b) merge(a, b);46
+     const x = resolve(i);86
+     }19
+-    foo()
++  const fresh = compress(i);
++  // new: kv-cache stable
+     const k = key + suffix;98
+     totals.push(v);76
+     const x = resolve(i);12
+@@ -163,24 +163,26 @@
+     if (n > 0) continue;29
+     const x = resolve(i);93
+     await store(value);50
+     }15
+     const k = key + suffix;67
+     if (a && b) merge(a, b);5
+     const k = key + suffix;86
+     const k = key + suffix;17
+     const k = key + suffix;53
+     if (a && b) merge(a, b);33
+     totals.push(v);69
+     // helper98
+     }31
+     }95
+     for (const item of arr) {97
+     // helper14
+     // helper91
+     const x = resolve(i);79
+     if (n > 0) continue;63
+     totals.push(v);62
+-    foo()
++    bar()
++  const t = Date.now();
+     const k = key + suffix;97
+     for (const item of arr) {65
+diff --git a/packages/core/src/compressors/diff.ts b/packages/core/src/compressors/diff.ts
+--- a/packages/core/src/compressors/diff.ts
++++ b/packages/core/src/compressors/diff.ts
+@@ -1,18 +1,20 @@
+     if (n > 0) continue;94
+     return out;63
+     totals.push(v);92
+     totals.push(v);83
+     if (a && b) merge(a, b);60
+     totals.push(v);35
+     if (a && b) merge(a, b);97
+     if (a && b) merge(a, b);40
+     return out;45
+     for (const item of arr) {90
+     if (a && b) merge(a, b);29
+     }66
+     await store(value);92
+     }24
+-  const old = legacy(i);
++  const fresh = compress(i);
++    check()
+     }12
+     const k = key + suffix;52
+@@ -51,18 +51,20 @@
+     }41
+     if (a && b) merge(a, b);46
+     return out;38
+     }85
+     for (const item of arr) {53
+     totals.push(v);44
+     return out;76
+     await store(value);10
+     return out;37
+     totals.push(v);88
+     // helper79
+     // helper17
+     await store(value);64
+-    foo()
++  const fresh = compress(i);
++    check()
+     const k = key + suffix;12
+     return out;20
+     }6
+@@ -101,15 +101,17 @@
+     totals.push(v);83
+     return out;5
+     return out;12
+     return out;11
+     for (const item of arr) {11
+     if (a && b) merge(a, b);98
+     const k = key + suffix;10
+     await store(value);11
+     }15
+     if (n > 0) continue;66
+-  return null;
++    bar()
++    check()
+     // helper85
+     for (const item of arr) {65
+     if (n > 0) continue;79
+@@ -148,14 +148,16 @@
+     await store(value);93
+     for (const item of arr) {41
+     const k = key + suffix;30
+     return out;88
+     return out;65
+     await store(value);19
+     await store(value);58
+     // helper13
+     for (const item of arr) {93
+     const x = resolve(i);57
+     await store(value);80
+-  return null;
++    bar()
++    check()
+     const x = resolve(i);58
+@@ -194,23 +194,25 @@
+     }41
+     if (n > 0) continue;59
+     // helper6
+     const k = key + suffix;51
+     if (a && b) merge(a, b);79
+     await store(value);15
+     }85
+     if (n > 0) continue;84
+     }40
+     return out;4
+     return out;15
+     if (n > 0) continue;96
+     }22
+     const k = key + suffix;60
+     // helper58
+     await store(value);45
+     await store(value);51
+     totals.push(v);70
+     if (n > 0) continue;83
+     if (a && b) merge(a, b);13
+-  const old = legacy(i);
++    bar()
++  const t = Date.now();
+     return out;7
+diff --git a/benchmarks/gen.ts b/benchmarks/gen.ts
+--- a/benchmarks/gen.ts
++++ b/benchmarks/gen.ts
+@@ -1,26 +1,28 @@
+     for (const item of arr) {44
+     return out;89
+     const x = resolve(i);96
+     if (a && b) merge(a, b);7
+     for (const item of arr) {16
+     }48
+     return out;27
+     totals.push(v);49
+     if (a && b) merge(a, b);11
+     for (const item of arr) {61
+     if (n > 0) continue;21
+     await store(value);94
+     for (const item of arr) {20
+     for (const item of arr) {81
+     await store(value);6
+     if (n > 0) continue;7
+     totals.push(v);41
+     for (const item of arr) {43
+     for (const item of arr) {73
+     const x = resolve(i);56
+     if (a && b) merge(a, b);88
+     if (n > 0) continue;47
+     await store(value);14
+-  return null;
++    bar()
++  // new: kv-cache stable
+     if (n > 0) continue;28
+@@ -59,14 +59,16 @@
+     const x = resolve(i);2
+     const x = resolve(i);67
+     // helper31
+     }23
+     return out;94
+     if (n > 0) continue;58
+     const k = key + suffix;62
+     if (a && b) merge(a, b);2
+     // helper77
+     return out;18
+-  return null;
++  return result;
++  const t = Date.now();
+     }58
+     for (const item of arr) {24
+@@ -105,17 +105,19 @@
+     totals.push(v);78
+     if (n > 0) continue;4
+     await store(value);50
+     const x = resolve(i);57
+     }29
+     return out;1
+     const k = key + suffix;89
+     if (n > 0) continue;62
+     const x = resolve(i);89
+     if (n > 0) continue;71
+     await store(value);91
+     if (n > 0) continue;67
+     const k = key + suffix;68
+-  const old = legacy(i);
++    bar()
++  const t = Date.now();
+     if (n > 0) continue;86
+     }6
+diff --git a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -1,26 +1,28 @@
+     await store(value);83
+     const k = key + suffix;76
+     await store(value);15
+     if (n > 0) continue;44
+     if (a && b) merge(a, b);2
+     // helper68
+     await store(value);66
+     return out;29
+     for (const item of arr) {71
+     }8
+     if (n > 0) continue;67
+     }68
+     // helper71
+     return out;80
+     const k = key + suffix;57
+     // helper82
+     if (n > 0) continue;3
+     // helper10
+     if (n > 0) continue;11
+     if (a && b) merge(a, b);90
+     const k = key + suffix;64
+-    foo()
++  const fresh = compress(i);
++  const t = Date.now();
+     const x = resolve(i);87
+     totals.push(v);69
+     }62
+@@ -59,14 +59,16 @@
+     }68
+     if (n > 0) continue;55
+     if (n > 0) continue;5
+     }35
+     return out;42
+     totals.push(v);61
+     const k = key + suffix;13
+     }35
+     const x = resolve(i);98
+     const k = key + suffix;61
+     if (a && b) merge(a, b);6
+-  const old = legacy(i);
++  return result;
++  // new: kv-cache stable
+     }56

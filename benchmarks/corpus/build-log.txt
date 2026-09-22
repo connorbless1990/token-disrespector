@@ -1,0 +1,1311 @@
+$ npm run build --workspaces
+> ctxroom@0.1.0 build
+
+2026-09-21T10:00:00:00.000Z INFO  [vite] minifying proxy chunk 10 (31 kB)
+2026-09-21T10:00:00:01.137Z INFO  [vite] rendering app chunk 45 (127 kB)
+2026-09-21T10:00:00:02.274Z INFO  [vite] transforming proxy chunk 214 (327 kB)
+2026-09-21T10:00:00:03.411Z INFO  [vite] minifying app chunk 202 (292 kB)
+2026-09-21T10:00:00:04.548Z INFO  [vite] rendering cli chunk 206 (18 kB)
+2026-09-21T10:00:00:05.685Z INFO  [vite] rendering cli chunk 218 (158 kB)
+2026-09-21T10:00:00:06.822Z INFO  [vite] rendering cli chunk 145 (394 kB)
+2026-09-21T10:00:00:07.959Z INFO  [vite] transforming proxy chunk 137 (56 kB)
+2026-09-21T10:00:00:08.096Z INFO  [vite] transforming cli chunk 152 (186 kB)
+2026-09-21T10:00:00:09.233Z INFO  [vite] minifying cli chunk 139 (356 kB)
+2026-09-21T10:00:00:10.370Z INFO  [vite] rendering cli chunk 101 (377 kB)
+2026-09-21T10:00:00:11.507Z INFO  [vite] minifying proxy chunk 214 (326 kB)
+2026-09-21T10:00:00:12.644Z INFO  [vite] bundling app chunk 9 (174 kB)
+2026-09-21T10:00:00:13.781Z INFO  [vite] transforming proxy chunk 118 (123 kB)
+2026-09-21T10:00:00:14.918Z INFO  [vite] bundling core chunk 115 (346 kB)
+2026-09-21T10:00:00:15.055Z INFO  [vite] bundling core chunk 129 (314 kB)
+2026-09-21T10:00:00:16.192Z INFO  [vite] rendering proxy chunk 215 (125 kB)
+2026-09-21T10:00:00:17.329Z INFO  [vite] rendering proxy chunk 133 (23 kB)
+2026-09-21T10:00:00:18.466Z INFO  [vite] transforming cli chunk 155 (270 kB)
+2026-09-21T10:00:00:19.603Z INFO  [vite] bundling cli chunk 84 (183 kB)
+2026-09-21T10:00:00:20.740Z INFO  [vite] transforming core chunk 174 (357 kB)
+2026-09-21T10:00:00:21.877Z INFO  [vite] transforming proxy chunk 138 (225 kB)
+2026-09-21T10:00:00:22.014Z INFO  [vite] transforming proxy chunk 3 (204 kB)
+2026-09-21T10:00:00:23.151Z INFO  [vite] minifying app chunk 151 (71 kB)
+2026-09-21T10:00:00:24.288Z INFO  [vite] transforming core chunk 74 (139 kB)
+2026-09-21T10:00:00:25.425Z INFO  [vite] transforming proxy chunk 38 (204 kB)
+2026-09-21T10:00:00:26.562Z INFO  [vite] bundling app chunk 177 (165 kB)
+2026-09-21T10:00:00:27.699Z INFO  [vite] minifying cli chunk 158 (292 kB)
+2026-09-21T10:00:00:28.836Z INFO  [vite] transforming cli chunk 207 (47 kB)
+2026-09-21T10:00:00:29.973Z INFO  [vite] transforming app chunk 55 (277 kB)
+2026-09-21T10:00:00:30.110Z INFO  [vite] minifying proxy chunk 111 (211 kB)
+2026-09-21T10:00:00:31.247Z INFO  [vite] minifying core chunk 69 (153 kB)
+2026-09-21T10:00:00:32.384Z INFO  [vite] transforming cli chunk 156 (314 kB)
+2026-09-21T10:00:00:33.521Z INFO  [vite] rendering cli chunk 29 (205 kB)
+2026-09-21T10:00:00:34.658Z INFO  [vite] transforming core chunk 23 (358 kB)
+2026-09-21T10:00:00:35.795Z INFO  [vite] transforming core chunk 150 (275 kB)
+2026-09-21T10:00:00:36.932Z INFO  [vite] bundling proxy chunk 31 (99 kB)
+2026-09-21T10:00:00:37.069Z INFO  [vite] minifying core chunk 157 (115 kB)
+2026-09-21T10:00:00:38.206Z INFO  [vite] minifying app chunk 4 (88 kB)
+2026-09-21T10:00:00:39.343Z INFO  [vite] minifying proxy chunk 39 (145 kB)
+2026-09-21T10:00:00:40.480Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:41.617Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:42.754Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:43.891Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:44.028Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:45.165Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:46.302Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:47.439Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:48.576Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:49.713Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:50.850Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:51.987Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:52.124Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:53.261Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:54.398Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:55.535Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:56.672Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:57.809Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:58.946Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:00:59.083Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:00.220Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:01.357Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:02.494Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:03.631Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:04.768Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:05.905Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:06.042Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:07.179Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:08.316Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:09.453Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:10.590Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:11.727Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:12.864Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:13.001Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:14.138Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:15.275Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:16.412Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:17.549Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:18.686Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:19.823Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:20.960Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:21.097Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:22.234Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:23.371Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:24.508Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:25.645Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:26.782Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:27.919Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:28.056Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:29.193Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:30.330Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:31.467Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:32.604Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:33.741Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:34.878Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:35.015Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:36.152Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:37.289Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:38.426Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:39.563Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:40.700Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:41.837Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:42.974Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:43.111Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:44.248Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:45.385Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:46.522Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:47.659Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:48.796Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:49.933Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:50.070Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:51.207Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:52.344Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:53.481Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:54.618Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:55.755Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:56.892Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:57.029Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:58.166Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:01:59.303Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:00.440Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:01.577Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:02.714Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:03.851Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:04.988Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:05.125Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:06.262Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:07.399Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:08.536Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:09.673Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:10.810Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:11.947Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:12.084Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:13.221Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:14.358Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:15.495Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:16.632Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:17.769Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:18.906Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:19.043Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:20.180Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:21.317Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:22.454Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:23.591Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:24.728Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:25.865Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:26.002Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:27.139Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:28.276Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:29.413Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:30.550Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:31.687Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:32.824Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:33.961Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:34.098Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:35.235Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:36.372Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:37.509Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:38.646Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:39.783Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:40.920Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:41.057Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:42.194Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:43.331Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:44.468Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:45.605Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:46.742Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:47.879Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:48.016Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:49.153Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:50.290Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:51.427Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:52.564Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:53.701Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:54.838Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:55.975Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:56.112Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:57.249Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:58.386Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:02:59.523Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:00.660Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:01.797Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:02.934Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:03.071Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:04.208Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:05.345Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:06.482Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:07.619Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:08.756Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:09.893Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:10.030Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:11.167Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:12.304Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:13.441Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:14.578Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:15.715Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:16.852Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:17.989Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:18.126Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:19.263Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:20.400Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:21.537Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:22.674Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:23.811Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:24.948Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:25.085Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:26.222Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:27.359Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:28.496Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:29.633Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:30.770Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:31.907Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:32.044Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:33.181Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:34.318Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:35.455Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:36.592Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:37.729Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:38.866Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:39.003Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:40.140Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:41.277Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:42.414Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:43.551Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:44.688Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:45.825Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:46.962Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:47.099Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:48.236Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:49.373Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:50.510Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:51.647Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:52.784Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:53.921Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:54.058Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:55.195Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:56.332Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:57.469Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:58.606Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:03:59.743Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:00.880Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:01.017Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:02.154Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:03.291Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:04.428Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:05.565Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:06.702Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:07.839Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:08.976Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:09.113Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:10.250Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:11.387Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:12.524Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:13.661Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:14.798Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:15.935Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:16.072Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:17.209Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:18.346Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:19.483Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:20.620Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:21.757Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:22.894Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:23.031Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:24.168Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:25.305Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:26.442Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:27.579Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:28.716Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:29.853Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:30.990Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:31.127Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:32.264Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:33.401Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:34.538Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:35.675Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:36.812Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:37.949Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:38.086Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:39.223Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:40.360Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:41.497Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:42.634Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:43.771Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:44.908Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:45.045Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:46.182Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:47.319Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:48.456Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:49.593Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:50.730Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:51.867Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:52.004Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:53.141Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:54.278Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:55.415Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:56.552Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:57.689Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:58.826Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:04:59.963Z INFO  [tsc] checking workspace packages
+2026-09-21T10:00:05:00.100Z PASS  tests/cli-proxy (39ms)
+2026-09-21T10:00:05:01.237Z PASS  tests/proxy-proxy (53ms)
+2026-09-21T10:00:05:02.374Z PASS  tests/mcp-ccr (45ms)
+2026-09-21T10:00:05:03.511Z PASS  tests/core-ccr (78ms)
+2026-09-21T10:00:05:04.648Z PASS  tests/mcp-router (48ms)
+2026-09-21T10:00:05:05.785Z PASS  tests/cli-router (41ms)
+2026-09-21T10:00:05:06.922Z PASS  tests/core-ccr (14ms)
+2026-09-21T10:00:05:07.059Z PASS  tests/mcp-engine (3ms)
+2026-09-21T10:00:05:08.196Z PASS  tests/core-engine (33ms)
+2026-09-21T10:00:05:09.333Z PASS  tests/proxy-router (58ms)
+2026-09-21T10:00:05:10.470Z PASS  tests/core-ccr (9ms)
+2026-09-21T10:00:05:11.607Z PASS  tests/mcp-router (17ms)
+2026-09-21T10:00:05:12.744Z PASS  tests/cli-router (66ms)
+2026-09-21T10:00:05:13.881Z PASS  tests/core-proxy (41ms)
+2026-09-21T10:00:05:14.018Z PASS  tests/core-router (36ms)
+2026-09-21T10:00:05:15.155Z PASS  tests/cli-engine (25ms)
+2026-09-21T10:00:05:16.292Z PASS  tests/mcp-engine (24ms)
+2026-09-21T10:00:05:17.429Z PASS  tests/core-router (26ms)
+2026-09-21T10:00:05:18.566Z PASS  tests/proxy-proxy (27ms)
+2026-09-21T10:00:05:19.703Z PASS  tests/mcp-engine (11ms)
+2026-09-21T10:00:05:20.840Z PASS  tests/cli-engine (47ms)
+2026-09-21T10:00:05:21.977Z PASS  tests/cli-proxy (89ms)
+2026-09-21T10:00:05:22.114Z PASS  tests/proxy-engine (3ms)
+2026-09-21T10:00:05:23.251Z PASS  tests/proxy-proxy (80ms)
+2026-09-21T10:00:05:24.388Z PASS  tests/proxy-proxy (13ms)
+2026-09-21T10:00:05:25.525Z PASS  tests/cli-ccr (17ms)
+2026-09-21T10:00:05:26.662Z PASS  tests/core-proxy (5ms)
+2026-09-21T10:00:05:27.799Z PASS  tests/core-engine (73ms)
+2026-09-21T10:00:05:28.936Z PASS  tests/mcp-engine (66ms)
+2026-09-21T10:00:05:29.073Z PASS  tests/core-proxy (47ms)
+2026-09-21T10:00:05:30.210Z PASS  tests/mcp-engine (36ms)
+2026-09-21T10:00:05:31.347Z PASS  tests/core-engine (88ms)
+2026-09-21T10:00:05:32.484Z PASS  tests/cli-proxy (23ms)
+2026-09-21T10:00:05:33.621Z PASS  tests/cli-proxy (70ms)
+2026-09-21T10:00:05:34.758Z PASS  tests/core-engine (48ms)
+2026-09-21T10:00:05:35.895Z PASS  tests/mcp-proxy (33ms)
+2026-09-21T10:00:05:36.032Z PASS  tests/mcp-engine (64ms)
+2026-09-21T10:00:05:37.169Z PASS  tests/core-proxy (4ms)
+2026-09-21T10:00:05:38.306Z PASS  tests/core-engine (8ms)
+2026-09-21T10:00:05:39.443Z PASS  tests/core-engine (56ms)
+2026-09-21T10:00:05:40.580Z PASS  tests/core-engine (41ms)
+2026-09-21T10:00:05:41.717Z PASS  tests/core-proxy (45ms)
+2026-09-21T10:00:05:42.854Z PASS  tests/cli-router (89ms)
+2026-09-21T10:00:05:43.991Z PASS  tests/core-proxy (2ms)
+2026-09-21T10:00:05:44.128Z PASS  tests/cli-router (15ms)
+2026-09-21T10:00:05:45.265Z PASS  tests/proxy-ccr (9ms)
+2026-09-21T10:00:05:46.402Z PASS  tests/cli-router (35ms)
+2026-09-21T10:00:05:47.539Z PASS  tests/proxy-router (16ms)
+2026-09-21T10:00:05:48.676Z PASS  tests/core-ccr (44ms)
+2026-09-21T10:00:05:49.813Z PASS  tests/cli-engine (61ms)
+2026-09-21T10:00:05:50.950Z PASS  tests/cli-engine (20ms)
+2026-09-21T10:00:05:51.087Z PASS  tests/proxy-engine (56ms)
+2026-09-21T10:00:05:52.224Z PASS  tests/proxy-proxy (18ms)
+2026-09-21T10:00:05:53.361Z PASS  tests/mcp-router (21ms)
+2026-09-21T10:00:05:54.498Z PASS  tests/cli-engine (38ms)
+2026-09-21T10:00:05:55.635Z PASS  tests/mcp-ccr (25ms)
+2026-09-21T10:00:05:56.772Z PASS  tests/cli-router (29ms)
+2026-09-21T10:00:05:57.909Z PASS  tests/cli-engine (23ms)
+2026-09-21T10:00:05:58.046Z PASS  tests/core-router (89ms)
+2026-09-21T10:00:05:59.183Z PASS  tests/proxy-ccr (16ms)
+2026-09-21T10:00:06:00.320Z PASS  tests/proxy-ccr (29ms)
+2026-09-21T10:00:06:01.457Z PASS  tests/core-proxy (78ms)
+2026-09-21T10:00:06:02.594Z PASS  tests/proxy-engine (67ms)
+2026-09-21T10:00:06:03.731Z PASS  tests/mcp-ccr (26ms)
+2026-09-21T10:00:06:04.868Z PASS  tests/mcp-router (58ms)
+2026-09-21T10:00:06:05.005Z PASS  tests/proxy-proxy (74ms)
+2026-09-21T10:00:06:06.142Z PASS  tests/proxy-ccr (83ms)
+2026-09-21T10:00:06:07.279Z PASS  tests/cli-proxy (23ms)
+2026-09-21T10:00:06:08.416Z PASS  tests/proxy-router (33ms)
+2026-09-21T10:00:06:09.553Z PASS  tests/mcp-proxy (49ms)
+2026-09-21T10:00:06:10.690Z PASS  tests/cli-ccr (56ms)
+2026-09-21T10:00:06:11.827Z PASS  tests/mcp-ccr (85ms)
+2026-09-21T10:00:06:12.964Z PASS  tests/core-ccr (60ms)
+2026-09-21T10:00:06:13.101Z PASS  tests/core-engine (5ms)
+2026-09-21T10:00:06:14.238Z PASS  tests/cli-proxy (22ms)
+2026-09-21T10:00:06:15.375Z PASS  tests/cli-router (67ms)
+2026-09-21T10:00:06:16.512Z PASS  tests/core-engine (80ms)
+2026-09-21T10:00:06:17.649Z PASS  tests/mcp-proxy (64ms)
+2026-09-21T10:00:06:18.786Z PASS  tests/cli-proxy (55ms)
+2026-09-21T10:00:06:19.923Z PASS  tests/core-engine (64ms)
+2026-09-21T10:00:06:20.060Z PASS  tests/core-engine (60ms)
+2026-09-21T10:00:06:21.197Z PASS  tests/mcp-proxy (14ms)
+2026-09-21T10:00:06:22.334Z PASS  tests/mcp-proxy (31ms)
+2026-09-21T10:00:06:23.471Z PASS  tests/proxy-proxy (77ms)
+2026-09-21T10:00:06:24.608Z PASS  tests/core-engine (11ms)
+2026-09-21T10:00:06:25.745Z PASS  tests/proxy-ccr (61ms)
+2026-09-21T10:00:06:26.882Z PASS  tests/proxy-proxy (17ms)
+2026-09-21T10:00:06:27.019Z PASS  tests/mcp-engine (8ms)
+2026-09-21T10:00:06:28.156Z PASS  tests/core-ccr (81ms)
+2026-09-21T10:00:06:29.293Z PASS  tests/proxy-router (83ms)
+2026-09-21T10:00:06:30.430Z PASS  tests/proxy-ccr (31ms)
+2026-09-21T10:00:06:31.567Z PASS  tests/cli-router (70ms)
+2026-09-21T10:00:06:32.704Z PASS  tests/mcp-engine (50ms)
+2026-09-21T10:00:06:33.841Z PASS  tests/proxy-proxy (17ms)
+2026-09-21T10:00:06:34.978Z PASS  tests/core-ccr (19ms)
+2026-09-21T10:00:06:35.115Z PASS  tests/proxy-engine (67ms)
+2026-09-21T10:00:06:36.252Z PASS  tests/mcp-ccr (6ms)
+2026-09-21T10:00:06:37.389Z PASS  tests/mcp-proxy (87ms)
+2026-09-21T10:00:06:38.526Z PASS  tests/cli-ccr (22ms)
+2026-09-21T10:00:06:39.663Z PASS  tests/cli-ccr (15ms)
+2026-09-21T10:00:06:40.800Z PASS  tests/proxy-proxy (71ms)
+2026-09-21T10:00:06:41.937Z PASS  tests/core-proxy (50ms)
+2026-09-21T10:00:06:42.074Z PASS  tests/core-ccr (29ms)
+2026-09-21T10:00:06:43.211Z PASS  tests/mcp-ccr (28ms)
+2026-09-21T10:00:06:44.348Z PASS  tests/proxy-ccr (84ms)
+2026-09-21T10:00:06:45.485Z PASS  tests/proxy-engine (84ms)
+2026-09-21T10:00:06:46.622Z PASS  tests/mcp-router (80ms)
+2026-09-21T10:00:06:47.759Z PASS  tests/proxy-proxy (73ms)
+2026-09-21T10:00:06:48.896Z PASS  tests/core-ccr (38ms)
+2026-09-21T10:00:06:49.033Z PASS  tests/proxy-router (55ms)
+2026-09-21T10:00:06:50.170Z PASS  tests/cli-engine (51ms)
+2026-09-21T10:00:06:51.307Z PASS  tests/mcp-router (41ms)
+2026-09-21T10:00:06:52.444Z PASS  tests/proxy-ccr (74ms)
+2026-09-21T10:00:06:53.581Z PASS  tests/proxy-proxy (28ms)
+2026-09-21T10:00:06:54.718Z PASS  tests/proxy-proxy (79ms)
+2026-09-21T10:00:06:55.855Z PASS  tests/core-proxy (88ms)
+2026-09-21T10:00:06:56.992Z PASS  tests/mcp-engine (34ms)
+2026-09-21T10:00:06:57.129Z PASS  tests/proxy-proxy (61ms)
+2026-09-21T10:00:06:58.266Z PASS  tests/mcp-ccr (4ms)
+2026-09-21T10:00:06:59.403Z PASS  tests/mcp-ccr (11ms)
+2026-09-21T10:00:07:00.540Z PASS  tests/proxy-proxy (23ms)
+2026-09-21T10:00:07:01.677Z PASS  tests/mcp-proxy (12ms)
+2026-09-21T10:00:07:02.814Z PASS  tests/core-proxy (8ms)
+2026-09-21T10:00:07:03.951Z PASS  tests/core-router (72ms)
+2026-09-21T10:00:07:04.088Z PASS  tests/mcp-proxy (30ms)
+2026-09-21T10:00:07:05.225Z PASS  tests/core-engine (45ms)
+2026-09-21T10:00:07:06.362Z PASS  tests/mcp-proxy (52ms)
+2026-09-21T10:00:07:07.499Z PASS  tests/proxy-ccr (26ms)
+2026-09-21T10:00:07:08.636Z PASS  tests/mcp-ccr (33ms)
+2026-09-21T10:00:07:09.773Z PASS  tests/cli-proxy (33ms)
+2026-09-21T10:00:07:10.910Z PASS  tests/proxy-ccr (58ms)
+2026-09-21T10:00:07:11.047Z PASS  tests/proxy-proxy (51ms)
+2026-09-21T10:00:07:12.184Z PASS  tests/cli-ccr (60ms)
+2026-09-21T10:00:07:13.321Z PASS  tests/core-proxy (35ms)
+2026-09-21T10:00:07:14.458Z PASS  tests/mcp-engine (43ms)
+2026-09-21T10:00:07:15.595Z PASS  tests/cli-proxy (12ms)
+2026-09-21T10:00:07:16.732Z PASS  tests/mcp-proxy (14ms)
+2026-09-21T10:00:07:17.869Z PASS  tests/proxy-proxy (38ms)
+2026-09-21T10:00:07:18.006Z PASS  tests/core-proxy (4ms)
+2026-09-21T10:00:07:19.143Z PASS  tests/mcp-proxy (64ms)
+2026-09-21T10:00:07:20.280Z PASS  tests/cli-engine (78ms)
+2026-09-21T10:00:07:21.417Z PASS  tests/core-ccr (6ms)
+2026-09-21T10:00:07:22.554Z PASS  tests/mcp-proxy (60ms)
+2026-09-21T10:00:07:23.691Z PASS  tests/cli-proxy (40ms)
+2026-09-21T10:00:07:24.828Z PASS  tests/core-ccr (57ms)
+2026-09-21T10:00:07:25.965Z PASS  tests/mcp-ccr (13ms)
+2026-09-21T10:00:07:26.102Z PASS  tests/proxy-engine (22ms)
+2026-09-21T10:00:07:27.239Z PASS  tests/core-engine (66ms)
+2026-09-21T10:00:07:28.376Z PASS  tests/core-ccr (31ms)
+2026-09-21T10:00:07:29.513Z PASS  tests/cli-proxy (2ms)
+2026-09-21T10:00:07:30.650Z PASS  tests/proxy-ccr (26ms)
+2026-09-21T10:00:07:31.787Z PASS  tests/core-ccr (57ms)
+2026-09-21T10:00:07:32.924Z PASS  tests/mcp-router (6ms)
+2026-09-21T10:00:07:33.061Z PASS  tests/proxy-engine (78ms)
+2026-09-21T10:00:07:34.198Z PASS  tests/mcp-proxy (59ms)
+2026-09-21T10:00:07:35.335Z PASS  tests/mcp-engine (52ms)
+2026-09-21T10:00:07:36.472Z PASS  tests/mcp-ccr (56ms)
+2026-09-21T10:00:07:37.609Z PASS  tests/core-router (70ms)
+2026-09-21T10:00:07:38.746Z PASS  tests/proxy-proxy (21ms)
+2026-09-21T10:00:07:39.883Z PASS  tests/cli-router (22ms)
+2026-09-21T10:00:07:40.020Z PASS  tests/proxy-router (41ms)
+2026-09-21T10:00:07:41.157Z PASS  tests/proxy-router (80ms)
+2026-09-21T10:00:07:42.294Z PASS  tests/mcp-ccr (43ms)
+2026-09-21T10:00:07:43.431Z PASS  tests/cli-proxy (74ms)
+2026-09-21T10:00:07:44.568Z PASS  tests/cli-ccr (42ms)
+2026-09-21T10:00:07:45.705Z PASS  tests/cli-router (90ms)
+2026-09-21T10:00:07:46.842Z PASS  tests/core-ccr (20ms)
+2026-09-21T10:00:07:47.979Z PASS  tests/proxy-ccr (87ms)
+2026-09-21T10:00:07:48.116Z PASS  tests/proxy-router (19ms)
+2026-09-21T10:00:07:49.253Z PASS  tests/core-router (12ms)
+2026-09-21T10:00:07:50.390Z PASS  tests/mcp-ccr (57ms)
+2026-09-21T10:00:07:51.527Z PASS  tests/proxy-ccr (16ms)
+2026-09-21T10:00:07:52.664Z PASS  tests/mcp-router (31ms)
+2026-09-21T10:00:07:53.801Z PASS  tests/cli-proxy (70ms)
+2026-09-21T10:00:07:54.938Z PASS  tests/proxy-engine (75ms)
+2026-09-21T10:00:07:55.075Z PASS  tests/cli-router (45ms)
+2026-09-21T10:00:07:56.212Z PASS  tests/cli-engine (67ms)
+2026-09-21T10:00:07:57.349Z PASS  tests/cli-ccr (18ms)
+2026-09-21T10:00:07:58.486Z PASS  tests/cli-ccr (74ms)
+2026-09-21T10:00:07:59.623Z PASS  tests/core-router (55ms)
+2026-09-21T10:00:08:00.760Z PASS  tests/core-ccr (25ms)
+2026-09-21T10:00:08:01.897Z PASS  tests/mcp-engine (4ms)
+2026-09-21T10:00:08:02.034Z PASS  tests/core-router (20ms)
+2026-09-21T10:00:08:03.171Z PASS  tests/proxy-router (56ms)
+2026-09-21T10:00:08:04.308Z PASS  tests/cli-ccr (35ms)
+2026-09-21T10:00:08:05.445Z PASS  tests/mcp-router (77ms)
+2026-09-21T10:00:08:06.582Z PASS  tests/proxy-router (45ms)
+2026-09-21T10:00:08:07.719Z PASS  tests/mcp-ccr (48ms)
+2026-09-21T10:00:08:08.856Z PASS  tests/core-engine (35ms)
+2026-09-21T10:00:08:09.993Z PASS  tests/cli-router (14ms)
+2026-09-21T10:00:08:10.130Z PASS  tests/proxy-proxy (44ms)
+2026-09-21T10:00:08:11.267Z PASS  tests/mcp-ccr (79ms)
+2026-09-21T10:00:08:12.404Z PASS  tests/core-router (74ms)
+2026-09-21T10:00:08:13.541Z PASS  tests/core-ccr (58ms)
+2026-09-21T10:00:08:14.678Z PASS  tests/proxy-router (83ms)
+2026-09-21T10:00:08:15.815Z PASS  tests/cli-router (75ms)
+2026-09-21T10:00:08:16.952Z PASS  tests/cli-router (38ms)
+2026-09-21T10:00:08:17.089Z PASS  tests/mcp-ccr (29ms)
+2026-09-21T10:00:08:18.226Z PASS  tests/mcp-router (71ms)
+2026-09-21T10:00:08:19.363Z PASS  tests/mcp-proxy (3ms)
+2026-09-21T10:00:08:20.500Z PASS  tests/core-router (73ms)
+2026-09-21T10:00:08:21.637Z PASS  tests/proxy-ccr (80ms)
+2026-09-21T10:00:08:22.774Z PASS  tests/core-engine (11ms)
+2026-09-21T10:00:08:23.911Z PASS  tests/core-engine (28ms)
+2026-09-21T10:00:08:24.048Z PASS  tests/proxy-router (16ms)
+2026-09-21T10:00:08:25.185Z PASS  tests/cli-router (28ms)
+2026-09-21T10:00:08:26.322Z PASS  tests/cli-engine (85ms)
+2026-09-21T10:00:08:27.459Z PASS  tests/cli-proxy (17ms)
+2026-09-21T10:00:08:28.596Z PASS  tests/core-proxy (77ms)
+2026-09-21T10:00:08:29.733Z PASS  tests/core-router (49ms)
+2026-09-21T10:00:08:30.870Z PASS  tests/mcp-engine (71ms)
+2026-09-21T10:00:08:31.007Z PASS  tests/core-router (76ms)
+2026-09-21T10:00:08:32.144Z PASS  tests/mcp-ccr (36ms)
+2026-09-21T10:00:08:33.281Z PASS  tests/mcp-router (69ms)
+2026-09-21T10:00:08:34.418Z PASS  tests/core-router (18ms)
+2026-09-21T10:00:08:35.555Z PASS  tests/core-engine (47ms)
+2026-09-21T10:00:08:36.692Z PASS  tests/core-ccr (80ms)
+2026-09-21T10:00:08:37.829Z PASS  tests/proxy-proxy (50ms)
+2026-09-21T10:00:08:38.966Z PASS  tests/mcp-proxy (81ms)
+2026-09-21T10:00:08:39.103Z PASS  tests/mcp-proxy (45ms)
+2026-09-21T10:00:08:40.240Z PASS  tests/core-ccr (58ms)
+2026-09-21T10:00:08:41.377Z PASS  tests/proxy-ccr (74ms)
+2026-09-21T10:00:08:42.514Z PASS  tests/core-router (80ms)
+2026-09-21T10:00:08:43.651Z PASS  tests/core-router (68ms)
+2026-09-21T10:00:08:44.788Z PASS  tests/core-router (69ms)
+2026-09-21T10:00:08:45.925Z PASS  tests/proxy-router (36ms)
+2026-09-21T10:00:08:46.062Z PASS  tests/proxy-router (44ms)
+2026-09-21T10:00:08:47.199Z PASS  tests/cli-proxy (28ms)
+2026-09-21T10:00:08:48.336Z PASS  tests/cli-router (46ms)
+2026-09-21T10:00:08:49.473Z PASS  tests/mcp-router (34ms)
+2026-09-21T10:00:08:50.610Z PASS  tests/mcp-router (8ms)
+2026-09-21T10:00:08:51.747Z PASS  tests/mcp-router (6ms)
+2026-09-21T10:00:08:52.884Z PASS  tests/core-engine (69ms)
+2026-09-21T10:00:08:53.021Z PASS  tests/mcp-proxy (77ms)
+2026-09-21T10:00:08:54.158Z PASS  tests/mcp-engine (11ms)
+2026-09-21T10:00:08:55.295Z PASS  tests/proxy-engine (31ms)
+2026-09-21T10:00:08:56.432Z PASS  tests/proxy-ccr (42ms)
+2026-09-21T10:00:08:57.569Z PASS  tests/cli-proxy (10ms)
+2026-09-21T10:00:08:58.706Z PASS  tests/cli-router (3ms)
+2026-09-21T10:00:08:59.843Z PASS  tests/cli-engine (80ms)
+2026-09-21T10:00:09:00.980Z PASS  tests/core-router (47ms)
+2026-09-21T10:00:09:01.117Z PASS  tests/cli-proxy (56ms)
+2026-09-21T10:00:09:02.254Z PASS  tests/mcp-engine (34ms)
+2026-09-21T10:00:09:03.391Z PASS  tests/mcp-proxy (86ms)
+2026-09-21T10:00:09:04.528Z PASS  tests/mcp-ccr (18ms)
+2026-09-21T10:00:09:05.665Z PASS  tests/mcp-router (22ms)
+2026-09-21T10:00:09:06.802Z PASS  tests/cli-ccr (36ms)
+2026-09-21T10:00:09:07.939Z PASS  tests/core-engine (21ms)
+2026-09-21T10:00:09:08.076Z PASS  tests/core-engine (31ms)
+2026-09-21T10:00:09:09.213Z PASS  tests/mcp-engine (52ms)
+2026-09-21T10:00:09:10.350Z PASS  tests/cli-proxy (14ms)
+2026-09-21T10:00:09:11.487Z PASS  tests/mcp-proxy (13ms)
+2026-09-21T10:00:09:12.624Z PASS  tests/cli-proxy (41ms)
+2026-09-21T10:00:09:13.761Z PASS  tests/mcp-engine (80ms)
+2026-09-21T10:00:09:14.898Z PASS  tests/proxy-router (47ms)
+2026-09-21T10:00:09:15.035Z PASS  tests/proxy-engine (23ms)
+2026-09-21T10:00:09:16.172Z PASS  tests/proxy-proxy (82ms)
+2026-09-21T10:00:09:17.309Z PASS  tests/mcp-proxy (78ms)
+2026-09-21T10:00:09:18.446Z PASS  tests/proxy-ccr (31ms)
+2026-09-21T10:00:09:19.583Z PASS  tests/mcp-ccr (52ms)
+2026-09-21T10:00:09:20.720Z PASS  tests/core-router (41ms)
+2026-09-21T10:00:09:21.857Z PASS  tests/proxy-engine (85ms)
+2026-09-21T10:00:09:22.994Z PASS  tests/mcp-ccr (38ms)
+2026-09-21T10:00:09:23.131Z PASS  tests/core-engine (58ms)
+2026-09-21T10:00:09:24.268Z PASS  tests/proxy-ccr (49ms)
+2026-09-21T10:00:09:25.405Z PASS  tests/mcp-proxy (90ms)
+2026-09-21T10:00:09:26.542Z PASS  tests/cli-ccr (54ms)
+2026-09-21T10:00:09:27.679Z PASS  tests/proxy-ccr (65ms)
+2026-09-21T10:00:09:28.816Z PASS  tests/mcp-proxy (51ms)
+2026-09-21T10:00:09:29.953Z PASS  tests/core-proxy (37ms)
+2026-09-21T10:00:09:30.090Z PASS  tests/cli-engine (68ms)
+2026-09-21T10:00:09:31.227Z PASS  tests/cli-engine (11ms)
+2026-09-21T10:00:09:32.364Z PASS  tests/mcp-proxy (32ms)
+2026-09-21T10:00:09:33.501Z PASS  tests/mcp-ccr (32ms)
+2026-09-21T10:00:09:34.638Z PASS  tests/cli-ccr (86ms)
+2026-09-21T10:00:09:35.775Z PASS  tests/proxy-engine (30ms)
+2026-09-21T10:00:09:36.912Z PASS  tests/core-router (2ms)
+2026-09-21T10:00:09:37.049Z PASS  tests/cli-ccr (66ms)
+2026-09-21T10:00:09:38.186Z PASS  tests/mcp-engine (16ms)
+2026-09-21T10:00:09:39.323Z PASS  tests/core-engine (3ms)
+2026-09-21T10:00:09:40.460Z PASS  tests/mcp-engine (53ms)
+2026-09-21T10:00:09:41.597Z PASS  tests/mcp-router (80ms)
+2026-09-21T10:00:09:42.734Z FAIL  tests/engine.test.ts > budget mode skips compressed zones
+2026-09-21T10:00:09:42.734Z   Error: expected 120_000 to be less than 120_000
+2026-09-21T10:00:09:42.734Z       at TestContext.assert (tests/engine.test.ts:88:11)
+2026-09-21T10:00:09:43.871Z PASS  tests/cli-ccr (34ms)
+2026-09-21T10:00:09:44.008Z PASS  tests/mcp-router (3ms)
+2026-09-21T10:00:09:45.145Z PASS  tests/mcp-ccr (9ms)
+2026-09-21T10:00:09:46.282Z PASS  tests/proxy-router (17ms)
+2026-09-21T10:00:09:47.419Z PASS  tests/mcp-router (9ms)
+2026-09-21T10:00:09:48.556Z PASS  tests/proxy-engine (58ms)
+2026-09-21T10:00:09:49.693Z PASS  tests/cli-proxy (47ms)
+2026-09-21T10:00:09:50.830Z PASS  tests/mcp-ccr (76ms)
+2026-09-21T10:00:09:51.967Z PASS  tests/mcp-engine (76ms)
+2026-09-21T10:00:09:52.104Z PASS  tests/proxy-engine (64ms)
+2026-09-21T10:00:09:53.241Z PASS  tests/proxy-router (77ms)
+2026-09-21T10:00:09:54.378Z PASS  tests/core-engine (74ms)
+2026-09-21T10:00:09:55.515Z PASS  tests/cli-ccr (12ms)
+2026-09-21T10:00:09:56.652Z PASS  tests/cli-router (17ms)
+2026-09-21T10:00:09:57.789Z PASS  tests/core-proxy (8ms)
+2026-09-21T10:00:09:58.926Z PASS  tests/cli-router (22ms)
+2026-09-21T10:00:09:59.063Z PASS  tests/mcp-engine (49ms)
+2026-09-21T10:00:10:00.200Z PASS  tests/cli-proxy (70ms)
+2026-09-21T10:00:10:01.337Z PASS  tests/mcp-proxy (23ms)
+2026-09-21T10:00:10:02.474Z PASS  tests/mcp-router (88ms)
+2026-09-21T10:00:10:03.611Z PASS  tests/cli-router (14ms)
+2026-09-21T10:00:10:04.748Z PASS  tests/core-router (60ms)
+2026-09-21T10:00:10:05.885Z PASS  tests/cli-router (33ms)
+2026-09-21T10:00:10:06.022Z PASS  tests/mcp-engine (35ms)
+2026-09-21T10:00:10:07.159Z PASS  tests/mcp-router (58ms)
+2026-09-21T10:00:10:08.296Z PASS  tests/cli-proxy (84ms)
+2026-09-21T10:00:10:09.433Z PASS  tests/cli-proxy (6ms)
+2026-09-21T10:00:10:10.570Z PASS  tests/mcp-ccr (31ms)
+2026-09-21T10:00:10:11.707Z PASS  tests/cli-proxy (85ms)
+2026-09-21T10:00:10:12.844Z PASS  tests/proxy-router (76ms)
+2026-09-21T10:00:10:13.981Z PASS  tests/core-proxy (44ms)
+2026-09-21T10:00:10:14.118Z PASS  tests/cli-proxy (47ms)
+2026-09-21T10:00:10:15.255Z PASS  tests/core-router (56ms)
+2026-09-21T10:00:10:16.392Z PASS  tests/mcp-router (82ms)
+2026-09-21T10:00:10:17.529Z PASS  tests/proxy-ccr (32ms)
+2026-09-21T10:00:10:18.666Z PASS  tests/core-ccr (41ms)
+2026-09-21T10:00:10:19.803Z PASS  tests/cli-ccr (55ms)
+2026-09-21T10:00:10:20.940Z PASS  tests/core-ccr (57ms)
+2026-09-21T10:00:10:21.077Z PASS  tests/cli-router (70ms)
+2026-09-21T10:00:10:22.214Z PASS  tests/proxy-ccr (88ms)
+2026-09-21T10:00:10:23.351Z PASS  tests/core-engine (75ms)
+2026-09-21T10:00:10:24.488Z PASS  tests/cli-engine (78ms)
+2026-09-21T10:00:10:25.625Z PASS  tests/core-ccr (81ms)
+2026-09-21T10:00:10:26.762Z PASS  tests/cli-router (2ms)
+2026-09-21T10:00:10:27.899Z PASS  tests/mcp-router (74ms)
+2026-09-21T10:00:10:28.036Z PASS  tests/mcp-engine (62ms)
+2026-09-21T10:00:10:29.173Z PASS  tests/mcp-ccr (71ms)
+2026-09-21T10:00:10:30.310Z PASS  tests/mcp-ccr (22ms)
+2026-09-21T10:00:10:31.447Z PASS  tests/proxy-proxy (28ms)
+2026-09-21T10:00:10:32.584Z PASS  tests/mcp-ccr (3ms)
+2026-09-21T10:00:10:33.721Z PASS  tests/mcp-router (22ms)
+2026-09-21T10:00:10:34.858Z PASS  tests/mcp-router (5ms)
+2026-09-21T10:00:10:35.995Z PASS  tests/core-proxy (3ms)
+2026-09-21T10:00:10:36.132Z PASS  tests/cli-engine (81ms)
+2026-09-21T10:00:10:37.269Z PASS  tests/mcp-router (43ms)
+2026-09-21T10:00:10:38.406Z PASS  tests/core-ccr (72ms)
+2026-09-21T10:00:10:39.543Z PASS  tests/core-ccr (80ms)
+2026-09-21T10:00:10:40.680Z PASS  tests/proxy-router (16ms)
+2026-09-21T10:00:10:41.817Z PASS  tests/core-router (90ms)
+2026-09-21T10:00:10:42.954Z PASS  tests/mcp-ccr (26ms)
+2026-09-21T10:00:10:43.091Z PASS  tests/cli-proxy (41ms)
+2026-09-21T10:00:10:44.228Z PASS  tests/mcp-router (13ms)
+2026-09-21T10:00:10:45.365Z PASS  tests/proxy-proxy (18ms)
+2026-09-21T10:00:10:46.502Z PASS  tests/proxy-ccr (62ms)
+2026-09-21T10:00:10:47.639Z PASS  tests/cli-engine (14ms)
+2026-09-21T10:00:10:48.776Z PASS  tests/proxy-engine (17ms)
+2026-09-21T10:00:10:49.913Z PASS  tests/proxy-proxy (74ms)
+2026-09-21T10:00:10:50.050Z PASS  tests/core-proxy (35ms)
+2026-09-21T10:00:10:51.187Z PASS  tests/proxy-engine (27ms)
+2026-09-21T10:00:10:52.324Z PASS  tests/proxy-proxy (13ms)
+2026-09-21T10:00:10:53.461Z PASS  tests/core-ccr (89ms)
+2026-09-21T10:00:10:54.598Z PASS  tests/proxy-engine (55ms)
+2026-09-21T10:00:10:55.735Z PASS  tests/cli-ccr (16ms)
+2026-09-21T10:00:10:56.872Z PASS  tests/core-ccr (18ms)
+2026-09-21T10:00:10:57.009Z PASS  tests/core-proxy (28ms)
+2026-09-21T10:00:10:58.146Z PASS  tests/core-ccr (62ms)
+2026-09-21T10:00:10:59.283Z PASS  tests/core-proxy (5ms)
+2026-09-21T10:00:11:00.420Z PASS  tests/cli-proxy (73ms)
+2026-09-21T10:00:11:01.557Z PASS  tests/proxy-router (19ms)
+2026-09-21T10:00:11:02.694Z PASS  tests/cli-engine (48ms)
+2026-09-21T10:00:11:03.831Z PASS  tests/core-engine (21ms)
+2026-09-21T10:00:11:04.968Z PASS  tests/core-proxy (62ms)
+2026-09-21T10:00:11:05.105Z PASS  tests/core-ccr (73ms)
+2026-09-21T10:00:11:06.242Z PASS  tests/proxy-router (6ms)
+2026-09-21T10:00:11:07.379Z PASS  tests/mcp-ccr (19ms)
+2026-09-21T10:00:11:08.516Z PASS  tests/mcp-engine (82ms)
+2026-09-21T10:00:11:09.653Z PASS  tests/mcp-router (34ms)
+2026-09-21T10:00:11:10.790Z PASS  tests/core-engine (63ms)
+2026-09-21T10:00:11:11.927Z PASS  tests/proxy-proxy (28ms)
+2026-09-21T10:00:11:12.064Z PASS  tests/cli-proxy (24ms)
+2026-09-21T10:00:11:13.201Z PASS  tests/cli-router (5ms)
+2026-09-21T10:00:11:14.338Z PASS  tests/cli-proxy (13ms)
+2026-09-21T10:00:11:15.475Z PASS  tests/proxy-proxy (49ms)
+2026-09-21T10:00:11:16.612Z PASS  tests/mcp-router (25ms)
+2026-09-21T10:00:11:17.749Z PASS  tests/cli-engine (78ms)
+2026-09-21T10:00:11:18.886Z PASS  tests/core-router (33ms)
+2026-09-21T10:00:11:19.023Z FAIL  tests/engine.test.ts > budget mode skips compressed zones
+2026-09-21T10:00:11:19.023Z   Error: expected 120_000 to be less than 120_000
+2026-09-21T10:00:11:19.023Z       at TestContext.assert (tests/engine.test.ts:88:11)
+2026-09-21T10:00:11:20.160Z PASS  tests/mcp-router (30ms)
+2026-09-21T10:00:11:21.297Z PASS  tests/proxy-engine (83ms)
+2026-09-21T10:00:11:22.434Z PASS  tests/core-proxy (82ms)
+2026-09-21T10:00:11:23.571Z PASS  tests/cli-engine (22ms)
+2026-09-21T10:00:11:24.708Z PASS  tests/proxy-engine (51ms)
+2026-09-21T10:00:11:25.845Z PASS  tests/core-proxy (48ms)
+2026-09-21T10:00:11:26.982Z PASS  tests/mcp-router (41ms)
+2026-09-21T10:00:11:27.119Z PASS  tests/proxy-proxy (48ms)
+2026-09-21T10:00:11:28.256Z PASS  tests/mcp-engine (42ms)
+2026-09-21T10:00:11:29.393Z PASS  tests/cli-ccr (63ms)
+2026-09-21T10:00:11:30.530Z PASS  tests/cli-ccr (72ms)
+2026-09-21T10:00:11:31.667Z PASS  tests/cli-ccr (12ms)
+2026-09-21T10:00:11:32.804Z PASS  tests/mcp-proxy (13ms)
+2026-09-21T10:00:11:33.941Z PASS  tests/mcp-engine (63ms)
+2026-09-21T10:00:11:34.078Z PASS  tests/cli-router (72ms)
+2026-09-21T10:00:11:35.215Z PASS  tests/core-ccr (57ms)
+2026-09-21T10:00:11:36.352Z PASS  tests/mcp-engine (16ms)
+2026-09-21T10:00:11:37.489Z PASS  tests/proxy-engine (80ms)
+2026-09-21T10:00:11:38.626Z PASS  tests/mcp-proxy (41ms)
+2026-09-21T10:00:11:39.763Z PASS  tests/cli-ccr (75ms)
+2026-09-21T10:00:11:40.900Z PASS  tests/mcp-proxy (54ms)
+2026-09-21T10:00:11:41.037Z PASS  tests/core-router (89ms)
+2026-09-21T10:00:11:42.174Z PASS  tests/core-router (68ms)
+2026-09-21T10:00:11:43.311Z PASS  tests/mcp-engine (18ms)
+2026-09-21T10:00:11:44.448Z PASS  tests/mcp-router (7ms)
+2026-09-21T10:00:11:45.585Z PASS  tests/cli-router (22ms)
+2026-09-21T10:00:11:46.722Z PASS  tests/core-router (83ms)
+2026-09-21T10:00:11:47.859Z PASS  tests/mcp-router (10ms)
+2026-09-21T10:00:11:48.996Z PASS  tests/core-ccr (42ms)
+2026-09-21T10:00:11:49.133Z PASS  tests/mcp-engine (50ms)
+2026-09-21T10:00:11:50.270Z PASS  tests/proxy-ccr (49ms)
+2026-09-21T10:00:11:51.407Z PASS  tests/cli-proxy (82ms)
+2026-09-21T10:00:11:52.544Z PASS  tests/proxy-ccr (31ms)
+2026-09-21T10:00:11:53.681Z PASS  tests/cli-proxy (54ms)
+2026-09-21T10:00:11:54.818Z PASS  tests/cli-engine (77ms)
+2026-09-21T10:00:11:55.955Z PASS  tests/core-proxy (22ms)
+2026-09-21T10:00:11:56.092Z PASS  tests/core-ccr (74ms)
+2026-09-21T10:00:11:57.229Z PASS  tests/cli-engine (50ms)
+2026-09-21T10:00:11:58.366Z PASS  tests/proxy-engine (59ms)
+2026-09-21T10:00:11:59.503Z PASS  tests/proxy-engine (87ms)
+2026-09-21T10:00:12:00.640Z PASS  tests/proxy-router (82ms)
+2026-09-21T10:00:12:01.777Z PASS  tests/cli-proxy (27ms)
+2026-09-21T10:00:12:02.914Z PASS  tests/proxy-engine (19ms)
+2026-09-21T10:00:12:03.051Z PASS  tests/cli-engine (90ms)
+2026-09-21T10:00:12:04.188Z PASS  tests/mcp-proxy (76ms)
+2026-09-21T10:00:12:05.325Z PASS  tests/core-proxy (14ms)
+2026-09-21T10:00:12:06.462Z PASS  tests/mcp-proxy (81ms)
+2026-09-21T10:00:12:07.599Z PASS  tests/core-proxy (52ms)
+2026-09-21T10:00:12:08.736Z PASS  tests/mcp-ccr (27ms)
+2026-09-21T10:00:12:09.873Z PASS  tests/cli-proxy (28ms)
+2026-09-21T10:00:12:10.010Z PASS  tests/cli-proxy (60ms)
+2026-09-21T10:00:12:11.147Z PASS  tests/proxy-engine (49ms)
+2026-09-21T10:00:12:12.284Z PASS  tests/cli-router (26ms)
+2026-09-21T10:00:12:13.421Z PASS  tests/core-engine (82ms)
+2026-09-21T10:00:12:14.558Z PASS  tests/core-router (87ms)
+2026-09-21T10:00:12:15.695Z PASS  tests/proxy-router (21ms)
+2026-09-21T10:00:12:16.832Z PASS  tests/mcp-engine (83ms)
+2026-09-21T10:00:12:17.969Z PASS  tests/proxy-proxy (32ms)
+2026-09-21T10:00:12:18.106Z PASS  tests/proxy-engine (74ms)
+2026-09-21T10:00:12:19.243Z PASS  tests/mcp-proxy (63ms)
+2026-09-21T10:00:12:20.380Z PASS  tests/cli-router (87ms)
+2026-09-21T10:00:12:21.517Z PASS  tests/mcp-engine (36ms)
+2026-09-21T10:00:12:22.654Z PASS  tests/cli-ccr (59ms)
+2026-09-21T10:00:12:23.791Z PASS  tests/cli-ccr (11ms)
+2026-09-21T10:00:12:24.928Z PASS  tests/proxy-router (56ms)
+2026-09-21T10:00:12:25.065Z PASS  tests/mcp-proxy (6ms)
+2026-09-21T10:00:12:26.202Z PASS  tests/cli-router (14ms)
+2026-09-21T10:00:12:27.339Z PASS  tests/cli-engine (65ms)
+2026-09-21T10:00:12:28.476Z PASS  tests/proxy-proxy (59ms)
+2026-09-21T10:00:12:29.613Z PASS  tests/core-ccr (18ms)
+2026-09-21T10:00:12:30.750Z PASS  tests/mcp-proxy (71ms)
+2026-09-21T10:00:12:31.887Z PASS  tests/proxy-ccr (32ms)
+2026-09-21T10:00:12:32.024Z PASS  tests/proxy-router (2ms)
+2026-09-21T10:00:12:33.161Z PASS  tests/proxy-engine (55ms)
+2026-09-21T10:00:12:34.298Z PASS  tests/cli-router (4ms)
+2026-09-21T10:00:12:35.435Z PASS  tests/proxy-proxy (8ms)
+2026-09-21T10:00:12:36.572Z PASS  tests/cli-ccr (45ms)
+2026-09-21T10:00:12:37.709Z PASS  tests/mcp-router (37ms)
+2026-09-21T10:00:12:38.846Z PASS  tests/core-engine (65ms)
+2026-09-21T10:00:12:39.983Z PASS  tests/mcp-router (67ms)
+2026-09-21T10:00:12:40.120Z PASS  tests/cli-router (5ms)
+2026-09-21T10:00:12:41.257Z PASS  tests/cli-router (29ms)
+2026-09-21T10:00:12:42.394Z PASS  tests/core-ccr (73ms)
+2026-09-21T10:00:12:43.531Z PASS  tests/mcp-ccr (50ms)
+2026-09-21T10:00:12:44.668Z PASS  tests/proxy-engine (81ms)
+2026-09-21T10:00:12:45.805Z PASS  tests/cli-engine (50ms)
+2026-09-21T10:00:12:46.942Z PASS  tests/mcp-router (57ms)
+2026-09-21T10:00:12:47.079Z PASS  tests/proxy-ccr (84ms)
+2026-09-21T10:00:12:48.216Z PASS  tests/proxy-engine (49ms)
+2026-09-21T10:00:12:49.353Z PASS  tests/proxy-ccr (44ms)
+2026-09-21T10:00:12:50.490Z PASS  tests/core-ccr (21ms)
+2026-09-21T10:00:12:51.627Z PASS  tests/mcp-router (57ms)
+2026-09-21T10:00:12:52.764Z PASS  tests/core-proxy (78ms)
+2026-09-21T10:00:12:53.901Z PASS  tests/proxy-ccr (23ms)
+2026-09-21T10:00:12:54.038Z PASS  tests/proxy-engine (23ms)
+2026-09-21T10:00:12:55.175Z PASS  tests/mcp-router (69ms)
+2026-09-21T10:00:12:56.312Z FAIL  tests/engine.test.ts > budget mode skips compressed zones
+2026-09-21T10:00:12:56.312Z   Error: expected 120_000 to be less than 120_000
+2026-09-21T10:00:12:56.312Z       at TestContext.assert (tests/engine.test.ts:88:11)
+2026-09-21T10:00:12:57.449Z PASS  tests/mcp-proxy (60ms)
+2026-09-21T10:00:12:58.586Z PASS  tests/cli-router (29ms)
+2026-09-21T10:00:12:59.723Z PASS  tests/core-proxy (10ms)
+2026-09-21T10:00:13:00.860Z PASS  tests/mcp-ccr (80ms)
+2026-09-21T10:00:13:01.997Z PASS  tests/proxy-ccr (41ms)
+2026-09-21T10:00:13:02.134Z PASS  tests/cli-engine (38ms)
+2026-09-21T10:00:13:03.271Z PASS  tests/mcp-router (77ms)
+2026-09-21T10:00:13:04.408Z PASS  tests/core-ccr (33ms)
+2026-09-21T10:00:13:05.545Z PASS  tests/proxy-proxy (83ms)
+2026-09-21T10:00:13:06.682Z PASS  tests/cli-engine (80ms)
+2026-09-21T10:00:13:07.819Z PASS  tests/core-proxy (56ms)
+2026-09-21T10:00:13:08.956Z PASS  tests/cli-router (71ms)
+2026-09-21T10:00:13:09.093Z PASS  tests/mcp-engine (8ms)
+2026-09-21T10:00:13:10.230Z PASS  tests/mcp-ccr (50ms)
+2026-09-21T10:00:13:11.367Z PASS  tests/cli-ccr (87ms)
+2026-09-21T10:00:13:12.504Z PASS  tests/mcp-router (43ms)
+2026-09-21T10:00:13:13.641Z PASS  tests/core-proxy (42ms)
+2026-09-21T10:00:13:14.778Z PASS  tests/cli-ccr (65ms)
+2026-09-21T10:00:13:15.915Z PASS  tests/proxy-proxy (85ms)
+2026-09-21T10:00:13:16.052Z PASS  tests/cli-ccr (34ms)
+2026-09-21T10:00:13:17.189Z PASS  tests/core-router (20ms)
+2026-09-21T10:00:13:18.326Z PASS  tests/proxy-engine (15ms)
+2026-09-21T10:00:13:19.463Z PASS  tests/core-ccr (36ms)
+2026-09-21T10:00:13:20.600Z PASS  tests/proxy-ccr (69ms)
+2026-09-21T10:00:13:21.737Z PASS  tests/proxy-engine (14ms)
+2026-09-21T10:00:13:22.874Z PASS  tests/cli-router (34ms)
+2026-09-21T10:00:13:23.011Z PASS  tests/core-proxy (82ms)
+2026-09-21T10:00:13:24.148Z PASS  tests/mcp-router (49ms)
+2026-09-21T10:00:13:25.285Z PASS  tests/core-engine (71ms)
+2026-09-21T10:00:13:26.422Z PASS  tests/cli-router (37ms)
+2026-09-21T10:00:13:27.559Z PASS  tests/mcp-proxy (6ms)
+2026-09-21T10:00:13:28.696Z PASS  tests/mcp-engine (62ms)
+2026-09-21T10:00:13:29.833Z PASS  tests/mcp-engine (44ms)
+2026-09-21T10:00:13:30.970Z PASS  tests/cli-router (48ms)
+2026-09-21T10:00:13:31.107Z PASS  tests/proxy-engine (73ms)
+2026-09-21T10:00:13:32.244Z PASS  tests/mcp-ccr (83ms)
+2026-09-21T10:00:13:33.381Z PASS  tests/mcp-proxy (89ms)
+2026-09-21T10:00:13:34.518Z PASS  tests/core-engine (73ms)
+2026-09-21T10:00:13:35.655Z PASS  tests/core-router (8ms)
+2026-09-21T10:00:13:36.792Z PASS  tests/cli-proxy (81ms)
+2026-09-21T10:00:13:37.929Z PASS  tests/proxy-engine (61ms)
+2026-09-21T10:00:13:38.066Z PASS  tests/core-proxy (12ms)
+2026-09-21T10:00:13:39.203Z PASS  tests/mcp-engine (42ms)
+2026-09-21T10:00:13:40.340Z PASS  tests/mcp-ccr (4ms)
+2026-09-21T10:00:13:41.477Z PASS  tests/cli-ccr (14ms)
+2026-09-21T10:00:13:42.614Z PASS  tests/cli-engine (16ms)
+2026-09-21T10:00:13:43.751Z PASS  tests/core-proxy (54ms)
+2026-09-21T10:00:13:44.888Z PASS  tests/mcp-engine (52ms)
+2026-09-21T10:00:13:45.025Z PASS  tests/cli-ccr (7ms)
+2026-09-21T10:00:13:46.162Z PASS  tests/mcp-proxy (76ms)
+2026-09-21T10:00:13:47.299Z PASS  tests/cli-proxy (80ms)
+2026-09-21T10:00:13:48.436Z PASS  tests/core-proxy (84ms)
+2026-09-21T10:00:13:49.573Z PASS  tests/proxy-ccr (80ms)
+2026-09-21T10:00:13:50.710Z PASS  tests/proxy-ccr (57ms)
+2026-09-21T10:00:13:51.847Z PASS  tests/proxy-engine (13ms)
+2026-09-21T10:00:13:52.984Z PASS  tests/core-proxy (77ms)
+2026-09-21T10:00:13:53.121Z PASS  tests/mcp-proxy (43ms)
+2026-09-21T10:00:13:54.258Z PASS  tests/cli-engine (35ms)
+2026-09-21T10:00:13:55.395Z PASS  tests/cli-router (37ms)
+2026-09-21T10:00:13:56.532Z PASS  tests/mcp-proxy (11ms)
+2026-09-21T10:00:13:57.669Z PASS  tests/proxy-ccr (62ms)
+2026-09-21T10:00:13:58.806Z PASS  tests/mcp-router (71ms)
+2026-09-21T10:00:13:59.943Z PASS  tests/cli-engine (3ms)
+2026-09-21T10:00:14:00.080Z PASS  tests/core-proxy (26ms)
+2026-09-21T10:00:14:01.217Z PASS  tests/mcp-proxy (63ms)
+2026-09-21T10:00:14:02.354Z PASS  tests/core-router (89ms)
+2026-09-21T10:00:14:03.491Z PASS  tests/proxy-proxy (4ms)
+2026-09-21T10:00:14:04.628Z PASS  tests/core-ccr (54ms)
+2026-09-21T10:00:14:05.765Z PASS  tests/core-ccr (70ms)
+2026-09-21T10:00:14:06.902Z PASS  tests/mcp-proxy (55ms)
+2026-09-21T10:00:14:07.039Z PASS  tests/proxy-engine (77ms)
+2026-09-21T10:00:14:08.176Z PASS  tests/cli-proxy (63ms)
+2026-09-21T10:00:14:09.313Z PASS  tests/mcp-ccr (26ms)
+2026-09-21T10:00:14:10.450Z PASS  tests/core-engine (18ms)
+2026-09-21T10:00:14:11.587Z PASS  tests/core-ccr (15ms)
+2026-09-21T10:00:14:12.724Z PASS  tests/mcp-ccr (8ms)
+2026-09-21T10:00:14:13.861Z PASS  tests/core-proxy (21ms)
+2026-09-21T10:00:14:14.998Z PASS  tests/proxy-proxy (17ms)
+2026-09-21T10:00:14:15.135Z PASS  tests/proxy-proxy (28ms)
+2026-09-21T10:00:14:16.272Z PASS  tests/core-engine (35ms)
+2026-09-21T10:00:14:17.409Z PASS  tests/cli-engine (42ms)
+2026-09-21T10:00:14:18.546Z PASS  tests/core-engine (40ms)
+2026-09-21T10:00:14:19.683Z PASS  tests/proxy-ccr (78ms)
+2026-09-21T10:00:14:20.820Z PASS  tests/core-ccr (38ms)
+2026-09-21T10:00:14:21.957Z PASS  tests/cli-proxy (81ms)
+2026-09-21T10:00:14:22.094Z PASS  tests/mcp-ccr (20ms)
+2026-09-21T10:00:14:23.231Z PASS  tests/core-engine (51ms)
+2026-09-21T10:00:14:24.368Z PASS  tests/cli-proxy (89ms)
+2026-09-21T10:00:14:25.505Z PASS  tests/mcp-router (40ms)
+2026-09-21T10:00:14:26.642Z PASS  tests/core-engine (24ms)
+2026-09-21T10:00:14:27.779Z PASS  tests/core-ccr (64ms)
+2026-09-21T10:00:14:28.916Z PASS  tests/proxy-proxy (46ms)
+2026-09-21T10:00:14:29.053Z PASS  tests/cli-ccr (73ms)
+2026-09-21T10:00:14:30.190Z PASS  tests/core-proxy (56ms)
+2026-09-21T10:00:14:31.327Z PASS  tests/cli-router (35ms)
+2026-09-21T10:00:14:32.464Z PASS  tests/mcp-router (66ms)
+2026-09-21T10:00:14:33.601Z FAIL  tests/engine.test.ts > budget mode skips compressed zones
+2026-09-21T10:00:14:33.601Z   Error: expected 120_000 to be less than 120_000
+2026-09-21T10:00:14:33.601Z       at TestContext.assert (tests/engine.test.ts:88:11)
+2026-09-21T10:00:14:34.738Z PASS  tests/proxy-proxy (84ms)
+2026-09-21T10:00:14:35.875Z PASS  tests/cli-proxy (29ms)
+2026-09-21T10:00:14:36.012Z PASS  tests/core-router (61ms)
+2026-09-21T10:00:14:37.149Z PASS  tests/core-router (20ms)
+2026-09-21T10:00:14:38.286Z PASS  tests/mcp-ccr (63ms)
+2026-09-21T10:00:14:39.423Z PASS  tests/proxy-proxy (85ms)
+2026-09-21T10:00:14:40.560Z PASS  tests/cli-ccr (79ms)
+2026-09-21T10:00:14:41.697Z PASS  tests/mcp-ccr (9ms)
+2026-09-21T10:00:14:42.834Z PASS  tests/proxy-router (58ms)
+2026-09-21T10:00:14:43.971Z PASS  tests/mcp-engine (2ms)
+2026-09-21T10:00:14:44.108Z PASS  tests/core-router (74ms)
+2026-09-21T10:00:14:45.245Z PASS  tests/core-ccr (56ms)
+2026-09-21T10:00:14:46.382Z PASS  tests/mcp-router (89ms)
+2026-09-21T10:00:14:47.519Z PASS  tests/mcp-ccr (83ms)
+2026-09-21T10:00:14:48.656Z PASS  tests/core-proxy (77ms)
+2026-09-21T10:00:14:49.793Z PASS  tests/mcp-ccr (35ms)
+2026-09-21T10:00:14:50.930Z PASS  tests/proxy-proxy (47ms)
+2026-09-21T10:00:14:51.067Z PASS  tests/cli-engine (83ms)
+2026-09-21T10:00:14:52.204Z PASS  tests/proxy-ccr (5ms)
+2026-09-21T10:00:14:53.341Z PASS  tests/mcp-engine (86ms)
+2026-09-21T10:00:14:54.478Z PASS  tests/mcp-proxy (25ms)
+2026-09-21T10:00:14:55.615Z PASS  tests/proxy-proxy (84ms)
+2026-09-21T10:00:14:56.752Z PASS  tests/proxy-proxy (89ms)
+2026-09-21T10:00:14:57.889Z PASS  tests/proxy-proxy (6ms)
+2026-09-21T10:00:14:58.026Z PASS  tests/cli-proxy (47ms)
+2026-09-21T10:00:14:59.163Z PASS  tests/proxy-router (12ms)
+2026-09-21T10:00:15:00.300Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:15:01.437Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:02.574Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:15:03.711Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:04.848Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:15:05.985Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:06.122Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:15:07.259Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:15:08.396Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:15:09.533Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:15:10.670Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:11.807Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:12.944Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:13.081Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:15:14.218Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:15.355Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:15:16.492Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:15:17.629Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:18.766Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:19.903Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:15:20.040Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:15:21.177Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:22.314Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:23.451Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:15:24.588Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:25.725Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:26.862Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:15:27.999Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:28.136Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:29.273Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:30.410Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:15:31.547Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:32.684Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:33.821Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:34.958Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:35.095Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:36.232Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:15:37.369Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:15:38.506Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:39.643Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:40.780Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:41.917Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:15:42.054Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:43.191Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:44.328Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:15:45.465Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:46.602Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:15:47.739Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:15:48.876Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:49.013Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:50.150Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:51.287Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:15:52.424Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:53.561Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:15:54.698Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:15:55.835Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:15:56.972Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:15:57.109Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:58.246Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:15:59.383Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:16:00.520Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:16:01.657Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:16:02.794Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:16:03.931Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:16:04.068Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:16:05.205Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:16:06.342Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:07.479Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:08.616Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:16:09.753Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:16:10.890Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:16:11.027Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:16:12.164Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:16:13.301Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:16:14.438Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:16:15.575Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:16:16.712Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:16:17.849Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:18.986Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:16:19.123Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:16:20.260Z WARN  [license] 5 package(s) have deprecated licenses
+2026-09-21T10:00:16:21.397Z WARN  [license] 1 package(s) have deprecated licenses
+2026-09-21T10:00:16:22.534Z WARN  [license] 6 package(s) have deprecated licenses
+2026-09-21T10:00:16:23.671Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:16:24.808Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:25.945Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:16:26.082Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:16:27.219Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:16:28.356Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:16:29.493Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:30.630Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:31.767Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:16:32.904Z WARN  [license] 4 package(s) have deprecated licenses
+2026-09-21T10:00:16:33.041Z WARN  [license] 9 package(s) have deprecated licenses
+2026-09-21T10:00:16:34.178Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:16:35.315Z WARN  [license] 7 package(s) have deprecated licenses
+2026-09-21T10:00:16:36.452Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:16:37.589Z WARN  [license] 3 package(s) have deprecated licenses
+2026-09-21T10:00:16:38.726Z WARN  [license] 2 package(s) have deprecated licenses
+2026-09-21T10:00:16:39.863Z WARN  [license] 8 package(s) have deprecated licenses
+2026-09-21T10:00:16:40.000Z INFO  [pack] sign @ctxroom/core 24 kB
+2026-09-21T10:00:16:41.137Z INFO  [pack] sign @ctxroom/core 257 kB
+2026-09-21T10:00:16:42.274Z INFO  [pack] verify @ctxroom/proxy 268 kB
+2026-09-21T10:00:16:43.411Z INFO  [pack] tar @ctxroom/proxy 260 kB
+2026-09-21T10:00:16:44.548Z INFO  [pack] tar @ctxroom/proxy 180 kB
+2026-09-21T10:00:16:45.685Z INFO  [pack] verify ctxroom 210 kB
+2026-09-21T10:00:16:46.822Z INFO  [pack] verify ctxroom 151 kB
+2026-09-21T10:00:16:47.959Z INFO  [pack] tar @ctxroom/core 263 kB
+2026-09-21T10:00:16:48.096Z INFO  [pack] sign @ctxroom/proxy 253 kB
+2026-09-21T10:00:16:49.233Z INFO  [pack] tar @ctxroom/core 266 kB
+2026-09-21T10:00:16:50.370Z INFO  [pack] tar ctxroom 255 kB
+2026-09-21T10:00:16:51.507Z INFO  [pack] verify @ctxroom/proxy 39 kB
+2026-09-21T10:00:16:52.644Z INFO  [pack] sign @ctxroom/core 274 kB
+2026-09-21T10:00:16:53.781Z INFO  [pack] tar ctxroom 31 kB
+2026-09-21T10:00:16:54.918Z INFO  [pack] tar @ctxroom/core 261 kB
+2026-09-21T10:00:16:55.055Z INFO  [pack] tar @ctxroom/core 210 kB
+2026-09-21T10:00:16:56.192Z INFO  [pack] verify ctxroom 108 kB
+2026-09-21T10:00:16:57.329Z INFO  [pack] verify @ctxroom/core 145 kB
+2026-09-21T10:00:16:58.466Z INFO  [pack] sign ctxroom 61 kB
+2026-09-21T10:00:16:59.603Z INFO  [pack] tar ctxroom 155 kB
+2026-09-21T10:00:17:00.740Z INFO  [pack] tar @ctxroom/proxy 63 kB
+2026-09-21T10:00:17:01.877Z INFO  [pack] verify @ctxroom/proxy 86 kB
+2026-09-21T10:00:17:02.014Z INFO  [pack] sign @ctxroom/core 169 kB
+2026-09-21T10:00:17:03.151Z INFO  [pack] verify @ctxroom/proxy 300 kB
+2026-09-21T10:00:17:04.288Z INFO  [pack] verify ctxroom 273 kB
+2026-09-21T10:00:17:05.425Z INFO  [pack] verify @ctxroom/proxy 104 kB
+2026-09-21T10:00:17:06.562Z INFO  [pack] tar @ctxroom/core 90 kB
+2026-09-21T10:00:17:07.699Z INFO  [pack] tar @ctxroom/proxy 276 kB
+2026-09-21T10:00:17:08.836Z INFO  [pack] verify @ctxroom/core 145 kB
+2026-09-21T10:00:17:09.973Z INFO  [pack] tar @ctxroom/core 204 kB
+2026-09-21T10:00:17:10.110Z INFO  [pack] tar @ctxroom/core 45 kB
+2026-09-21T10:00:17:11.247Z INFO  [pack] verify @ctxroom/proxy 244 kB
+2026-09-21T10:00:17:12.384Z INFO  [pack] sign @ctxroom/core 87 kB
+2026-09-21T10:00:17:13.521Z INFO  [pack] verify @ctxroom/core 65 kB
+2026-09-21T10:00:17:14.658Z INFO  [pack] verify @ctxroom/proxy 88 kB
+2026-09-21T10:00:17:15.795Z INFO  [pack] sign @ctxroom/proxy 186 kB
+2026-09-21T10:00:17:16.932Z INFO  [pack] sign @ctxroom/core 39 kB
+2026-09-21T10:00:17:17.069Z INFO  [pack] verify @ctxroom/core 198 kB
+2026-09-21T10:00:17:18.206Z INFO  [pack] sign ctxroom 284 kB
+2026-09-21T10:00:17:19.343Z INFO  [pack] verify @ctxroom/core 123 kB
+2026-09-21T10:00:17:20.480Z INFO  [pack] sign @ctxroom/core 196 kB
+2026-09-21T10:00:17:21.617Z INFO  [pack] tar @ctxroom/proxy 258 kB
+2026-09-21T10:00:17:22.754Z INFO  [pack] tar @ctxroom/core 99 kB
+2026-09-21T10:00:17:23.891Z INFO  [pack] sign @ctxroom/core 255 kB
+2026-09-21T10:00:17:24.028Z INFO  [pack] verify @ctxroom/proxy 219 kB
+2026-09-21T10:00:17:25.165Z INFO  [pack] sign @ctxroom/core 113 kB
+2026-09-21T10:00:17:26.302Z INFO  [pack] tar ctxroom 255 kB
+2026-09-21T10:00:17:27.439Z INFO  [pack] verify @ctxroom/core 181 kB
+2026-09-21T10:00:17:28.576Z INFO  [pack] tar ctxroom 60 kB
+2026-09-21T10:00:17:29.713Z INFO  [pack] verify @ctxroom/proxy 292 kB
+2026-09-21T10:00:17:30.850Z INFO  [pack] verify ctxroom 286 kB
+2026-09-21T10:00:17:31.987Z INFO  [pack] tar @ctxroom/proxy 196 kB
+2026-09-21T10:00:17:32.124Z INFO  [pack] sign @ctxroom/core 65 kB
+2026-09-21T10:00:17:33.261Z INFO  [pack] tar @ctxroom/proxy 203 kB
+2026-09-21T10:00:17:34.398Z INFO  [pack] verify @ctxroom/core 137 kB
+2026-09-21T10:00:17:35.535Z INFO  [pack] sign ctxroom 151 kB
+2026-09-21T10:00:17:36.672Z INFO  [pack] sign @ctxroom/proxy 25 kB
+2026-09-21T10:00:17:37.809Z INFO  [pack] sign ctxroom 156 kB
+2026-09-21T10:00:17:38.946Z INFO  [pack] sign @ctxroom/core 149 kB
+2026-09-21T10:00:17:39.083Z INFO  [pack] tar @ctxroom/proxy 74 kB
+2026-09-21T10:00:17:40.220Z INFO  [pack] tar @ctxroom/proxy 232 kB
+2026-09-21T10:00:17:41.357Z INFO  [pack] tar @ctxroom/core 81 kB
+2026-09-21T10:00:17:42.494Z INFO  [pack] tar @ctxroom/core 164 kB
+2026-09-21T10:00:17:43.631Z INFO  [pack] sign @ctxroom/proxy 133 kB
+2026-09-21T10:00:17:44.768Z INFO  [pack] tar @ctxroom/proxy 222 kB
+2026-09-21T10:00:17:45.905Z INFO  [pack] verify @ctxroom/proxy 282 kB
+2026-09-21T10:00:17:46.042Z INFO  [pack] tar ctxroom 123 kB
+2026-09-21T10:00:17:47.179Z INFO  [pack] sign @ctxroom/proxy 221 kB
+2026-09-21T10:00:17:48.316Z INFO  [pack] tar @ctxroom/proxy 182 kB
+2026-09-21T10:00:17:49.453Z INFO  [pack] sign @ctxroom/core 153 kB
+2026-09-21T10:00:17:50.590Z INFO  [pack] sign @ctxroom/core 75 kB
+2026-09-21T10:00:17:51.727Z INFO  [pack] verify @ctxroom/core 107 kB
+2026-09-21T10:00:17:52.864Z INFO  [pack] tar ctxroom 222 kB
+2026-09-21T10:00:17:53.001Z INFO  [pack] sign @ctxroom/core 72 kB
+2026-09-21T10:00:17:54.138Z INFO  [pack] sign @ctxroom/proxy 181 kB
+2026-09-21T10:00:17:55.275Z INFO  [pack] tar @ctxroom/proxy 22 kB
+2026-09-21T10:00:17:56.412Z INFO  [pack] verify @ctxroom/proxy 242 kB
+2026-09-21T10:00:17:57.549Z INFO  [pack] sign @ctxroom/core 51 kB
+2026-09-21T10:00:17:58.686Z INFO  [pack] sign ctxroom 238 kB
+2026-09-21T10:00:17:59.823Z INFO  [pack] sign @ctxroom/proxy 270 kB
+2026-09-21T10:00:18:00.960Z INFO  [pack] sign ctxroom 233 kB
+2026-09-21T10:00:18:01.097Z INFO  [pack] tar @ctxroom/core 212 kB
+2026-09-21T10:00:18:02.234Z INFO  [pack] tar @ctxroom/core 254 kB
+2026-09-21T10:00:18:03.371Z INFO  [pack] sign @ctxroom/proxy 156 kB
+2026-09-21T10:00:18:04.508Z INFO  [pack] tar ctxroom 139 kB
+2026-09-21T10:00:18:05.645Z INFO  [pack] sign ctxroom 258 kB
+2026-09-21T10:00:18:06.782Z INFO  [pack] verify @ctxroom/core 148 kB
+2026-09-21T10:00:18:07.919Z INFO  [pack] sign @ctxroom/proxy 281 kB
+2026-09-21T10:00:18:08.056Z INFO  [pack] sign @ctxroom/proxy 149 kB
+2026-09-21T10:00:18:09.193Z INFO  [pack] verify @ctxroom/core 86 kB
+2026-09-21T10:00:18:10.330Z INFO  [pack] sign @ctxroom/proxy 231 kB
+2026-09-21T10:00:18:11.467Z INFO  [pack] verify ctxroom 79 kB
+2026-09-21T10:00:18:12.604Z INFO  [pack] tar @ctxroom/proxy 158 kB
+2026-09-21T10:00:18:13.741Z INFO  [pack] tar ctxroom 70 kB
+2026-09-21T10:00:18:14.878Z INFO  [pack] verify @ctxroom/core 178 kB
+2026-09-21T10:00:18:15.015Z INFO  [pack] tar ctxroom 217 kB
+2026-09-21T10:00:18:16.152Z INFO  [pack] tar @ctxroom/core 93 kB
+2026-09-21T10:00:18:17.289Z INFO  [pack] tar @ctxroom/proxy 184 kB
+2026-09-21T10:00:18:18.426Z INFO  [pack] verify @ctxroom/core 279 kB
+2026-09-21T10:00:18:19.563Z INFO  [pack] verify ctxroom 254 kB
+2026-09-21T10:00:18:20.700Z INFO  [pack] verify @ctxroom/core 25 kB
+2026-09-21T10:00:18:21.837Z INFO  [pack] verify @ctxroom/proxy 279 kB
+2026-09-21T10:00:18:22.974Z INFO  [pack] tar @ctxroom/core 299 kB
+2026-09-21T10:00:18:23.111Z INFO  [pack] verify @ctxroom/core 233 kB
+2026-09-21T10:00:18:24.248Z INFO  [pack] sign ctxroom 279 kB
+2026-09-21T10:00:18:25.385Z INFO  [pack] tar @ctxroom/core 21 kB
+2026-09-21T10:00:18:26.522Z INFO  [pack] verify @ctxroom/proxy 129 kB
+2026-09-21T10:00:18:27.659Z INFO  [pack] sign @ctxroom/core 178 kB
+2026-09-21T10:00:18:28.796Z INFO  [pack] sign @ctxroom/proxy 169 kB
+2026-09-21T10:00:18:29.933Z INFO  [pack] sign @ctxroom/core 284 kB
+2026-09-21T10:00:18:30.070Z INFO  [pack] verify ctxroom 99 kB
+2026-09-21T10:00:18:31.207Z INFO  [pack] tar @ctxroom/proxy 283 kB
+2026-09-21T10:00:18:32.344Z INFO  [pack] sign @ctxroom/proxy 212 kB
+2026-09-21T10:00:18:33.481Z INFO  [pack] verify @ctxroom/proxy 117 kB
+2026-09-21T10:00:18:34.618Z INFO  [pack] sign @ctxroom/proxy 119 kB
+2026-09-21T10:00:18:35.755Z INFO  [pack] verify ctxroom 184 kB
+2026-09-21T10:00:18:36.892Z INFO  [pack] sign @ctxroom/core 169 kB
+2026-09-21T10:00:18:37.029Z INFO  [pack] sign @ctxroom/core 284 kB
+2026-09-21T10:00:18:38.166Z INFO  [pack] sign @ctxroom/proxy 296 kB
+2026-09-21T10:00:18:39.303Z INFO  [pack] verify @ctxroom/core 259 kB
+2026-09-21T10:00:18:40.440Z INFO  [pack] sign @ctxroom/proxy 205 kB
+2026-09-21T10:00:18:41.577Z INFO  [pack] tar ctxroom 291 kB
+2026-09-21T10:00:18:42.714Z INFO  [pack] verify ctxroom 66 kB
+2026-09-21T10:00:18:43.851Z INFO  [pack] tar ctxroom 155 kB
+2026-09-21T10:00:18:44.988Z INFO  [pack] sign @ctxroom/core 22 kB
+2026-09-21T10:00:18:45.125Z INFO  [pack] verify @ctxroom/proxy 262 kB
+2026-09-21T10:00:18:46.262Z INFO  [pack] tar ctxroom 78 kB
+2026-09-21T10:00:18:47.399Z INFO  [pack] tar @ctxroom/core 229 kB
+2026-09-21T10:00:18:48.536Z INFO  [pack] verify ctxroom 116 kB
+2026-09-21T10:00:18:49.673Z INFO  [pack] sign ctxroom 87 kB
+2026-09-21T10:00:18:50.810Z INFO  [pack] sign ctxroom 192 kB
+2026-09-21T10:00:18:51.947Z INFO  [pack] sign ctxroom 147 kB
+2026-09-21T10:00:18:52.084Z INFO  [pack] tar @ctxroom/proxy 279 kB
+2026-09-21T10:00:18:53.221Z INFO  [pack] tar @ctxroom/proxy 140 kB
+2026-09-21T10:00:18:54.358Z INFO  [pack] verify @ctxroom/proxy 253 kB
+2026-09-21T10:00:18:55.495Z INFO  [pack] sign @ctxroom/core 248 kB
+2026-09-21T10:00:18:56.632Z INFO  [pack] verify @ctxroom/core 28 kB
+2026-09-21T10:00:18:57.769Z INFO  [pack] tar ctxroom 247 kB
+2026-09-21T10:00:18:58.906Z INFO  [pack] sign @ctxroom/proxy 121 kB
+2026-09-21T10:00:18:59.043Z INFO  [pack] verify @ctxroom/proxy 194 kB
+2026-09-21T10:00:19:00.180Z INFO  [pack] sign @ctxroom/proxy 60 kB
+2026-09-21T10:00:19:01.317Z INFO  [pack] verify @ctxroom/core 90 kB
+2026-09-21T10:00:19:02.454Z INFO  [pack] tar @ctxroom/core 205 kB
+2026-09-21T10:00:19:03.591Z INFO  [pack] verify @ctxroom/proxy 240 kB
+2026-09-21T10:00:19:04.728Z INFO  [pack] verify @ctxroom/proxy 292 kB
+2026-09-21T10:00:19:05.865Z INFO  [pack] verify @ctxroom/core 30 kB
+2026-09-21T10:00:19:06.002Z INFO  [pack] verify @ctxroom/core 21 kB
+2026-09-21T10:00:19:07.139Z INFO  [pack] sign @ctxroom/core 144 kB
+2026-09-21T10:00:19:08.276Z INFO  [pack] tar @ctxroom/proxy 89 kB
+2026-09-21T10:00:19:09.413Z INFO  [pack] tar @ctxroom/core 94 kB
+2026-09-21T10:00:19:10.550Z FATAL [runner] out of memory: heap limit reached at 77%
+2026-09-21T10:00:19:10.550Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:10.550Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:11.687Z FATAL [runner] out of memory: heap limit reached at 43%
+2026-09-21T10:00:19:11.687Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:11.687Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:12.824Z FATAL [runner] out of memory: heap limit reached at 72%
+2026-09-21T10:00:19:12.824Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:12.824Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:13.961Z FATAL [runner] out of memory: heap limit reached at 88%
+2026-09-21T10:00:19:13.961Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:13.961Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:14.098Z FATAL [runner] out of memory: heap limit reached at 33%
+2026-09-21T10:00:19:14.098Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:14.098Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:15.235Z FATAL [runner] out of memory: heap limit reached at 60%
+2026-09-21T10:00:19:15.235Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:15.235Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:16.372Z FATAL [runner] out of memory: heap limit reached at 72%
+2026-09-21T10:00:19:16.372Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:16.372Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:17.509Z FATAL [runner] out of memory: heap limit reached at 86%
+2026-09-21T10:00:19:17.509Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:17.509Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:18.646Z FATAL [runner] out of memory: heap limit reached at 63%
+2026-09-21T10:00:19:18.646Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:18.646Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:19.783Z FATAL [runner] out of memory: heap limit reached at 88%
+2026-09-21T10:00:19:19.783Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:19.783Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:20.920Z FATAL [runner] out of memory: heap limit reached at 50%
+2026-09-21T10:00:19:20.920Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:20.920Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:21.057Z FATAL [runner] out of memory: heap limit reached at 36%
+2026-09-21T10:00:19:21.057Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:21.057Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:22.194Z FATAL [runner] out of memory: heap limit reached at 79%
+2026-09-21T10:00:19:22.194Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:22.194Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:23.331Z FATAL [runner] out of memory: heap limit reached at 83%
+2026-09-21T10:00:19:23.331Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:23.331Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:24.468Z FATAL [runner] out of memory: heap limit reached at 62%
+2026-09-21T10:00:19:24.468Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:24.468Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:25.605Z FATAL [runner] out of memory: heap limit reached at 78%
+2026-09-21T10:00:19:25.605Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:25.605Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:26.742Z FATAL [runner] out of memory: heap limit reached at 24%
+2026-09-21T10:00:19:26.742Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:26.742Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:27.879Z FATAL [runner] out of memory: heap limit reached at 35%
+2026-09-21T10:00:19:27.879Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:27.879Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:28.016Z FATAL [runner] out of memory: heap limit reached at 56%
+2026-09-21T10:00:19:28.016Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:28.016Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:29.153Z FATAL [runner] out of memory: heap limit reached at 92%
+2026-09-21T10:00:19:29.153Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:29.153Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:30.290Z FATAL [runner] out of memory: heap limit reached at 47%
+2026-09-21T10:00:19:30.290Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:30.290Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:31.427Z FATAL [runner] out of memory: heap limit reached at 77%
+2026-09-21T10:00:19:31.427Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:31.427Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:32.564Z FATAL [runner] out of memory: heap limit reached at 62%
+2026-09-21T10:00:19:32.564Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:32.564Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:33.701Z FATAL [runner] out of memory: heap limit reached at 80%
+2026-09-21T10:00:19:33.701Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:33.701Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:34.838Z FATAL [runner] out of memory: heap limit reached at 68%
+2026-09-21T10:00:19:34.838Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:34.838Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:35.975Z FATAL [runner] out of memory: heap limit reached at 58%
+2026-09-21T10:00:19:35.975Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:35.975Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:36.112Z FATAL [runner] out of memory: heap limit reached at 46%
+2026-09-21T10:00:19:36.112Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:36.112Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:37.249Z FATAL [runner] out of memory: heap limit reached at 40%
+2026-09-21T10:00:19:37.249Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:37.249Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:38.386Z FATAL [runner] out of memory: heap limit reached at 63%
+2026-09-21T10:00:19:38.386Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:38.386Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:39.523Z FATAL [runner] out of memory: heap limit reached at 43%
+2026-09-21T10:00:19:39.523Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:39.523Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:40.660Z FATAL [runner] out of memory: heap limit reached at 74%
+2026-09-21T10:00:19:40.660Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:40.660Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:41.797Z FATAL [runner] out of memory: heap limit reached at 93%
+2026-09-21T10:00:19:41.797Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:41.797Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:42.934Z FATAL [runner] out of memory: heap limit reached at 20%
+2026-09-21T10:00:19:42.934Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:42.934Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:43.071Z FATAL [runner] out of memory: heap limit reached at 83%
+2026-09-21T10:00:19:43.071Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:43.071Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:44.208Z FATAL [runner] out of memory: heap limit reached at 81%
+2026-09-21T10:00:19:44.208Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:44.208Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:45.345Z FATAL [runner] out of memory: heap limit reached at 63%
+2026-09-21T10:00:19:45.345Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:45.345Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:46.482Z FATAL [runner] out of memory: heap limit reached at 27%
+2026-09-21T10:00:19:46.482Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:46.482Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:47.619Z FATAL [runner] out of memory: heap limit reached at 57%
+2026-09-21T10:00:19:47.619Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:47.619Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:48.756Z FATAL [runner] out of memory: heap limit reached at 53%
+2026-09-21T10:00:19:48.756Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:48.756Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:49.893Z FATAL [runner] out of memory: heap limit reached at 92%
+2026-09-21T10:00:19:49.893Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:49.893Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:50.030Z FATAL [runner] out of memory: heap limit reached at 33%
+2026-09-21T10:00:19:50.030Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:50.030Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:51.167Z FATAL [runner] out of memory: heap limit reached at 81%
+2026-09-21T10:00:19:51.167Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:51.167Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:52.304Z FATAL [runner] out of memory: heap limit reached at 31%
+2026-09-21T10:00:19:52.304Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:52.304Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:53.441Z FATAL [runner] out of memory: heap limit reached at 27%
+2026-09-21T10:00:19:53.441Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:53.441Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:54.578Z FATAL [runner] out of memory: heap limit reached at 26%
+2026-09-21T10:00:19:54.578Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:54.578Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:55.715Z FATAL [runner] out of memory: heap limit reached at 60%
+2026-09-21T10:00:19:55.715Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:55.715Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:56.852Z FATAL [runner] out of memory: heap limit reached at 69%
+2026-09-21T10:00:19:56.852Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:56.852Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:57.989Z FATAL [runner] out of memory: heap limit reached at 57%
+2026-09-21T10:00:19:57.989Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:57.989Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:58.126Z FATAL [runner] out of memory: heap limit reached at 90%
+2026-09-21T10:00:19:58.126Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:58.126Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)
+2026-09-21T10:00:19:59.263Z FATAL [runner] out of memory: heap limit reached at 69%
+2026-09-21T10:00:19:59.263Z   FATAL detail: allocation of 512 MB failed for session registry LRU
+2026-09-21T10:00:19:59.263Z   Retrying with increased heap (NODE_OPTIONS=--max-old-space-size=8192)

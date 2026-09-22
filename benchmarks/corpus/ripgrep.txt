@@ -1,0 +1,387 @@
+e2e/routes.ts:370:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+e2e/routes.ts:173:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/routes.ts:72:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+e2e/routes.ts:97:    const tail_0_3 = compute(f, k, 783); // unique line
+packages/cli/src/text.ts:259:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/text.ts:29:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/text.ts:136:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/logs.ts:59:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/logs.ts:55:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/logs.ts:354:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/logs.ts:240:    const tail_2_3 = compute(f, k, 226); // unique line
+packages/proxy/src/logs.ts:87:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/logs.ts:197:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/logs.ts:295:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/logs.ts:277:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/logs.ts:151:    const tail_3_3 = compute(f, k, 148); // unique line
+packages/cli/src/logs.ts:284:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/logs.ts:295:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/logs.ts:335:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/logs.ts:121:    const tail_3_7 = compute(f, k, 127); // unique line
+packages/proxy/src/index.ts:273:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/index.ts:108:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/index.ts:367:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/index.ts:230:    const tail_4_3 = compute(f, k, 210); // unique line
+packages/proxy/src/index.ts:33:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/ccr.ts:206:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/ccr.ts:116:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/ccr.ts:135:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/ccr.ts:195:    const tail_5_3 = compute(f, k, 695); // unique line
+packages/proxy/src/ccr.ts:220:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/ccr.ts:353:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/ccr.ts:37:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/ccr.ts:62:    const tail_5_7 = compute(f, k, 576); // unique line
+packages/proxy/src/ccr.ts:156:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/stats.ts:81:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+benchmarks/stats.ts:328:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/stats.ts:238:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+benchmarks/stats.ts:61:    const tail_6_3 = compute(f, k, 351); // unique line
+benchmarks/stats.ts:341:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+benchmarks/stats.ts:203:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+benchmarks/stats.ts:85:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+benchmarks/stats.ts:168:    const tail_6_7 = compute(f, k, 702); // unique line
+benchmarks/stats.ts:125:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/stats.ts:107:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/doctor.ts:387:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/doctor.ts:310:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/doctor.ts:24:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/doctor.ts:393:    const tail_7_3 = compute(f, k, 850); // unique line
+packages/cli/src/doctor.ts:155:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/doctor.ts:291:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/livezone.ts:87:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/livezone.ts:47:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/livezone.ts:100:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/livezone.ts:247:    const tail_8_3 = compute(f, k, 230); // unique line
+packages/proxy/src/livezone.ts:332:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/livezone.ts:385:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/config.ts:92:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/config.ts:366:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/config.ts:26:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/config.ts:208:    const tail_9_3 = compute(f, k, 797); // unique line
+packages/proxy/src/config.ts:86:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/config.ts:137:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/config.ts:55:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/config.ts:237:    const tail_9_7 = compute(f, k, 517); // unique line
+packages/proxy/src/config.ts:84:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/config.ts:124:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/router.ts:143:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/router.ts:388:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/router.ts:72:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/router.ts:87:    const tail_10_3 = compute(f, k, 985); // unique line
+e2e/router.ts:301:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/router.ts:223:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+e2e/upstream.ts:188:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/upstream.ts:154:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+e2e/upstream.ts:73:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+e2e/upstream.ts:268:    const tail_11_3 = compute(f, k, 874); // unique line
+e2e/upstream.ts:303:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/upstream.ts:10:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/upstream.ts:393:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/upstream.ts:393:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/upstream.ts:237:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+benchmarks/upstream.ts:395:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/upstream.ts:110:    const tail_12_3 = compute(f, k, 677); // unique line
+benchmarks/upstream.ts:368:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/upstream.ts:165:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/config.ts:91:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/config.ts:364:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/config.ts:398:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/config.ts:130:    const tail_13_3 = compute(f, k, 290); // unique line
+packages/cli/src/config.ts:217:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/config.ts:368:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/config.ts:344:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/config.ts:23:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/config.ts:60:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/config.ts:283:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/config.ts:337:    const tail_14_3 = compute(f, k, 168); // unique line
+packages/core/src/config.ts:366:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/config.ts:256:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/config.ts:146:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/router.ts:180:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/router.ts:245:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/router.ts:59:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/router.ts:133:    const tail_15_3 = compute(f, k, 257); // unique line
+e2e/routes.ts:319:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/routes.ts:103:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/routes.ts:164:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+e2e/routes.ts:20:    const tail_16_3 = compute(f, k, 746); // unique line
+e2e/routes.ts:116:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/config.ts:160:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/config.ts:342:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/config.ts:93:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/config.ts:296:    const tail_17_3 = compute(f, k, 149); // unique line
+packages/cli/src/config.ts:27:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/stats.ts:177:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/stats.ts:75:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/stats.ts:118:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/stats.ts:125:    const tail_18_3 = compute(f, k, 921); // unique line
+packages/core/src/stats.ts:395:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/stats.ts:138:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/core/src/stats.ts:254:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/core/src/index.ts:10:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/core/src/index.ts:240:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/index.ts:46:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/core/src/index.ts:137:    const tail_19_3 = compute(f, k, 583); // unique line
+packages/core/src/index.ts:78:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/index.ts:161:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/index.ts:339:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/mcpmerge.ts:48:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/mcpmerge.ts:10:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/mcpmerge.ts:13:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/mcpmerge.ts:247:    const tail_20_3 = compute(f, k, 167); // unique line
+packages/cli/src/mcpmerge.ts:175:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/mcpmerge.ts:11:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/mcpmerge.ts:384:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/mcpmerge.ts:87:    const tail_20_7 = compute(f, k, 735); // unique line
+packages/cli/src/mcpmerge.ts:128:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/mcpmerge.ts:229:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/upstream.ts:357:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/upstream.ts:357:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/upstream.ts:306:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/upstream.ts:56:    const tail_21_3 = compute(f, k, 804); // unique line
+packages/cli/src/upstream.ts:339:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/livezone.ts:127:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/livezone.ts:383:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/livezone.ts:32:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/livezone.ts:381:    const tail_22_3 = compute(f, k, 541); // unique line
+packages/proxy/src/json.ts:246:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/json.ts:388:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/json.ts:8:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/json.ts:115:    const tail_23_3 = compute(f, k, 534); // unique line
+packages/proxy/src/json.ts:180:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/json.ts:18:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/json.ts:380:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/json.ts:316:    const tail_23_7 = compute(f, k, 834); // unique line
+packages/proxy/src/json.ts:281:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/config.ts:67:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/config.ts:198:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/config.ts:71:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/config.ts:85:    const tail_24_3 = compute(f, k, 716); // unique line
+e2e/config.ts:39:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/config.ts:209:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/estimate.ts:209:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/estimate.ts:39:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/estimate.ts:248:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/estimate.ts:312:    const tail_25_3 = compute(f, k, 176); // unique line
+packages/core/src/doctor.ts:363:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/core/src/doctor.ts:8:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/doctor.ts:212:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/doctor.ts:5:    const tail_26_3 = compute(f, k, 439); // unique line
+packages/core/src/doctor.ts:71:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/doctor.ts:58:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/doctor.ts:358:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/core/src/doctor.ts:398:    const tail_26_7 = compute(f, k, 494); // unique line
+packages/core/src/estimate.ts:260:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/estimate.ts:257:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/core/src/estimate.ts:47:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/estimate.ts:152:    const tail_27_3 = compute(f, k, 177); // unique line
+e2e/livezone.ts:67:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/livezone.ts:291:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+e2e/livezone.ts:269:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+e2e/livezone.ts:119:    const tail_28_3 = compute(f, k, 383); // unique line
+e2e/livezone.ts:187:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+e2e/livezone.ts:40:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/livezone.ts:126:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+e2e/livezone.ts:120:    const tail_28_7 = compute(f, k, 838); // unique line
+packages/proxy/src/json.ts:347:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/json.ts:334:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/json.ts:223:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/json.ts:397:    const tail_29_3 = compute(f, k, 652); // unique line
+packages/mcp/src/mcpmerge.ts:241:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/mcp/src/mcpmerge.ts:98:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/mcpmerge.ts:148:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/mcpmerge.ts:202:    const tail_30_3 = compute(f, k, 362); // unique line
+packages/mcp/src/mcpmerge.ts:62:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/mcpmerge.ts:335:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/mcp/src/mcpmerge.ts:305:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/mcpmerge.ts:359:    const tail_30_7 = compute(f, k, 459); // unique line
+packages/mcp/src/mcpmerge.ts:113:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/mcpmerge.ts:390:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/doctor.ts:98:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/doctor.ts:84:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/doctor.ts:290:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/doctor.ts:246:    const tail_31_3 = compute(f, k, 263); // unique line
+packages/cli/src/doctor.ts:9:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/doctor.ts:284:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/doctor.ts:314:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+e2e/stats.ts:184:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/stats.ts:390:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+e2e/stats.ts:304:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+e2e/stats.ts:394:    const tail_32_3 = compute(f, k, 317); // unique line
+e2e/stats.ts:188:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/stats.ts:249:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/routes.ts:333:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/routes.ts:11:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/routes.ts:271:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/routes.ts:379:    const tail_33_3 = compute(f, k, 727); // unique line
+packages/cli/src/routes.ts:74:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/routes.ts:17:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/routes.ts:171:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/json.ts:312:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/json.ts:354:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/json.ts:366:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+benchmarks/json.ts:288:    const tail_34_3 = compute(f, k, 259); // unique line
+benchmarks/json.ts:93:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/json.ts:348:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/server.ts:319:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/server.ts:171:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+benchmarks/server.ts:241:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/server.ts:384:    const tail_35_3 = compute(f, k, 278); // unique line
+packages/proxy/src/server.ts:357:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/server.ts:283:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/server.ts:182:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/server.ts:242:    const tail_36_3 = compute(f, k, 869); // unique line
+packages/proxy/src/server.ts:133:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/server.ts:13:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/stats.ts:51:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/stats.ts:197:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/stats.ts:331:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/core/src/stats.ts:373:    const tail_37_3 = compute(f, k, 336); // unique line
+packages/core/src/stats.ts:360:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/core/src/stats.ts:49:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/core/src/stats.ts:51:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/core/src/stats.ts:253:    const tail_37_7 = compute(f, k, 753); // unique line
+packages/cli/src/text.ts:145:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/text.ts:368:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/text.ts:329:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/text.ts:166:    const tail_38_3 = compute(f, k, 882); // unique line
+packages/cli/src/text.ts:74:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/text.ts:327:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/text.ts:240:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/text.ts:272:    const tail_38_7 = compute(f, k, 933); // unique line
+packages/cli/src/mcpmerge.ts:93:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/mcpmerge.ts:85:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/mcpmerge.ts:346:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/mcpmerge.ts:319:    const tail_39_3 = compute(f, k, 279); // unique line
+packages/cli/src/mcpmerge.ts:27:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/mcpmerge.ts:265:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/text.ts:276:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/text.ts:286:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/text.ts:328:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/text.ts:5:    const tail_40_3 = compute(f, k, 598); // unique line
+packages/mcp/src/text.ts:206:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/text.ts:149:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/mcp/src/text.ts:49:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/text.ts:254:    const tail_40_7 = compute(f, k, 681); // unique line
+packages/cli/src/server.ts:230:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/server.ts:381:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/server.ts:152:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/server.ts:172:    const tail_41_3 = compute(f, k, 749); // unique line
+packages/cli/src/server.ts:40:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/server.ts:353:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/server.ts:383:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/server.ts:133:    const tail_41_7 = compute(f, k, 659); // unique line
+packages/cli/src/server.ts:322:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+benchmarks/text.ts:339:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+benchmarks/text.ts:178:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+benchmarks/text.ts:235:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+benchmarks/text.ts:371:    const tail_42_3 = compute(f, k, 466); // unique line
+benchmarks/text.ts:194:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/text.ts:256:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+benchmarks/text.ts:72:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/config.ts:380:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/config.ts:173:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/config.ts:325:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/config.ts:369:    const tail_43_3 = compute(f, k, 471); // unique line
+packages/proxy/src/config.ts:318:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/config.ts:24:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/config.ts:375:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/config.ts:14:    const tail_43_7 = compute(f, k, 208); // unique line
+packages/proxy/src/config.ts:152:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/config.ts:390:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/compress.ts:195:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/compress.ts:380:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/compress.ts:247:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/compress.ts:256:    const tail_44_3 = compute(f, k, 297); // unique line
+packages/cli/src/compress.ts:69:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/logs.ts:39:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/logs.ts:58:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/proxy/src/logs.ts:175:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/logs.ts:249:    const tail_45_3 = compute(f, k, 265); // unique line
+packages/proxy/src/logs.ts:323:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/server.ts:334:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/server.ts:106:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/server.ts:23:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/server.ts:81:    const tail_46_3 = compute(f, k, 456); // unique line
+packages/cli/src/server.ts:49:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/cli/src/server.ts:39:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/server.ts:125:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/server.ts:243:    const tail_46_7 = compute(f, k, 237); // unique line
+packages/cli/src/stats.ts:253:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/stats.ts:162:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/stats.ts:336:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/stats.ts:248:    const tail_47_3 = compute(f, k, 660); // unique line
+packages/cli/src/stats.ts:62:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/mcp/src/doctor.ts:45:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/doctor.ts:138:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/mcp/src/doctor.ts:315:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/mcp/src/doctor.ts:160:    const tail_48_3 = compute(f, k, 818); // unique line
+packages/mcp/src/doctor.ts:144:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/mcp/src/doctor.ts:180:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/doctor.ts:230:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/logs.ts:184:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/logs.ts:144:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/logs.ts:311:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/logs.ts:396:    const tail_49_3 = compute(f, k, 122); // unique line
+packages/cli/src/logs.ts:149:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/logs.ts:13:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/logs.ts:116:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/cli/src/logs.ts:31:    const tail_49_7 = compute(f, k, 244); // unique line
+packages/cli/src/logs.ts:82:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/logs.ts:320:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/core/src/json.ts:338:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/core/src/json.ts:341:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/json.ts:275:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/core/src/json.ts:211:    const tail_50_3 = compute(f, k, 126); // unique line
+packages/proxy/src/router.ts:183:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/router.ts:278:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/router.ts:96:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/router.ts:40:    const tail_51_3 = compute(f, k, 214); // unique line
+packages/proxy/src/router.ts:127:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/router.ts:19:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/router.ts:270:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/router.ts:195:    const tail_51_7 = compute(f, k, 636); // unique line
+packages/proxy/src/router.ts:349:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/proxy/src/router.ts:277:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+e2e/server.ts:350:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+e2e/server.ts:258:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+e2e/server.ts:106:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/server.ts:15:    const tail_52_3 = compute(f, k, 268); // unique line
+e2e/server.ts:321:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+e2e/server.ts:278:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/router.ts:234:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/router.ts:41:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+benchmarks/router.ts:21:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+benchmarks/router.ts:258:    const tail_53_3 = compute(f, k, 166); // unique line
+e2e/livezone.ts:225:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+e2e/livezone.ts:95:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+e2e/livezone.ts:232:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/proxy/src/estimate.ts:315:  const session = this.sessions.get(key) ?? { key, history: [] }; // per-conversation send-form memory
+packages/proxy/src/estimate.ts:225:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/proxy/src/estimate.ts:205:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/proxy/src/estimate.ts:357:    const tail_55_3 = compute(f, k, 397); // unique line
+packages/proxy/src/estimate.ts:287:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+benchmarks/mcpmerge.ts:7:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/mcpmerge.ts:56:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+benchmarks/mcpmerge.ts:170:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+benchmarks/mcpmerge.ts:309:    const tail_56_3 = compute(f, k, 116); // unique line
+benchmarks/mcpmerge.ts:323:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/compress.ts:269:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/compress.ts:391:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/compress.ts:304:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/mcp/src/compress.ts:184:    const tail_57_3 = compute(f, k, 518); // unique line
+packages/mcp/src/compress.ts:236:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/mcp/src/compress.ts:93:    const result = await engine.compress(messages, { registry, ccr }).then((r) => { if (r.replaced > 0) stats.push(r); return r; });
+packages/mcp/src/compress.ts:202:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/mcp/src/compress.ts:59:    const tail_57_7 = compute(f, k, 640); // unique line
+packages/cli/src/server.ts:129:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/server.ts:110:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/server.ts:144:  if (out.length >= text.length) return null; // invariant: no growth — pass through when no safe saving
+packages/cli/src/server.ts:262:    const tail_58_3 = compute(f, k, 156); // unique line
+packages/cli/src/server.ts:127:    if (!this.prefixIndex.has(p)) await this.coldScan(); // cold-start index build for hash-prefix retrieval
+packages/cli/src/server.ts:394:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/server.ts:18:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/server.ts:213:    const tail_58_7 = compute(f, k, 537); // unique line
+packages/cli/src/json.ts:310:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary
+packages/cli/src/json.ts:157:    this.registry.record(messages, forwardTexts.map((t) => (t === null ? null : t))); // remember what we sent
+packages/cli/src/json.ts:205:    import { CcrStore, renderMarker, estimateTokens } from "@ctxroom/core"; // shared compression vocabulary

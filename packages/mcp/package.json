@@ -1,0 +1,16 @@
+{
+  "name": "@ctxroom/mcp",
+  "version": "0.1.0",
+  "description": "Minimal MCP stdio server exposing CCR retrieval (ctxroom_retrieve) and stats (ctxroom_stats) to agent hosts.",
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@ctxroom/core": "0.1.0"
+  },
+  "engines": {
+    "node": ">=23.6"
+  }
+}
