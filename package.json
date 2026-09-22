@@ -8,11 +8,11 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "node --test packages/*/test/ --test-reporter=spec",
-    "test:core": "node --test packages/core/test/",
-    "test:proxy": "node --test packages/proxy/test/",
-    "test:cli": "node --test packages/cli/test/",
-    "test:mcp": "node --test packages/mcp/test/",
+    "test": "node --test packages/*/test/*.test.ts --test-reporter=spec",
+    "test:core": "node --test packages/core/test/*.test.ts",
+    "test:proxy": "node --test packages/proxy/test/*.test.ts",
+    "test:cli": "node --test packages/cli/test/*.test.ts",
+    "test:mcp": "node --test packages/mcp/test/*.test.ts",
     "check": "tsc -p tsconfig.json --noEmit",
     "bench": "node benchmarks/run.ts",
     "e2e": "node e2e/run.ts",
