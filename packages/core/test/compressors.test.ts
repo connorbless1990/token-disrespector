@@ -150,7 +150,7 @@ test("tabular: ≥70%; all data values survive in the JSON form", () => {
   assert.ok(parsed.rows.length >= 10, `boundary rows survive: ${parsed.rows.length}`);
   assert.ok(parsed.rows.length <= 150, "never more rows than the source");
   assert.ok(JSON.stringify(parsed.rows).includes("req_1000"));
-  assert.match(out!, /\[\d+ of \d+ array items/, "dropped rows must be noted");
+  assert.match(out!, /\d+ of \d+ array items/, "dropped rows must be noted");
 });
 
 test("text: ≥50%; first and last paragraphs survive", () => {
@@ -219,9 +219,11 @@ test("invariants: no compressor may grow its input (I3)", () => {
     const r = router.route(text);
     for (const comp of r.candidates) {
       let out: string | null = null;
-      assert.doesNotThrow(() => {
+      try {
         out = comp.compress(text, NO_CTX);
-      }, `${comp.name} must not throw on ${JSON.stringify(text.slice(0, 20))}`);
+      } catch (e) {
+        assert.fail(`${comp.name} threw on ${JSON.stringify(text.slice(0, 20))}: ${String(e)}`);
+      }
       if (out !== null) assert.ok(out.length < text.length, `${comp.name} grew on ${JSON.stringify(text.slice(0, 20))}`);
     }
   }

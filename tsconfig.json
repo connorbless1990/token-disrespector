@@ -19,5 +19,9 @@
     "packages/*/test/**/*.ts",
     "benchmarks/**/*.ts",
     "e2e/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "benchmarks/corpus"
   ]
 }

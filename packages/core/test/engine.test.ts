@@ -38,8 +38,8 @@ const systemMsg: EngineMessage = {
   content:
     "You are an expert coding agent working in the user's repository. Use the available tools to inspect and modify code. Be precise, and verify changes with the project's tooling. Never expose secrets or credentials in your output.",
 };
-const bigJson: EngineMessage = { role: "tool", tool_call_id: "call_1", content: corpus("json-api-results.json") };
-const bigLogs: EngineMessage = { role: "tool", tool_call_id: "call_2", content: corpus("build-log.txt") };
+const bigJson = { role: "tool", tool_call_id: "call_1", content: corpus("json-api-results.json") } as const;
+const bigLogs = { role: "tool", tool_call_id: "call_2", content: corpus("build-log.txt") } as const;
 const smallUser: EngineMessage = { role: "user", content: "What failed?" };
 const assistantMsg: EngineMessage = { role: "assistant", content: "Let me look at the results and the log." };
 

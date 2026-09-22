@@ -93,7 +93,9 @@ export class Engine {
     // messages use their stored send form; new messages their original text.
     // (forwardTexts is mutated below for compressed new messages, so this
     // snapshot is the "before" side of the accounting.)
-    const beforeTexts = forwardTexts.map((f, i) => f ?? messageText(messages[i]));
+    const beforeTexts = forwardTexts.map((f, i) =>
+      f === null ? messageText(messages[i]) : Array.isArray(f) ? f.join("\n") : f
+    );
 
     // 1. Frozen prefix: re-apply stored send forms (byte-stability).
     for (let i = 0; i < liveStart && i < out.length; i++) {

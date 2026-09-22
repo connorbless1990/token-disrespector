@@ -105,6 +105,14 @@ export class CcrStore {
     } catch {
       return null;
     }
+    // Freshness is enforced here (not only by the periodic evictor): the
+    // fire-and-forget evict can race with store(), so an expired entry must
+    // never be returned, whatever the directory state.
+    const st = await stat(file).catch(() => null);
+    if (st && Date.now() - st.mtimeMs > this.ttlMs) {
+      await unlink(file).catch(() => {});
+      return null;
+    }
     const maxChars = options.maxChars ?? 20_000;
     const offset = options.offset ?? 0;
     const text = raw.slice(offset, offset + maxChars);
