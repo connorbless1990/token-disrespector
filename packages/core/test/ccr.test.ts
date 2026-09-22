@@ -69,8 +69,10 @@ test("ttl eviction removes expired entries", async () => {
   const dir = mkdtempSync(join(tmpdir(), "ctxroom-ccr3-"));
   const store = new CcrStore({ dir, ttlMs: -1 }); // negative ttl: everything is expired
   const hash = await store.store("old entry that must go");
-  // A negative-ttl entry is evicted as soon as it is inserted (the store
-  // self-evicts on store), so it is unretrievable.
+  // A negative-ttl entry is expired the moment it exists. Wait a few ms so
+  // the (float) mtime is unambiguously older than Date.now() for the
+  // sub-millisecond boundary check, then the entry must be unretrievable.
+  await new Promise((r) => setTimeout(r, 5));
   assert.equal(await store.retrieve(hash!), null);
   // And a normal-ttl store evicts nothing fresh.
   const store2 = new CcrStore({ dir, ttlMs: 60_000 });

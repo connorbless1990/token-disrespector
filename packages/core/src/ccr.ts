@@ -106,10 +106,13 @@ export class CcrStore {
       return null;
     }
     // Freshness is enforced here (not only by the periodic evictor): the
-    // fire-and-forget evict can race with store(), so an expired entry must
-    // never be returned, whatever the directory state.
+    // fire-and-forget evict can race with retrieve(), so an expired entry
+    // must never be returned, whatever the directory state. A missing stat
+    // means the file was evicted between the read and the stat — same
+    // conclusion: it no longer exists, so it cannot be returned.
     const st = await stat(file).catch(() => null);
-    if (st && Date.now() - st.mtimeMs > this.ttlMs) {
+    if (!st) return null;
+    if (Date.now() - st.mtimeMs > this.ttlMs) {
       await unlink(file).catch(() => {});
       return null;
     }
