@@ -15,6 +15,7 @@
     "test:mcp": "node --test packages/mcp/test/*.test.ts",
     "check": "tsc -p tsconfig.json --noEmit",
     "bench": "node benchmarks/run.ts",
+    "gen": "node benchmarks/gen.ts",
     "e2e": "node e2e/run.ts",
     "ctxroom": "node packages/cli/src/index.ts"
   },
