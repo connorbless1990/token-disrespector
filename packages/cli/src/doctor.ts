@@ -7,7 +7,7 @@
  * writability, port state. Soft checks (warnings): token env, API-URL
  * feature detection (the BYOK fallback covers the native-lane gap).
  */
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -55,13 +55,15 @@ export async function runDoctor(opts: DoctorOptions = {}): Promise<DoctorReport>
     detail: `found v${process.versions.node}`,
   });
 
-  // 2. Copilot CLI.
+  // 2. Copilot CLI (--copilot / CTXROOM_COPILOT_PATH override the search).
   const copilotPath = opts.copilotPath === undefined ? findCopilot({ home }) : opts.copilotPath;
-  if (copilotPath) {
+  if (copilotPath && !existsSync(copilotPath)) {
+    items.push({ ok: false, label: "copilot CLI found", detail: `the given path does not exist: ${copilotPath}` });
+  } else if (copilotPath) {
     const version = copilotVersion(copilotPath, 5000);
     items.push({ ok: true, label: "copilot CLI found", detail: `${copilotPath}${version ? ` (v${version})` : ""}` });
   } else {
-    items.push({ ok: false, label: "copilot CLI found", detail: "not in PATH, ~/.local/bin, or brew prefix — install it or set a custom path" });
+    items.push({ ok: false, label: "copilot CLI found", detail: "not in PATH, ~/.local/bin, or brew prefix — pass --copilot /path/to/it" });
   }
 
   // 3. Feature detection (bundle markers).

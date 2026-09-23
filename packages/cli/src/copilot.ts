@@ -19,7 +19,6 @@ import {
   accessSync,
   constants,
   existsSync,
-  lstatSync,
   mkdirSync,
   readFileSync,
   readdirSync,
@@ -71,9 +70,15 @@ export function findCopilot(opts: LocateOptions = {}): string | null {
   for (const dir of dirs) {
     const p = path.join(dir, bin);
     try {
-      if (!lstatSync(p).isFile()) continue;
+      // stat, NOT lstat: the standard layouts (npm/bun/brew global bins)
+      // ARE symlinks into the package tree. lstat would report the link
+      // itself — "not a file" — and skip exactly those installs. stat
+      // follows the link: a dangling link throws, a directory fails
+      // isFile, both are skipped; a real file (direct or linked) passes.
+      if (!statSync(p).isFile()) continue;
       if (process.platform !== "win32" && accessSync(p, constants.X_OK) === undefined) {
-        // accessSync throws on EACCES; success returns undefined
+        // accessSync follows the link to the target and checks its exec
+        // bit; throws on EACCES/ENOENT, success returns undefined
       }
       return path.resolve(p);
     } catch {

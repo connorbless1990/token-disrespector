@@ -11,6 +11,7 @@
  *   ctxroom retrieve <hash> [maxChars]
  */
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -113,11 +114,15 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   const log = opts.log ?? ((l: string) => console.error(l));
   const port = opts.port ?? DEFAULT_PORT;
 
-  // 1. locate
+  // 1. locate (--copilot flag / CTXROOM_COPILOT_PATH override the search;
+  //    existence of a user-supplied path is validated by cmdCopilot, so
+  //    injected test paths keep flowing through the full pipeline)
   const copilotPath = opts.copilotPath === undefined ? findCopilot() : opts.copilotPath;
   if (!copilotPath) {
-    log("error: could not find the `copilot` binary (PATH, ~/.local/bin, brew prefix, ~/.copilot).");
-    log("       install it, or reinstall ctxroom after the install so the PATH check passes.");
+    log("error: could not find the `copilot` binary — searched every $PATH dir,");
+    log("       ~/.local/bin, /opt/homebrew/bin, /usr/local/bin for an executable named 'copilot'.");
+    log("       point at yours:  ctxroom copilot --copilot /path/to/your/binary");
+    log("       (or export CTXROOM_COPILOT_PATH=/path/to/your/binary)");
     return 1;
   }
 
@@ -174,16 +179,28 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   return code;
 }
 
+/** `--copilot <path>` flag (or CTXROOM_COPILOT_PATH) overrides the search. */
+export function copilotPathOverride(flags: Record<string, string | number | boolean>, env: Record<string, string | undefined> = process.env): string | undefined {
+  const flag = typeof flags.copilot === "string" ? flags.copilot : undefined;
+  return flag ?? (env.CTXROOM_COPILOT_PATH || undefined);
+}
+
 export async function cmdCopilot(args: string[]): Promise<number> {
   const { flags, positional } = parseArgs(args);
+  const copilotPath = copilotPathOverride(flags);
+  if (copilotPath && !existsSync(copilotPath)) {
+    console.error(`error: the copilot path you gave does not exist: ${copilotPath}`);
+    return 1;
+  }
   if (flags.doctor) {
-    const report = await runDoctor({ port: flagNumber(flags, "port") });
+    const report = await runDoctor({ port: flagNumber(flags, "port"), copilotPath });
     printDoctor(report);
     return report.broken ? 1 : 0;
   }
   const port = flagNumber(flags, "port") ?? DEFAULT_PORT;
   return runCopilot({
     port,
+    copilotPath,
     spawnArgs: positional,
     stopProxyOnExit: flags["stop-proxy"] === true || flags["stop-proxy"] === "true",
   });
@@ -205,7 +222,7 @@ export async function cmdUnwrap(args: string[]): Promise<number> {
 
 export async function cmdDoctor(args: string[]): Promise<number> {
   const { flags } = parseArgs(args);
-  const report = await runDoctor({ port: flagNumber(flags, "port") });
+  const report = await runDoctor({ port: flagNumber(flags, "port"), copilotPath: copilotPathOverride(flags) });
   printDoctor(report);
   return report.broken ? 1 : 0;
 }
@@ -257,9 +274,11 @@ export const USAGE = `ctxroom — local-first context compression for AI coding 
 
 Usage:
   ctxroom copilot [args…]            run copilot through the compression proxy
-                                     [--port N] [--stop-proxy] [--config PATH] [--doctor]
+                                     [--port N] [--stop-proxy] [--config PATH]
+                                     [--doctor] [--copilot PATH]
   ctxroom unwrap [--config PATH]     remove the marked MCP block, restore backup, stop proxy
   ctxroom doctor [--port N]          environment checklist (exit 1 if broken)
+                                     [--copilot PATH]
   ctxroom proxy [--port N] [--ccr on|off] [--budget N]
   ctxroom stats [--days 7] [--model M]
   ctxroom simulate --file prompt.json  offline engine run (no network)
@@ -267,6 +286,7 @@ Usage:
 
 Environment:
   CTXROOM_HOME            base dir (default ~/.ctxroom): cache/ + stats/
+  CTXROOM_COPILOT_PATH    where the copilot binary lives (same as --copilot)
   CTXROOM_COPILOT_API_URL explicit upstream override for the proxy
   CTXROOM_CCR             on|off (default on) — off disables lossy compression
   CTXROOM_BUDGET / CTXROOM_TOKEN_BUDGET  aggressive history compression

@@ -6,7 +6,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -28,7 +28,7 @@ import {
   pidfileFor,
 } from "../src/copilot.ts";
 import { runDoctor } from "../src/doctor.ts";
-import { runCopilot, parseArgs } from "../src/index.ts";
+import { runCopilot, parseArgs, copilotPathOverride, cmdCopilot } from "../src/index.ts";
 import { runRetrieve, runSimulate, runStats } from "../src/commands.ts";
 
 const M = "node"; // the mcp command the entry registers
@@ -119,6 +119,48 @@ test("findCopilot: locates an executable, skips non-executable, returns null whe
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("findCopilot: follows a SYMLINK to an executable (npm/bun/brew layout)", () => {
+  const base = mkdtempSync(join(tmpdir(), "ctxroom-symlink-"));
+  try {
+    // Real binary lives in a package dir; a symlink in a PATH dir points at it.
+    const pkg = join(base, "node_modules", "@github", "copilot", "bin");
+    mkdirSync(pkg, { recursive: true });
+    const real = join(pkg, "copilot.js");
+    writeFileSync(real, "#!/usr/bin/env node\nconsole.log('copilot');\n");
+    chmodSync(real, 0o755);
+
+    const bin = join(base, "bin");
+    mkdirSync(bin);
+    const link = join(bin, "copilot"); // the name the search looks for
+    symlinkSync(real, link);
+
+    // A symlink whose target is executable must be found (this is exactly the
+    // layout npm/bun/brew produce, and the bug that went undetected before).
+    assert.equal(findCopilot({ dirs: [bin] }), link);
+  } finally {
+    rmSync(base, { recursive: true, force: true });
+  }
+});
+
+test("findCopilot: skips a dangling symlink (target missing)", () => {
+  const base = mkdtempSync(join(tmpdir(), "ctxroom-dangle-"));
+  try {
+    const bin = join(base, "bin");
+    mkdirSync(bin);
+    symlinkSync(join(base, "does-not-exist"), join(bin, "copilot"));
+    assert.equal(findCopilot({ dirs: [bin] }), null, "dangling link must be skipped");
+  } finally {
+    rmSync(base, { recursive: true, force: true });
+  }
+});
+
+test("copilotPathOverride: --copilot flag beats CTXROOM_COPILOT_PATH env", () => {
+  assert.equal(copilotPathOverride({ copilot: "/a" }, { CTXROOM_COPILOT_PATH: "/b" }), "/a");
+  assert.equal(copilotPathOverride({}, { CTXROOM_COPILOT_PATH: "/b" }), "/b");
+  assert.equal(copilotPathOverride({}, {}), undefined);
+  assert.equal(copilotPathOverride({ copilot: false } as Record<string, string | number | boolean>), undefined, "boolean flag is not a path");
 });
 
 test("feature detection: finds COPILOT_API_URL in a temp bundle, honors roots", () => {
@@ -465,6 +507,20 @@ test("runCopilot: no lane supported → clean failure, no spawn", async () => {
   });
   assert.equal(code, 1);
   assert.equal(spawned, false);
+});
+
+test("cmdCopilot: --copilot pointing at a missing path fails early (no proxy, no spawn)", async () => {
+  const errors: string[] = [];
+  const orig = console.error;
+  console.error = (...a: unknown[]) => errors.push(a.join(" "));
+  try {
+    const code = await cmdCopilot(["--copilot", "/definitely/not/a/real/copilot"]);
+    assert.equal(code, 1);
+    assert.ok(errors.some((l) => l.includes("does not exist")), "clear error message");
+    assert.ok(!errors.some((l) => l.includes("listening")), "proxy never started");
+  } finally {
+    console.error = orig;
+  }
 });
 
 test("ensureProxy + stopProxy: real detached lifecycle on an ephemeral port", async () => {
