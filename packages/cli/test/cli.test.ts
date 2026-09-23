@@ -6,7 +6,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -15,10 +15,14 @@ import { CcrStore } from "@ctxroom/core";
 import { startProxy, StatsWriter } from "@ctxroom/proxy";
 import {
   buildLaunchEnv,
+  classifyBuild,
   copilotEnvMatrix,
+  defaultMcpConfigPath,
+  detectBuildKind,
   findCopilot,
   mergeMcpConfig,
   mcpEntry,
+  resolveCopilotPlatformBinary,
   resolveMcpServerPath,
   scanBundle,
   stripJsoncComments,
@@ -28,7 +32,7 @@ import {
   pidfileFor,
 } from "../src/copilot.ts";
 import { runDoctor } from "../src/doctor.ts";
-import { runCopilot, parseArgs, copilotPathOverride, cmdCopilot } from "../src/index.ts";
+import { runCopilot, parseArgs, copilotPathOverride, cmdCopilot, laneOverride, copilotSpawnArgs } from "../src/index.ts";
 import { runRetrieve, runSimulate, runStats } from "../src/commands.ts";
 
 const M = "node"; // the mcp command the entry registers
@@ -161,6 +165,186 @@ test("copilotPathOverride: --copilot flag beats CTXROOM_COPILOT_PATH env", () =>
   assert.equal(copilotPathOverride({}, { CTXROOM_COPILOT_PATH: "/b" }), "/b");
   assert.equal(copilotPathOverride({}, {}), undefined);
   assert.equal(copilotPathOverride({ copilot: false } as Record<string, string | number | boolean>), undefined, "boolean flag is not a path");
+});
+
+test("laneOverride: --lane flag beats CTXROOM_COPILOT_LANE env; bad values ignored", () => {
+  assert.equal(laneOverride({ lane: "byok" }, { CTXROOM_COPILOT_LANE: "native" }), "byok");
+  assert.equal(laneOverride({}, { CTXROOM_COPILOT_LANE: "native" }), "native");
+  assert.equal(laneOverride({ lane: "weird" } as Record<string, string | number | boolean>), undefined);
+  assert.equal(laneOverride({}, {}), undefined);
+});
+
+test("detectBuildKind: Mach-O and ELF are native, text is js, missing is null", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ctxroom-kind-"));
+  try {
+    const macho = join(dir, "copilot-macho");
+    writeFileSync(macho, Buffer.from([0xcf, 0xfa, 0xed, 0xfe, 0x03, 0x00, 0x00, 0x00, 0, 0, 0, 0]));
+    assert.equal(detectBuildKind(macho), "native");
+    const machoLe = join(dir, "copilot-macho-le");
+    writeFileSync(machoLe, Buffer.from([0xfe, 0xed, 0xfa, 0xce, 0x02, 0x00, 0x00, 0x00]));
+    assert.equal(detectBuildKind(machoLe), "native");
+    const elf = join(dir, "copilot-elf");
+    writeFileSync(elf, Buffer.from([0x7f, 0x45, 0x4c, 0x46, 0x02, 0x01, 0x01, 0x00]));
+    assert.equal(detectBuildKind(elf), "native");
+    const script = join(dir, "copilot.js");
+    writeFileSync(script, "#!/usr/bin/env node\nconsole.log(1);\n");
+    assert.equal(detectBuildKind(script), "js");
+    assert.equal(detectBuildKind(join(dir, "absent")), null);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("copilotSpawnArgs: forwards copilot flags, keeps ctxroom's own", () => {
+  const { flags, positional } = parseArgs(["-p", "hi there", "--model", "qwen", "--port", "9000", "--stop-proxy"]);
+  const out = copilotSpawnArgs(flags, positional);
+  assert.ok(out.includes("-p") && out.includes("hi there"), "prompt passthrough");
+  const mi = out.indexOf("--model");
+  assert.ok(mi !== -1 && out[mi + 1] === "qwen", "--model forwarded with its value");
+  assert.ok(!out.includes("--port"), "ctxroom's own --port is not forwarded");
+  assert.ok(!out.includes("--stop-proxy"), "ctxroom's own --stop-proxy is not forwarded");
+});
+
+test("classifyBuild: a JS loader resolving to a platform binary is 'native'", () => {
+  const base = mkdtempSync(join(tmpdir(), "ctxroom-classify-"));
+  try {
+    const pkg = join(base, "node_modules", "@github", "copilot");
+    mkdirSync(pkg, { recursive: true });
+    writeFileSync(join(pkg, "package.json"), JSON.stringify({ name: "@github/copilot", bin: { copilot: "npm-loader.js" } }));
+    const loader = join(pkg, "npm-loader.js");
+    writeFileSync(loader, "#!/usr/bin/env node\n");
+    // No platform binary present → js.
+    assert.equal(classifyBuild(loader), "js");
+    // Add the platform binary (with a Mach-O header) → native.
+    const platDir = join(pkg, "node_modules", "@github", `copilot-${process.platform}-${process.arch}`);
+    mkdirSync(platDir, { recursive: true });
+    writeFileSync(join(platDir, "package.json"), JSON.stringify({ name: `@github/copilot-${process.platform}-${process.arch}`, bin: { x: "copilot" }, exports: { ".": "./copilot" } }));
+    writeFileSync(join(platDir, "copilot"), Buffer.from([0xcf, 0xfa, 0xed, 0xfe, 0x03, 0, 0, 0]));
+    assert.equal(classifyBuild(loader), "native");
+    // A bare script with no package context → js.
+    const bare = join(base, "standalone.js");
+    writeFileSync(bare, "console.log(1);\n");
+    assert.equal(classifyBuild(bare), "js");
+  } finally {
+    rmSync(base, { recursive: true, force: true });
+  }
+});
+
+test("mcpEntry + defaultMcpConfigPath: native builds get mcp-config.json with type/tools", () => {
+  const home = "/fakehome";
+  assert.equal(defaultMcpConfigPath(home, "native"), join(home, ".copilot", "mcp-config.json"));
+  assert.equal(defaultMcpConfigPath(home, "js"), join(home, ".copilot", "mcp.json"));
+  assert.equal(defaultMcpConfigPath(home), join(home, ".copilot", "mcp.json"), "js is the historical default");
+
+  const native = mcpEntry("/abs/mcp.ts", "native") as { name?: string; command: string; args: string[]; type?: string; tools?: string[] };
+  assert.equal(native.command, "node");
+  assert.deepEqual(native.args, ["/abs/mcp.ts"]);
+  assert.equal(native.type, "local", "native schema carries type");
+  assert.deepEqual(native.tools, ["*"], "native schema carries tools");
+  assert.equal(native.name, "ctxroom", "name stays (it is the object key / array field)");
+
+  const js = mcpEntry("/abs/mcp.ts") as { type?: string; tools?: string[] };
+  assert.equal(js.type, undefined, "js shape stays minimal");
+  assert.equal(js.tools, undefined);
+});
+
+test("scanBundle: finds markers byte-embedded in the platform binary of an npm install", () => {
+  const base = mkdtempSync(join(tmpdir(), "ctxroom-nativescan-"));
+  try {
+    // Fake npm global layout: loader + optional-dep platform binary.
+    const pkg = join(base, "node_modules", "@github", "copilot");
+    mkdirSync(join(pkg), { recursive: true });
+    writeFileSync(join(pkg, "package.json"), JSON.stringify({ name: "@github/copilot", bin: { copilot: "npm-loader.js" } }));
+    writeFileSync(join(pkg, "npm-loader.js"), "#!/usr/bin/env node\n// loader shim\n");
+    const binDir = join(base, "bin");
+    mkdirSync(binDir);
+    symlinkSync(join(pkg, "npm-loader.js"), join(binDir, "copilot"));
+
+    // The platform binary: extensionless, with the markers embedded as raw bytes.
+    const platDir = join(pkg, "node_modules", "@github", `copilot-${process.platform}-${process.arch}`);
+    mkdirSync(platDir, { recursive: true });
+    const binary = join(platDir, "copilot");
+    const payload = Buffer.concat([
+      Buffer.from("\x7fELF junk padding here "),
+      Buffer.from("COPILOT_API_URL"),
+      Buffer.from(" random bytes "),
+      Buffer.from("COPILOT_PROVIDER_BASE_URL"),
+    ]);
+    writeFileSync(binary, payload);
+
+    // realpath both sides: on macOS the temp dir lives behind the
+    // /var → /private/var symlink and realpathSync normalizes it.
+    const real = resolveCopilotPlatformBinary(join(binDir, "copilot"));
+    assert.equal(realpathSync(real!), realpathSync(binary), "the optional-dep binary is located");
+
+    const scan = scanBundle({ roots: [binDir, pkg], realPath: join(binDir, "copilot") });
+    assert.equal(scan.markers["COPILOT_API_URL"], true, "byte-scanned the compiled binary");
+    assert.equal(scan.markers["COPILOT_PROVIDER_BASE_URL"], true);
+    assert.ok(scan.bundlePath, "bundle path recorded");
+  } finally {
+    rmSync(base, { recursive: true, force: true });
+  }
+});
+
+test("runCopilot: forced --lane byok proceeds even when the scan sees nothing", async () => {
+  const home = mkdtempSync(join(tmpdir(), "ctxroom-forcelane-"));
+  const port = 18907;
+  let seenEnv: Record<string, string> | null = null;
+  const logs: string[] = [];
+  try {
+    const code = await runCopilot({
+      port,
+      copilotPath: "/fake/copilot",
+      scan: { supported: false, markers: {}, bundlePath: null, filesScanned: 0 },
+      lane: "byok",
+      mcpConfigPath: join(home, "mcp.json"),
+      env: { PATH: "/usr/bin" } as Record<string, string | undefined>,
+      spawn: async (_cmd, _args, env) => {
+        seenEnv = env;
+        return 0;
+      },
+      log: (l) => logs.push(l),
+      stopProxyOnExit: true,
+    });
+    assert.equal(code, 0);
+    assert.ok(seenEnv!.COPILOT_PROVIDER_BASE_URL?.includes(`127.0.0.1:${port}`), "provider base URL points at the proxy");
+    assert.ok(logs.some((l) => l.includes("BYOK (forced)")), "loud forced-lane note");
+  } finally {
+    await stopProxy({ port, home, log: () => {} });
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("runCopilot: native binary with an invisible bundle assumes the native lane", async () => {
+  const home = mkdtempSync(join(tmpdir(), "ctxroom-natassumed-"));
+  const port = 18908;
+  // A "binary" with a Mach-O header so detectBuildKind classifies it native.
+  const fakeBin = join(home, "copilot-bin");
+  writeFileSync(fakeBin, Buffer.from([0xcf, 0xfa, 0xed, 0xfe, 0x03, 0x00, 0x00, 0x00, 0, 0]));
+  chmodSync(fakeBin, 0o755);
+  let seenEnv: Record<string, string> | null = null;
+  const logs: string[] = [];
+  try {
+    const code = await runCopilot({
+      port,
+      copilotPath: fakeBin,
+      scan: { supported: false, markers: {}, bundlePath: null, filesScanned: 0 },
+      mcpConfigPath: join(home, "mcp.json"),
+      env: { PATH: "/usr/bin" } as Record<string, string | undefined>,
+      spawn: async (_cmd, _args, env) => {
+        seenEnv = env;
+        return 0;
+      },
+      log: (l) => logs.push(l),
+      stopProxyOnExit: true,
+    });
+    assert.equal(code, 0);
+    assert.equal(seenEnv!.COPILOT_API_URL, `http://127.0.0.1:${port}`, "native lane env set");
+    assert.ok(logs.some((l) => l.includes("native binary")), "assumption is loudly documented");
+  } finally {
+    await stopProxy({ port, home, log: () => {} });
+    rmSync(home, { recursive: true, force: true });
+  }
 });
 
 test("feature detection: finds COPILOT_API_URL in a temp bundle, honors roots", () => {

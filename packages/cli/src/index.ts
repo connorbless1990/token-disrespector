@@ -11,7 +11,7 @@
  *   ctxroom retrieve <hash> [maxChars]
  */
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -19,10 +19,13 @@ import {
   buildLaunchEnv,
   copilotEnvMatrix,
   defaultMcpConfigPath,
+  classifyBuild,
+  detectBuildKind,
   ensureProxy,
   findCopilot,
   mergeMcpConfig,
   mcpEntry,
+  resolveCopilotRealPath,
   resolveMcpServerPath,
   scanBundle,
   stopProxy,
@@ -30,6 +33,7 @@ import {
   type BundleScanResult,
   type LaneMode,
 } from "./copilot.ts";
+import os from "node:os";
 import { printDoctor, runDoctor } from "./doctor.ts";
 import { runProxy, runRetrieve, runSimulate, runStats } from "./commands.ts";
 
@@ -96,6 +100,8 @@ export interface CopilotRunOptions {
   spawnArgs?: string[];
   copilotPath?: string | null; // null = not found
   scan?: BundleScanResult | null; // null = run a real scan
+  /** Force a lane (native | byok) instead of auto-detecting. */
+  lane?: LaneMode;
   stopProxyOnExit?: boolean;
   env?: Record<string, string | undefined>;
   spawn?: (cmd: string, args: string[], env: Record<string, string>) => Promise<number>;
@@ -104,7 +110,7 @@ export interface CopilotRunOptions {
 
 /**
  * The full copilot flow:
- *   1. locate copilot   2. feature-detect the installed bundle
+ *   1. locate copilot   2. classify the build + feature-detect the bundle
  *   3. ensure proxy     4. pick the lane (native vs BYOK) + build env
  *   5. merge the MCP config (marked block, backed up)
  *   6. spawn copilot, pass through the exit code, keep the proxy running
@@ -125,21 +131,41 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
     log("       (or export CTXROOM_COPILOT_PATH=/path/to/your/binary)");
     return 1;
   }
+  const realPath = resolveCopilotRealPath(copilotPath);
+  const buildKind = classifyBuild(realPath) ?? "js";
 
-  // 2. feature detection
-  const scan = opts.scan === undefined ? scanBundle() : opts.scan;
+  // 2. feature detection (string grep of the install tree / platform binary)
+  const scan = opts.scan === undefined ? scanBundle({ realPath }) : opts.scan;
   const native = scan?.markers["COPILOT_API_URL"] === true;
   const byok = scan?.markers["COPILOT_PROVIDER_BASE_URL"] === true;
-  let mode: LaneMode | null = native ? "native" : byok ? "byok" : null;
-  if (!mode) {
-    log("error: this copilot build exposes neither COPILOT_API_URL nor COPILOT_PROVIDER_* —");
-    log("       the proxy cannot be wired in. Try upgrading the CLI (headroom-style redirect).");
-    return 1;
+  let mode: LaneMode | null = opts.lane ?? (native ? "native" : byok ? "byok" : null);
+  if (mode === null) {
+    if (buildKind === "native") {
+      // The current CLI (v1.0.x) is a compiled binary: its JS is embedded
+      // compressed, so the string grep above cannot see the env knobs even
+      // though the build honors them (verified live: COPILOT_API_URL and
+      // COPILOT_PROVIDER_* both work on v1.0.88). Assume the native lane.
+      mode = "native";
+      log("note: current native binary build — the redirect knobs are compiled into the");
+      log("      executable (compressed) and invisible to the string scan. Proceeding on");
+      log("      the NATIVE lane. For a local/self-hosted model, force BYOK:");
+      log("        ctxroom copilot --lane byok   (with CTXROOM_COPILOT_API_URL=<your endpoint>)");
+    } else {
+      log("error: this copilot build exposes neither COPILOT_API_URL nor COPILOT_PROVIDER_* —");
+      log("       the proxy cannot be wired in. Try upgrading the CLI (headroom-style redirect).");
+      return 1;
+    }
   }
   if (mode === "byok") {
-    log("warning: this copilot build does not support COPILOT_API_URL — falling back to the");
-    log("         BYOK provider lane. NOTE: BYOK is a single-model lane (no model picker;");
-    log("         the CLI's provider model is what runs).");
+    if (opts.lane) {
+      log("lane: BYOK (forced) — the provider base URL points at the ctxroom proxy;");
+      log("      set CTXROOM_COPILOT_API_URL to the endpoint the proxy should forward to");
+      log("      (default: your normal Copilot upstream).");
+    } else if (!native) {
+      log("warning: this copilot build does not support COPILOT_API_URL — falling back to the");
+      log("         BYOK provider lane. NOTE: BYOK is a single-model lane (no model picker;");
+      log("         the CLI's provider model is what runs).");
+    }
   }
 
   // 3. proxy
@@ -150,8 +176,9 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   const launchEnv = buildLaunchEnv(baseEnv, ensured.port, mode);
 
   // 5. MCP config (marked block; pristine original backed up once)
-  const configPath = opts.mcpConfigPath ?? defaultMcpConfigPath();
-  const merge = mergeMcpConfig(configPath, mcpEntry(resolveMcpServerPath(fileURLToPath(import.meta.url))));
+  const mcpKind = buildKind === "native" ? "native" : "js";
+  const configPath = opts.mcpConfigPath ?? defaultMcpConfigPath(os.homedir(), mcpKind);
+  const merge = mergeMcpConfig(configPath, mcpEntry(resolveMcpServerPath(fileURLToPath(import.meta.url)), mcpKind));
   if (!merge.ok) {
     log(`warning: MCP config merge at ${configPath}: ${merge.detail} (continuing without MCP tools)`);
   } else {
@@ -185,6 +212,30 @@ export function copilotPathOverride(flags: Record<string, string | number | bool
   return flag ?? (env.CTXROOM_COPILOT_PATH || undefined);
 }
 
+/** `--lane native|byok` flag (or CTXROOM_COPILOT_LANE) forces the lane. */
+export function laneOverride(flags: Record<string, string | number | boolean>, env: Record<string, string | undefined> = process.env): LaneMode | undefined {
+  const v = typeof flags.lane === "string" ? flags.lane : env.CTXROOM_COPILOT_LANE;
+  return v === "native" || v === "byok" ? v : undefined;
+}
+
+/** The flags ctxroom itself consumes; everything else is forwarded to copilot. */
+const CTXROOM_FLAGS = new Set(["port", "lane", "copilot", "config", "doctor", "stop-proxy"]);
+
+/**
+ * What copilot actually receives: every positional plus every flag that is
+ * NOT ctxroom's own. This is how `ctxroom copilot -p "…" --model x` works —
+ * ctxroom's parser would otherwise swallow `--model`.
+ */
+export function copilotSpawnArgs(flags: Record<string, string | number | boolean>, positional: string[]): string[] {
+  const out = [...positional];
+  for (const [k, v] of Object.entries(flags)) {
+    if (CTXROOM_FLAGS.has(k)) continue;
+    out.push(`--${k}`);
+    if (v !== true) out.push(String(v));
+  }
+  return out;
+}
+
 export async function cmdCopilot(args: string[]): Promise<number> {
   const { flags, positional } = parseArgs(args);
   const copilotPath = copilotPathOverride(flags);
@@ -192,8 +243,9 @@ export async function cmdCopilot(args: string[]): Promise<number> {
     console.error(`error: the copilot path you gave does not exist: ${copilotPath}`);
     return 1;
   }
+  const lane = laneOverride(flags);
   if (flags.doctor) {
-    const report = await runDoctor({ port: flagNumber(flags, "port"), copilotPath });
+    const report = await runDoctor({ port: flagNumber(flags, "port"), copilotPath, lane });
     printDoctor(report);
     return report.broken ? 1 : 0;
   }
@@ -201,7 +253,8 @@ export async function cmdCopilot(args: string[]): Promise<number> {
   return runCopilot({
     port,
     copilotPath,
-    spawnArgs: positional,
+    lane,
+    spawnArgs: copilotSpawnArgs(flags, positional),
     stopProxyOnExit: flags["stop-proxy"] === true || flags["stop-proxy"] === "true",
   });
 }
@@ -212,7 +265,16 @@ export async function cmdCopilot(args: string[]): Promise<number> {
 
 export async function cmdUnwrap(args: string[]): Promise<number> {
   const { flags } = parseArgs(args);
-  const configPath = typeof flags.config === "string" ? (flags.config as string) : defaultMcpConfigPath();
+  // The user's --config wins; otherwise operate on whichever known location
+  // actually holds our marked block (native builds: mcp-config.json, older:
+  // mcp.json), falling back to the native one.
+  const known = [defaultMcpConfigPath(), defaultMcpConfigPath(os.homedir(), "native")];
+  let configPath = typeof flags.config === "string" ? (flags.config as string) : null;
+  if (!configPath) {
+    configPath = known.find((p) => existsSync(p) && readFileSync(p, "utf8").includes("ctxroom:begin"))
+      ?? known.find((p) => existsSync(p))
+      ?? known[1];
+  }
   const result = unwrapMcpConfig(configPath);
   console.log(`mcp: ${result.detail} (${configPath})`);
   const ensured = await stopProxy({ port: flagNumber(flags, "port") ?? DEFAULT_PORT });
@@ -222,7 +284,11 @@ export async function cmdUnwrap(args: string[]): Promise<number> {
 
 export async function cmdDoctor(args: string[]): Promise<number> {
   const { flags } = parseArgs(args);
-  const report = await runDoctor({ port: flagNumber(flags, "port"), copilotPath: copilotPathOverride(flags) });
+  const report = await runDoctor({
+    port: flagNumber(flags, "port"),
+    copilotPath: copilotPathOverride(flags),
+    lane: laneOverride(flags),
+  });
   printDoctor(report);
   return report.broken ? 1 : 0;
 }
@@ -275,10 +341,12 @@ export const USAGE = `ctxroom — local-first context compression for AI coding 
 Usage:
   ctxroom copilot [args…]            run copilot through the compression proxy
                                      [--port N] [--stop-proxy] [--config PATH]
-                                     [--doctor] [--copilot PATH]
+                                     [--doctor] [--copilot PATH] [--lane native|byok]
+                                     (everything else — -p, --model, prompts — is
+                                      forwarded to copilot verbatim)
   ctxroom unwrap [--config PATH]     remove the marked MCP block, restore backup, stop proxy
   ctxroom doctor [--port N]          environment checklist (exit 1 if broken)
-                                     [--copilot PATH]
+                                     [--copilot PATH] [--lane native|byok]
   ctxroom proxy [--port N] [--ccr on|off] [--budget N]
   ctxroom stats [--days 7] [--model M]
   ctxroom simulate --file prompt.json  offline engine run (no network)
@@ -287,7 +355,9 @@ Usage:
 Environment:
   CTXROOM_HOME            base dir (default ~/.ctxroom): cache/ + stats/
   CTXROOM_COPILOT_PATH    where the copilot binary lives (same as --copilot)
-  CTXROOM_COPILOT_API_URL explicit upstream override for the proxy
+  CTXROOM_COPILOT_LANE    native|byok — same as --lane (local models: byok)
+  CTXROOM_COPILOT_API_URL where the PROXY forwards (upstream) — e.g. a local
+                          OpenAI-compatible endpoint like http://localhost:8000
   CTXROOM_CCR             on|off (default on) — off disables lossy compression
   CTXROOM_BUDGET / CTXROOM_TOKEN_BUDGET  aggressive history compression
   CTXROOM_MIN_INPUT_WORDS blocks below this many words are never compressed

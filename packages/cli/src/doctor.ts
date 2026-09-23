@@ -14,7 +14,7 @@ import path from "node:path";
 import process from "node:process";
 import { createServer } from "node:http";
 import { resolveUpstreamBase } from "@ctxroom/proxy";
-import { copilotVersion, findCopilot, scanBundle, type BundleScanResult } from "./copilot.ts";
+import { classifyBuild, copilotVersion, defaultMcpConfigPath, findCopilot, resolveCopilotRealPath, scanBundle, type BundleScanResult, type LaneMode } from "./copilot.ts";
 
 export interface DoctorItem {
   ok: boolean;
@@ -35,6 +35,8 @@ export interface DoctorOptions {
   home?: string;
   /** Injected copilot path (null = not found; undefined = search for it). */
   copilotPath?: string | null;
+  /** Forced lane (--lane / CTXROOM_COPILOT_LANE). */
+  lane?: LaneMode;
   /** Injected bundle scan result (undefined = run a real scan). */
   scan?: BundleScanResult | null;
   /** Injected process env. */
@@ -57,33 +59,49 @@ export async function runDoctor(opts: DoctorOptions = {}): Promise<DoctorReport>
 
   // 2. Copilot CLI (--copilot / CTXROOM_COPILOT_PATH override the search).
   const copilotPath = opts.copilotPath === undefined ? findCopilot({ home }) : opts.copilotPath;
+  const realPath = copilotPath ? resolveCopilotRealPath(copilotPath) : null;
+  const buildKind = realPath ? classifyBuild(realPath) : null;
   if (copilotPath && !existsSync(copilotPath)) {
     items.push({ ok: false, label: "copilot CLI found", detail: `the given path does not exist: ${copilotPath}` });
   } else if (copilotPath) {
     const version = copilotVersion(copilotPath, 5000);
-    items.push({ ok: true, label: "copilot CLI found", detail: `${copilotPath}${version ? ` (v${version})` : ""}` });
+    const kindNote = buildKind === "native" ? " [native binary]" : "";
+    items.push({ ok: true, label: "copilot CLI found", detail: `${copilotPath}${kindNote}${version ? ` (v${version})` : ""}` });
   } else {
     items.push({ ok: false, label: "copilot CLI found", detail: "not in PATH, ~/.local/bin, or brew prefix — pass --copilot /path/to/it" });
   }
 
-  // 3. Feature detection (bundle markers).
-  const scan = opts.scan === undefined ? scanBundle({ home }) : opts.scan;
-  if (scan) {
-    const native = scan.markers["COPILOT_API_URL"] === true;
-    const byok = scan.markers["COPILOT_PROVIDER_BASE_URL"] === true;
+  // 3. Redirect lane (detected from the install; --lane forces one).
+  const scan = opts.scan === undefined ? scanBundle({ home, realPath: realPath ?? undefined }) : opts.scan;
+  const nativeDetected = scan?.markers["COPILOT_API_URL"] === true;
+  const byokDetected = scan?.markers["COPILOT_PROVIDER_BASE_URL"] === true;
+  const lane: LaneMode | null = opts.lane ?? (nativeDetected ? "native" : byokDetected ? "byok" : null);
+  if (lane) {
+    const how = opts.lane
+      ? "forced via --lane"
+      : nativeDetected || byokDetected
+        ? "detected in the installed bundle"
+        : "assumed (native binary — its knobs are compiled in compressed form, invisible to the string scan; verified working on current builds)";
+    items.push({ ok: true, soft: true, label: "redirect lane", detail: `${lane} — ${how}` });
+  } else {
     items.push({
-      ok: native,
-      soft: true, // the BYOK lane covers the gap
-      label: "installed CLI supports COPILOT_API_URL (native lane)",
-      detail: native ? `bundle: ${scan.bundlePath}` : "will fall back to the BYOK lane if provider knobs exist",
-    });
-    items.push({
-      ok: byok,
+      ok: false,
       soft: true,
-      label: "installed CLI supports COPILOT_PROVIDER_* (BYOK lane)",
-      detail: byok ? "BYOK fallback available" : "neither lane detected — an upgrade may be required",
+      label: "redirect lane",
+      detail: copilotPath
+        ? "neither lane detected — an upgrade may be required, or force one with --lane byok"
+        : "cannot determine — copilot not installed",
     });
   }
+  // MCP config location (informational).
+  const mcpKind = buildKind === "native" ? "native" : "js";
+  const mcpConfig = defaultMcpConfigPath(os.homedir(), mcpKind);
+  items.push({
+    ok: true,
+    soft: true,
+    label: "mcp config",
+    detail: `${mcpConfig} — ctxroom adds a marked block here and keeps a backup`,
+  });
 
   // 4. Token (PAT lane is optional; github-native login is the norm).
   const hasToken = Boolean(env.GH_TOKEN || env.GITHUB_TOKEN);

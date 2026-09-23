@@ -17,15 +17,20 @@
  */
 import {
   accessSync,
+  closeSync,
   constants,
   existsSync,
   mkdirSync,
+  openSync,
   readFileSync,
+  readSync,
   readdirSync,
+  realpathSync,
   rmSync,
   statSync,
   writeFileSync,
 } from "node:fs";
+import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
@@ -108,13 +113,21 @@ export interface BundleScanOptions {
   roots?: string[];
   /** home used to build the default roots. */
   home?: string;
+  /**
+   * The located copilot binary (possibly a symlink). When set, its package
+   * directory is prepended to the roots and the compiled platform binary
+   * (if any) is byte-scanned — this is where a real install lives.
+   */
+  realPath?: string;
   /** Markers to look for. Default: the native + BYOK env knobs. */
   markers?: string[];
   maxDepth?: number;
   /** Hard cap on files content-scanned. */
   maxFiles?: number;
-  /** Skip files larger than this (minified bundles). */
+  /** Skip TEXT files larger than this (minified bundles). */
   maxFileBytes?: number;
+  /** Skip BINARY (non-JS) files larger than this — a compiled CLI can be big. */
+  maxBinaryBytes?: number;
 }
 
 export interface BundleScanResult {
@@ -151,15 +164,38 @@ const PRUNE_DIRS = new Set(["caches", "trash", ".trash", ".git", ".cache", ".npm
  */
 export function scanBundle(opts: BundleScanOptions = {}): BundleScanResult {
   const home = opts.home ?? os.homedir();
-  const roots = opts.roots ?? defaultBundleRoots(home);
+  let roots = opts.roots ?? defaultBundleRoots(home);
   const markers = opts.markers ?? ["COPILOT_API_URL", "COPILOT_PROVIDER_BASE_URL"];
   const maxDepth = opts.maxDepth ?? 12;
   const maxFiles = opts.maxFiles ?? 5000;
   const maxFileBytes = opts.maxFileBytes ?? 25 * 1024 * 1024;
+  const maxBinaryBytes = opts.maxBinaryBytes ?? 500 * 1024 * 1024;
+
+  // A real install: root at the copilot package dir (where the binary
+  // ACTUALLY lives — npm/nvm/bun installs are not in the static roots) and
+  // byte-scan the compiled platform binary (its JS may be embedded but
+  // still greppable at the byte level).
+  const realPath = opts.realPath ? resolveCopilotRealPath(opts.realPath) : null;
+  const platformBinary = realPath ? resolveCopilotPlatformBinary(realPath) : null;
+  const pkgDir = realPath ? copilotPackageDir(realPath) : null;
+  if (pkgDir) roots = [pkgDir, ...roots];
+  // Dedupe the roots.
+  roots = [...new Set(roots)];
 
   const found: Record<string, boolean> = Object.fromEntries(markers.map((m) => [m, false]));
   let bundlePath: string | null = null;
   let filesScanned = 0;
+  const scanned = new Set<string>();
+
+  const markHit = (file: string, text: string | Buffer) => {
+    for (const m of markers) {
+      const hit = typeof text === "string" ? text.includes(m) : text.includes(Buffer.from(m));
+      if (!found[m] && hit) {
+        found[m] = true;
+        if (!bundlePath) bundlePath = file;
+      }
+    }
+  };
 
   const queue: { dir: string; depth: number }[] = [];
   for (const r of roots) {
@@ -186,23 +222,42 @@ export function scanBundle(opts: BundleScanOptions = {}): BundleScanResult {
         if (depth + 1 > maxDepth) continue;
         if (PRUNE_DIRS.has(e.name.toLowerCase())) continue;
         queue.push({ dir: full, depth: depth + 1 });
-      } else if (e.isFile() && /\.(js|mjs|cjs)$/i.test(e.name)) {
+      } else if (e.isFile()) {
+        const inCopilotTree = /copilot|pkg/i.test(dir) || /copilot|pkg/i.test(e.name);
+        const isText = /\.(js|mjs|cjs|ts|json|ts)$/i.test(e.name);
+        // Text files (JS/JSON): the classic grep. Binary files: byte-scan
+        // ONLY inside copilot/pkg-named trees (a compiled CLI embeds its JS;
+        // scanning every huge binary on disk would be absurd).
+        const shouldScan = isText || (inCopilotTree && !/^(so|dylib|a|map|wasm|node)$/i.test(e.name));
+        if (!shouldScan) continue;
         if (filesScanned >= maxFiles) break outer;
         filesScanned++;
         try {
-          if (statSync(full).size > maxFileBytes) continue;
-          const text = readFileSync(full, "utf8");
-          for (const m of markers) {
-            if (!found[m] && text.includes(m)) {
-              found[m] = true;
-              if (!bundlePath) bundlePath = full;
-            }
-          }
+          const size = statSync(full).size;
+          const cap = isText ? maxFileBytes : maxBinaryBytes;
+          if (size > cap) continue;
+          scanned.add(full);
+          markHit(full, isText ? readFileSync(full, "utf8") : readFileSync(full));
           if (markers.every((m) => found[m])) break outer;
         } catch {
           /* unreadable file */
         }
       }
+    }
+  }
+
+  // The compiled platform binary, explicitly (one bounded byte-scan; skipped
+  // when the tree walk above already covered it).
+  if (platformBinary && !markers.every((m) => found[m]) && !scanned.has(platformBinary)) {
+    try {
+      const size = statSync(platformBinary).size;
+      if (size <= maxBinaryBytes) {
+        filesScanned++;
+        scanned.add(platformBinary);
+        markHit(platformBinary, readFileSync(platformBinary));
+      }
+    } catch {
+      /* unreadable binary */
     }
   }
 
@@ -212,6 +267,114 @@ export function scanBundle(opts: BundleScanOptions = {}): BundleScanResult {
     bundlePath,
     filesScanned,
   };
+}
+
+// ---------------------------------------------------------------------------
+// 2b. Build classification — the current CLI ships as a NATIVE binary
+// ---------------------------------------------------------------------------
+
+/**
+ * Classify the copilot install from the REAL (symlink-resolved) file:
+ *  - "native" — a compiled executable (Mach-O / ELF). Since the 2025
+ *    "Copilot CLI" (@github/copilot), the npm package is a tiny JS loader
+ *    that spawns a per-platform compiled binary (e.g.
+ *    @github/copilot-darwin-arm64) with the JS embedded COMPRESSED — so
+ *    scanBundle's string grep cannot see the env knobs, no matter how
+ *    hard it looks.
+ *  - "js"     — a greppable text/JS entry (the pre-native layout).
+ *  - null     — unreadable.
+ */
+export function detectBuildKind(realPath: string): "native" | "js" | null {
+  let fd: number | null = null;
+  try {
+    fd = openSync(realPath, "r");
+    const head = Buffer.alloc(4);
+    const n = readSync(fd, head, 0, 4, 0);
+    if (n < 4) return "js";
+    // Mach-O magic, on-disk byte order:
+    //   little-endian: CF FA ED FE (32-bit) / C0 FA ED FE (64-bit) / C1 FA ED FE (prebundled)
+    //   big-endian:    FE ED FA CE / FE ED FA C0 / FE ED FA C1
+    const le = head[0] === 0xcf || head[0] === 0xc0 || head[0] === 0xc1;
+    if (le && head[1] === 0xfa && head[2] === 0xed && head[3] === 0xfe) return "native";
+    if (head[0] === 0xfe && head[1] === 0xed && head[2] === 0xfa &&
+        (head[3] === 0xce || head[3] === 0xc0 || head[3] === 0xc1)) return "native";
+    if (head[0] === 0x7f && head[1] === 0x45 && head[2] === 0x4c && head[3] === 0x46) return "native"; // ELF
+    return "js";
+  } catch {
+    return null;
+  } finally {
+    if (fd !== null) try { closeSync(fd); } catch { /* ignore */ }
+  }
+}
+
+/**
+ * Effective build kind of the install:
+ *  - "native" — the real file is a compiled executable, OR the install is a
+ *    JS loader (the current npm layout) that resolves to a platform binary;
+ *  - "js"     — a greppable text entry with no platform binary behind it;
+ *  - null     — unreadable.
+ */
+export function classifyBuild(realPath: string): "native" | "js" | null {
+  const self = detectBuildKind(realPath);
+  if (self === null) return null;
+  if (self === "native") return "native";
+  return resolveCopilotPlatformBinary(realPath) ? "native" : "js";
+}
+
+/** The real file behind a (possibly symlinked) copilot path. */
+export function resolveCopilotRealPath(copilotPath: string): string {
+  try {
+    return realpathSync(copilotPath);
+  } catch {
+    return copilotPath;
+  }
+}
+
+/**
+ * The package directory containing the real copilot entry (bounded climb to
+ * the nearest package.json — for an npm global install that is
+ * .../node_modules/@github/copilot, holding the loader + platform binary).
+ */
+export function copilotPackageDir(realPath: string): string | null {
+  let dir = path.dirname(realPath);
+  for (let i = 0; i < 3; i++) {
+    if (existsSync(path.join(dir, "package.json"))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+  return path.dirname(realPath);
+}
+
+/**
+ * Locate the compiled platform binary an npm-installed copilot spawns
+ * (the loader resolves `@github/copilot-<platform>-<arch>`); null when the
+ * install is not the npm layout or the optional dep is absent.
+ */
+export function resolveCopilotPlatformBinary(copilotPath: string): string | null {
+  // Follow symlinks first: a PATH entry points at the loader, but the
+  // optional-dep lookup has to start from the REAL package directory.
+  let realPath: string;
+  try {
+    realPath = realpathSync(copilotPath);
+  } catch {
+    realPath = copilotPath;
+  }
+  const dir = path.dirname(realPath);
+  // 1. the entry itself, when it already is the executable
+  if (detectBuildKind(realPath) === "native") return realPath;
+  // 2. npm optional dependency, resolved from the loader's own context
+  try {
+    const req = createRequire(path.join(dir, "noop.js"));
+    const spec = `@github/copilot-${process.platform}-${process.arch}`;
+    const p = req.resolve(spec);
+    if (existsSync(p)) return p;
+  } catch {
+    /* not an npm package context */
+  }
+  // 3. a sibling optional-dep dir with the binary named after it
+  const guess = path.join(dir, "node_modules", "@github", `copilot-${process.platform}-${process.arch}`, "copilot");
+  return existsSync(guess) ? guess : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -417,9 +580,13 @@ export async function stopProxy(opts: { port?: number; home?: string; log?: (l: 
 // 5. MCP config merge / unwrap (JSONC, marked block, backup)
 // ---------------------------------------------------------------------------
 
-/** Where the copilot CLI keeps its MCP config (injectable via --config). */
-export function defaultMcpConfigPath(home: string = os.homedir()): string {
-  return path.join(home, ".copilot", "mcp.json");
+/**
+ * Where the copilot CLI keeps its MCP config (injectable via --config).
+ * The current CLI (v1.0.x native binary) reads mcp-config.json — verified
+ * live via `copilot mcp add`; the older JS CLI used mcp.json.
+ */
+export function defaultMcpConfigPath(home: string = os.homedir(), kind: "native" | "js" = "js"): string {
+  return path.join(home, ".copilot", kind === "native" ? "mcp-config.json" : "mcp.json");
 }
 
 /** Absolute path of the MCP server entry the CLI should spawn. */
@@ -427,8 +594,17 @@ export function resolveMcpServerPath(cliPath: string = fileURLToPath(import.meta
   return path.resolve(path.dirname(cliPath), "..", "..", "mcp", "src", "index.ts");
 }
 
-export function mcpEntry(mcpSrcPath: string): Record<string, unknown> {
-  return { name: "ctxroom", command: "node", args: [mcpSrcPath] };
+export function mcpEntry(mcpSrcPath: string, kind: "native" | "js" = "js"): Record<string, unknown> {
+  // "name" is kept in both shapes: for an object-shaped mcpServers it becomes
+  // the KEY (renderBlock strips it from the fields); for a list it is a
+  // spec-literal field. The current native build's schema (observed via
+  // `copilot mcp add`) additionally carries type + tools.
+  const entry: Record<string, unknown> = { name: "ctxroom", command: "node", args: [mcpSrcPath] };
+  if (kind === "native") {
+    entry.type = "local";
+    entry.tools = ["*"];
+  }
+  return entry;
 }
 
 // --- JSONC string/comment-aware scanner -------------------------------------
