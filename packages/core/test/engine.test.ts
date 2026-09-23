@@ -17,6 +17,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CcrStore, Engine, messageText, resolveEngineConfig, type EngineMessage } from "../src/index.ts";
+import { countWords } from "../src/estimate.ts";
 
 import { readFileSync } from "node:fs";
 
@@ -55,6 +56,41 @@ test("I4: small blocks pass through untouched", async () => {
   const res = await engine.compress([systemMsg, smallUser, bigJson]);
   // "What failed?" is 3 words << 120
   assert.equal(res.messages[1].content, smallUser.content);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("I4: whitespace-free blocks are gated by characters, not by their one word", async () => {
+  const { engine, dir } = makeEngine();
+  // Minified JSON: a single "word" by whitespace count, thousands of chars.
+  const minified = JSON.stringify({
+    results: Array.from({ length: 200 }, (_, i) => ({
+      id: "req_" + i,
+      service: ["a", "b"][i % 2],
+      status: i % 17 === 0 ? 500 : 200,
+    })),
+  });
+  assert.ok(minified.length > 120 * 4, "test input must clear the gate");
+  assert.equal(countWords(minified), 1, "sanity: the input has no whitespace");
+  const res = await engine.compress([
+    systemMsg,
+    smallUser,
+    { role: "tool", tool_call_id: "c1", content: minified } as EngineMessage,
+  ]);
+  const out = res.messages[2].content as string;
+  assert.notEqual(out, minified, "the block must be processed, not skipped");
+  assert.ok(out.length < minified.length, "the json crusher shrinks it");
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("I4: tiny whitespace-free blocks still pass through", async () => {
+  const { engine, dir } = makeEngine();
+  const tiny = "a".repeat(300); // 75 word-equivalents < 120
+  const res = await engine.compress([
+    systemMsg,
+    smallUser,
+    { role: "tool", tool_call_id: "c2", content: tiny } as EngineMessage,
+  ]);
+  assert.equal(res.messages[2].content, tiny);
   rmSync(dir, { recursive: true, force: true });
 });
 

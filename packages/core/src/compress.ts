@@ -135,7 +135,11 @@ export class Engine {
       for (let pi = 0; pi < parts.length; pi++) {
         const part = parts[pi];
         if (part === null || part.length === 0) continue;
-        if (countWords(part) < config.minInputWords) continue; // I4
+        // I4 — "too small" gate, in word-equivalents: whitespace words with a
+        // floor of chars/4. Whitespace-free content (minified JSON, single-line
+        // code) must not read as "1 word" and silently bypass the pipeline.
+        const words = Math.max(countWords(part), Math.floor(part.length / 4));
+        if (words < config.minInputWords) continue;
         if (part.length > config.maxBlockChars) continue;
         if (config.protectedRegexes.some((re) => re.test(part))) continue; // I10
 
