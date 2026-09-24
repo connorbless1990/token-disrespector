@@ -8,6 +8,9 @@
  * contract).
  */
 import type { BlockCompressor, ContentType } from "../types.ts";
+import type { WrapperSpec } from "../unwrap.ts";
+import { detectAnyWrapper } from "../unwrap.ts";
+import { shapeStats } from "./fragment.ts";
 import { JsonCrusher } from "./json.ts";
 import { LogCrusher } from "./logs.ts";
 import { SearchCrusher } from "./search.ts";
@@ -17,8 +20,10 @@ import { HtmlExtractor } from "./html.ts";
 import { TabularCrusher } from "./tabular.ts";
 import { TextCompressor } from "./text.ts";
 import { CodeCompressor } from "./code.ts";
+import { FragmentCrusher } from "./fragment.ts";
 
-export { JsonCrusher, LogCrusher, SearchCrusher, DiffCrusher, ConfigCrusher, HtmlExtractor, TabularCrusher, TextCompressor, CodeCompressor };
+export { JsonCrusher, LogCrusher, SearchCrusher, DiffCrusher, ConfigCrusher, HtmlExtractor, TabularCrusher, TextCompressor, CodeCompressor, FragmentCrusher };
+export { shapeStats, shapeOf, type ShapeStats } from "./fragment.ts";
 
 const SAMPLE_CHARS = 12_000;
 
@@ -36,6 +41,8 @@ export interface RouterResult {
   type: ContentType;
   /** Ordered candidates; the engine tries each until one shrinks. */
   candidates: BlockCompressor[];
+  /** A detected tool-output wrapper; compressors run on `spec.inner`. */
+  unwrap?: WrapperSpec;
 }
 
 export interface CompressorSet {
@@ -48,6 +55,7 @@ export interface CompressorSet {
   tabular: BlockCompressor;
   text: BlockCompressor;
   code: BlockCompressor;
+  fragment: BlockCompressor;
 }
 
 export class ContentRouter {
@@ -68,12 +76,23 @@ export class ContentRouter {
       tabular: new TabularCrusher(),
       text: new TextCompressor(),
       code: new CodeCompressor(),
+      fragment: new FragmentCrusher(),
     });
   }
 
+  /**
+   * Route one block. When the block is a wrapped tool output (leading path
+   * header, trailing truncation notice, per-line prefixes) the *inner
+   * document* is what gets routed; the wrapper spec rides along on the
+   * result so the engine can re-attach it around the compressed body.
+   */
   route(text: string): RouterResult {
-    if (text.length < 200) return { type: "text", candidates: [this.compressors.text] };
-    const sample = text.slice(0, SAMPLE_CHARS);
+    const unwrap = detectAnyWrapper(text);
+    const doc = unwrap ? unwrap.inner : text;
+    if (doc.length < 200) {
+      return { type: "text", candidates: [this.compressors.text], unwrap: unwrap ?? undefined };
+    }
+    const sample = doc.slice(0, SAMPLE_CHARS);
     const lines = sample.split("\n");
     const nonEmpty = lines.filter((l) => l.trim().length > 0);
     const frac = (re: RegExp) =>
@@ -81,15 +100,14 @@ export class ContentRouter {
 
     const trimmed = sample.trimStart();
     const first = trimmed[0];
+    const tag = (r: Omit<RouterResult, "unwrap">): RouterResult => ({ ...r, unwrap: unwrap ?? undefined });
 
-    // 1. JSON (only if it actually parses — cheap at sample size)
-    if ((first === "{" || first === "[") && text.length < 512 * 1024) {
+    // 1. JSON (only if it actually parses — cheap at sample size). A wrapped
+    //    block parses only after unwrapping, so this runs on the inner doc.
+    if ((first === "{" || first === "[") && doc.length < 512 * 1024) {
       try {
-        JSON.parse(text);
-        return {
-          type: "json",
-          candidates: [this.compressors.json, this.compressors.text],
-        };
+        JSON.parse(doc);
+        return tag({ type: "json", candidates: [this.compressors.json, this.compressors.text] });
       } catch {
         // not valid JSON; continue to other detectors
       }
@@ -108,24 +126,24 @@ export class ContentRouter {
       (gitHdr >= 2 && hunk >= 2 && (gitHdr + hunk) / nonEmpty.length > 0.05) ||
       frac(DIFF_HEADER_RE) > 0.3;
     if (diffish) {
-      return { type: "diff", candidates: [this.compressors.diff, this.compressors.text] };
+      return tag({ type: "diff", candidates: [this.compressors.diff, this.compressors.text] });
     }
 
     // 3. Logs — checked BEFORE search: ISO-timestamped lines
     // (`2026-09-21T10:00:01.123Z ...`) also match the search `path:line:`
     // pattern, and a timestamp+level is the stronger signal.
     if (frac(LOG_LINE_RE) > 0.4) {
-      return { type: "log", candidates: [this.compressors.logs, this.compressors.text] };
+      return tag({ type: "log", candidates: [this.compressors.logs, this.compressors.text] });
     }
 
     // 4. Search results (file:line:content)
     if (frac(SEARCH_LINE_RE) > 0.6) {
-      return { type: "search", candidates: [this.compressors.search, this.compressors.logs, this.compressors.text] };
+      return tag({ type: "search", candidates: [this.compressors.search, this.compressors.logs, this.compressors.text] });
     }
 
     // 5. HTML
     if ((sample.match(/<[a-zA-Z]/g) ?? []).length > 8 && sample.includes("</")) {
-      return { type: "html", candidates: [this.compressors.html, this.compressors.text] };
+      return tag({ type: "html", candidates: [this.compressors.html, this.compressors.text] });
     }
 
     // 6. Tabular
@@ -137,23 +155,36 @@ export class ContentRouter {
       return consistent > nonEmpty.slice(0, 20).length * 0.7;
     });
     if (delim || (firstLine.includes("|") && nonEmpty[1]?.match(/^\s*\|?[\s:|-]+\|/))) {
-      return {
+      return tag({
         type: "tabular",
-        candidates: [this.compressors.tabular, this.compressors.json, this.compressors.text],
-      };
+        candidates: [this.compressors.tabular, this.compressors.fragment, this.compressors.text],
+      });
     }
 
-    // 7. Config (YAML/TOML/INI)
+    // 7. Config (YAML/TOML/INI) — a sliced config keeps the fragment as a
+    //    fallback: ConfigCrusher only strips comments/blanks/duplicates, so
+    //    a 700-line slice with unique values falls through to the fragment.
     if (frac(YAML_KEY_RE) > 0.5) {
-      return { type: "config", candidates: [this.compressors.config, this.compressors.text] };
+      return tag({
+        type: "config",
+        candidates: [this.compressors.config, this.compressors.fragment, this.compressors.text],
+      });
     }
 
-    // 8. Code
+    // 8. Structural fragment (work package A2): a block that is a SLICE of a
+    //    larger document — chunked/truncated indented JSON, key-value dumps.
+    //    Checked after the specialized detectors so they keep priority.
+    const frag = shapeStats(nonEmpty);
+    if (frag.mode !== null) {
+      return tag({ type: "fragment", candidates: [this.compressors.fragment, this.compressors.text] });
+    }
+
+    // 9. Code
     if (frac(CODE_KW_RE) > 0.04 && lines.some((l) => /^\s{2,}\S/.test(l))) {
-      return { type: "code", candidates: [this.compressors.code, this.compressors.text] };
+      return tag({ type: "code", candidates: [this.compressors.code, this.compressors.text] });
     }
 
-    // 9. Plain text
-    return { type: "text", candidates: [this.compressors.text] };
+    // 10. Plain text
+    return tag({ type: "text", candidates: [this.compressors.text] });
   }
 }

@@ -15,6 +15,7 @@
  */
 import { CcrStore, renderMarker } from "./ccr.ts";
 import { ContentRouter } from "./compressors/index.ts";
+import { reassembleWrapper, type WrapperSpec } from "./unwrap.ts";
 import { countWords, estimateTokens } from "./estimate.ts";
 import {
   budgetEligible,
@@ -144,11 +145,33 @@ export class Engine {
         if (config.protectedRegexes.some((re) => re.test(part))) continue; // I10
 
         const routed = this.router.route(part);
+        // A block that already carries ctxroom markers is our own output from
+        // an earlier session — never re-compress it (stable second pass).
+        if (part.includes("[ctxroom:")) {
+          transforms.push({
+            transform: "already-compressed",
+            type: routed.type,
+            tokensBefore: estimateTokens(part),
+            tokensAfter: estimateTokens(part),
+            messageIndex: i,
+            partIndex: pi,
+          });
+          continue;
+        }
+
+        // Wrapped tool output: compressors run on the INNER document; the
+        // wrapper (header / truncation notice / prefixes) is re-attached
+        // around the result and the whole original goes to CCR.
+        const spec: WrapperSpec | null = routed.unwrap ?? null;
+        const target = spec ? spec.inner : part;
         let result: string | null = null;
         for (const comp of routed.candidates) {
           try {
-            const r = comp.compress(part, ctx);
-            if (r !== null && r.length < part.length) result = r; // I3
+            const r = comp.compress(target, ctx);
+            if (r !== null && r.length < target.length) {
+              const body = spec ? reassembleWrapper(spec, r) : r;
+              if (body.length < part.length) result = body; // I3 (whole block)
+            }
           } catch {
             /* I5 */
           }
@@ -158,11 +181,14 @@ export class Engine {
         // Optional LLM summarizer — budget-zone text only (latency).
         if (result === null && config.llmSummarizer && budgetSet.has(i) && routed.type === "text") {
           const r = await (this.router.compressors.text as { llmSummarize?: (t: string, c: CompressContext, cfg: ResolvedEngineConfig) => Promise<string | null> }).llmSummarize?.(
-            part,
+            target,
             ctx,
             config
           ).catch(() => null);
-          if (r && r.length < part.length) result = r;
+          if (r) {
+            const body = spec ? reassembleWrapper(spec, r) : r;
+            if (body.length < part.length) result = body;
+          }
         }
 
         if (result === null) {
@@ -195,6 +221,19 @@ export class Engine {
         }
 
         const marked = `${result}\n${renderMarker(hash12, estimateTokens(part), estimateTokens(result))}`;
+        // I3 with the marker included: the BYTES THE MODEL SEES must be
+        // strictly smaller than the original block, marker overhead included.
+        if (marked.length >= part.length) {
+          transforms.push({
+            transform: "no-growth",
+            type: routed.type,
+            tokensBefore: estimateTokens(part),
+            tokensAfter: estimateTokens(part),
+            messageIndex: i,
+            partIndex: pi,
+          });
+          continue;
+        }
         parts[pi] = marked;
         anyChanged = true;
         ccrStored++;

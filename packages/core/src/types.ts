@@ -5,6 +5,7 @@
  * speaks): messages with string or part-array content. Normalization of other
  * wire shapes (Anthropic /responses) happens upstream of the engine.
  */
+import type { WrapperSpec } from "./unwrap.ts";
 
 /** One part of a message content array. */
 export interface ContentPart {
@@ -35,6 +36,7 @@ export type ContentType =
   | "tabular"
   | "config"
   | "html"
+  | "fragment"
   | "text";
 
 /** Context available to a compressor for one text block. */
@@ -70,6 +72,12 @@ export interface BlockCompressor {
 export interface RoutedBlock {
   type: ContentType;
   compressor: BlockCompressor;
+  /**
+   * A detected tool-output wrapper (leading path header, trailing truncation
+   * notice, per-line prefixes). When present, compressors run on
+   * `spec.inner` and the engine re-attaches the wrapper around the result.
+   */
+  unwrap?: WrapperSpec;
 }
 
 /** One recorded transformation, for stats and diagnostics. */

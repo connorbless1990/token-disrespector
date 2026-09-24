@@ -10,4 +10,5 @@ export * from "./config.ts";
 export * from "./ccr.ts";
 export * from "./livezone.ts";
 export * from "./compress.ts";
+export * from "./unwrap.ts";
 export * from "./compressors/index.ts";
