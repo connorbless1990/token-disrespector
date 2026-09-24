@@ -66,6 +66,13 @@ export interface BlockCompressor {
    * - must never throw for arbitrary input (return `null` instead).
    */
   compress(text: string, ctx: CompressContext): string | null;
+  /**
+   * True when the output is a REFORMAT: every information-bearing unit of
+   * the input survives in the result (whitespace may normalize). Such a
+   * result is safe even with the CCR disabled (I8 governs information loss,
+   * of which there is none) and needs no marker: the output IS the data.
+   */
+  readonly lossless?: boolean;
 }
 
 /** Result of routing one block through the ContentRouter. */

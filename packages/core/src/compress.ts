@@ -25,6 +25,7 @@ import {
   type ForwardText,
 } from "./livezone.ts";
 import type {
+  BlockCompressor,
   CompressContext,
   CompressResult,
   EngineMessage,
@@ -165,12 +166,20 @@ export class Engine {
         const spec: WrapperSpec | null = routed.unwrap ?? null;
         const target = spec ? spec.inner : part;
         let result: string | null = null;
+        let resultComp: BlockCompressor | null = null;
         for (const comp of routed.candidates) {
           try {
             const r = comp.compress(target, ctx);
             if (r !== null && r.length < target.length) {
+              // I8 in the loop: a lossy result needs the CCR; when it is
+              // disabled, skip this candidate and keep looking (a lossless
+              // reformat further down the chain is still allowed).
+              if (comp.lossless !== true && !config.ccr.enabled) continue;
               const body = spec ? reassembleWrapper(spec, r) : r;
-              if (body.length < part.length) result = body; // I3 (whole block)
+              if (body.length < part.length) {
+                result = body; // I3 (whole block)
+                resultComp = comp;
+              }
             }
           } catch {
             /* I5 */
@@ -187,7 +196,10 @@ export class Engine {
           ).catch(() => null);
           if (r) {
             const body = spec ? reassembleWrapper(spec, r) : r;
-            if (body.length < part.length) result = body;
+            if (body.length < part.length) {
+              result = body;
+              resultComp = this.router.compressors.text; // a summary is lossy
+            }
           }
         }
 
@@ -203,24 +215,45 @@ export class Engine {
           continue;
         }
 
-        // I8 — lossy compression requires the original to be stored.
+        // I8 — lossy compression requires the original to be stored. A
+        // lossless REFORMAT (every information-bearing unit survives in the
+        // output) needs no CCR and no marker: it is safe even with the CCR
+        // disabled, and the output IS the data.
+        const lossless = resultComp?.lossless === true;
         let hash12: string | null = null;
-        if (config.ccr.enabled) {
+        if (!lossless) {
+          if (!config.ccr.enabled) {
+            transforms.push({
+              transform: "ccr-unavailable",
+              type: routed.type,
+              tokensBefore: estimateTokens(part),
+              tokensAfter: estimateTokens(part),
+              messageIndex: i,
+              partIndex: pi,
+            });
+            continue;
+          }
           hash12 = await this.ccr.store(part);
-        }
-        if (!hash12) {
-          transforms.push({
-            transform: "ccr-unavailable",
-            type: routed.type,
-            tokensBefore: estimateTokens(part),
-            tokensAfter: estimateTokens(part),
-            messageIndex: i,
-            partIndex: pi,
-          });
-          continue;
+          if (!hash12) {
+            transforms.push({
+              transform: "ccr-unavailable",
+              type: routed.type,
+              tokensBefore: estimateTokens(part),
+              tokensAfter: estimateTokens(part),
+              messageIndex: i,
+              partIndex: pi,
+            });
+            continue;
+          }
         }
 
-        const marked = `${result}\n${renderMarker(hash12, estimateTokens(part), estimateTokens(result))}`;
+        let marked: string;
+        if (lossless) {
+          marked = result!; // reformat: the output IS the data — no marker
+        } else {
+          const h = hash12!; // guaranteed non-null by the I8 block above
+          marked = `${result}\n${renderMarker(h, estimateTokens(part), estimateTokens(result))}`;
+        }
         // I3 with the marker included: the BYTES THE MODEL SEES must be
         // strictly smaller than the original block, marker overhead included.
         if (marked.length >= part.length) {
@@ -236,16 +269,16 @@ export class Engine {
         }
         parts[pi] = marked;
         anyChanged = true;
-        ccrStored++;
+        if (!lossless) ccrStored++;
         replaced++;
         transforms.push({
-          transform: result.includes("llm-summarized") ? "llm-summarizer" : "compressor",
+          transform: lossless ? "reformat" : result!.includes("llm-summarized") ? "llm-summarizer" : "compressor",
           type: routed.type,
           tokensBefore: estimateTokens(part),
           tokensAfter: estimateTokens(marked),
           messageIndex: i,
           partIndex: pi,
-          ccrHash: hash12,
+          ccrHash: hash12 ?? undefined,
         });
       }
 

@@ -1,0 +1,10 @@
+{
+  "name": "@ctxroom/evals",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic evaluation harness for ctxroom (zero runtime dependencies).",
+  "scripts": {
+    "eval": "node --experimental-strip-types src/index.ts"
+  }
+}

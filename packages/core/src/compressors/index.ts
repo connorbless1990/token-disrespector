@@ -21,8 +21,9 @@ import { TabularCrusher } from "./tabular.ts";
 import { TextCompressor } from "./text.ts";
 import { CodeCompressor } from "./code.ts";
 import { FragmentCrusher } from "./fragment.ts";
+import { TemplateReformatter } from "./template.ts";
 
-export { JsonCrusher, LogCrusher, SearchCrusher, DiffCrusher, ConfigCrusher, HtmlExtractor, TabularCrusher, TextCompressor, CodeCompressor, FragmentCrusher };
+export { JsonCrusher, LogCrusher, SearchCrusher, DiffCrusher, ConfigCrusher, HtmlExtractor, TabularCrusher, TextCompressor, CodeCompressor, FragmentCrusher, TemplateReformatter };
 export { shapeStats, shapeOf, type ShapeStats } from "./fragment.ts";
 
 const SAMPLE_CHARS = 12_000;
@@ -56,6 +57,7 @@ export interface CompressorSet {
   text: BlockCompressor;
   code: BlockCompressor;
   fragment: BlockCompressor;
+  template: BlockCompressor;
 }
 
 export class ContentRouter {
@@ -77,6 +79,7 @@ export class ContentRouter {
       text: new TextCompressor(),
       code: new CodeCompressor(),
       fragment: new FragmentCrusher(),
+      template: new TemplateReformatter(),
     });
   }
 
@@ -133,7 +136,9 @@ export class ContentRouter {
     // (`2026-09-21T10:00:01.123Z ...`) also match the search `path:line:`
     // pattern, and a timestamp+level is the stronger signal.
     if (frac(LOG_LINE_RE) > 0.4) {
-      return tag({ type: "log", candidates: [this.compressors.logs, this.compressors.text] });
+      // LogCrusher v2 template-mines internally (lossy); the standalone
+      // TemplateReformatter (lossless) is the CCR-off-safe fallback.
+      return tag({ type: "log", candidates: [this.compressors.logs, this.compressors.template, this.compressors.text] });
     }
 
     // 4. Search results (file:line:content)
@@ -157,7 +162,7 @@ export class ContentRouter {
     if (delim || (firstLine.includes("|") && nonEmpty[1]?.match(/^\s*\|?[\s:|-]+\|/))) {
       return tag({
         type: "tabular",
-        candidates: [this.compressors.tabular, this.compressors.fragment, this.compressors.text],
+        candidates: [this.compressors.tabular, this.compressors.fragment, this.compressors.template, this.compressors.text],
       });
     }
 
@@ -167,7 +172,7 @@ export class ContentRouter {
     if (frac(YAML_KEY_RE) > 0.5) {
       return tag({
         type: "config",
-        candidates: [this.compressors.config, this.compressors.fragment, this.compressors.text],
+        candidates: [this.compressors.config, this.compressors.fragment, this.compressors.template, this.compressors.text],
       });
     }
 
@@ -181,10 +186,10 @@ export class ContentRouter {
 
     // 9. Code
     if (frac(CODE_KW_RE) > 0.04 && lines.some((l) => /^\s{2,}\S/.test(l))) {
-      return tag({ type: "code", candidates: [this.compressors.code, this.compressors.text] });
+      return tag({ type: "code", candidates: [this.compressors.code, this.compressors.template, this.compressors.text] });
     }
 
     // 10. Plain text
-    return tag({ type: "text", candidates: [this.compressors.text] });
+    return tag({ type: "text", candidates: [this.compressors.text, this.compressors.template] });
   }
 }
