@@ -132,6 +132,12 @@ export interface CcrConfig {
   ttlMs?: number;
   /** Refuse to store originals larger than this. Default 20 MiB. */
   maxEntryBytes?: number;
+  /**
+   * Maximum number of stored originals. Default 10_000. When the store holds
+   * more, the oldest entries (by file mtime) are evicted. `0` disables the
+   * cap (TTL still applies).
+   */
+  maxEntries?: number;
 }
 
 /** Token-budget (aggressive history) settings. */
@@ -184,6 +190,7 @@ export interface ResolvedEngineConfig {
     dir: string;
     ttlMs: number;
     maxEntryBytes: number;
+    maxEntries: number;
   };
   budget: {
     enabled: boolean;

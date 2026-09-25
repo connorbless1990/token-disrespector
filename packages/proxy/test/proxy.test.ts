@@ -340,3 +340,136 @@ test("upstream failure surfaces as 502 JSON, never a crash", async () => {
     await rm(home, { recursive: true, force: true }).catch(() => {});
   }
 });
+
+// ---------------------------------------------------------------------------
+// B3 — the near-production additions
+// ---------------------------------------------------------------------------
+
+test("malformed JSON on a compressible route ⇒ byte-identical passthrough, 200, zero-savings stats (I5)", async () => {
+  const h = await makeHarness();
+  try {
+    const broken = JSON.stringify({ model: "m", messages: [smallUser, bigJson] }).slice(0, 1200); // truncated mid-JSON
+    const res = await client(h.proxy.port, "/chat/completions", { body: broken });
+    assert.equal(res.status, 200, "a bad body must not 502");
+    await res.text();
+    assert.equal(h.upstream.captured[0].rawBody.toString("utf8"), broken, "upstream must receive the exact original bytes");
+
+    const row = await waitFor(() => findStatsRow(h, (s) => s.path === "/chat/completions"));
+    assert.equal(row.ccrStored, 0, "no CCR store without a parse");
+    assert.equal(row.tokensSaved, 0);
+  } finally {
+    await h.cleanup();
+  }
+});
+
+test("two concurrent sessions stay isolated (I2 per session, no cross-session bleed)", async () => {
+  const h = await makeHarness();
+  try {
+    const sysA: EngineMessage = { role: "system", content: "Session A system prompt with enough words to be a real system prompt body for the proxy concurrency test and nothing else in it at all here." };
+    const sysB: EngineMessage = { role: "system", content: "Session B system prompt with a different word count and different filler text so the two sessions are unambiguously distinct objects in any registry." };
+    const toolA: EngineMessage = { role: "tool", tool_call_id: "call_a1", content: corpus("json-api-results.json") };
+    const toolB: EngineMessage = { role: "tool", tool_call_id: "call_b1", content: corpus("build-log.txt") };
+
+    const send = (msgs: EngineMessage[]) =>
+      client(h.proxy.port, "/chat/completions", { body: JSON.stringify({ model: "m", messages: msgs }) }).then((r) => {
+        assert.equal(r.status, 200);
+        return r;
+      });
+
+    // Request pair 1 — both sessions at once.
+    await Promise.all([
+      send([sysA, smallUser, toolA]),
+      send([sysB, { role: "user", content: "What broke?" }, toolB]),
+    ]);
+    await Promise.all([
+      // Request pair 2 — clients resend their original tool content (their own copy).
+      send([sysA, smallUser, toolA, { role: "user", content: "More A." }]),
+      send([sysB, { role: "user", content: "What broke?" }, toolB, { role: "user", content: "More B." }]),
+    ]);
+
+    // Identify each captured request by its system content — arrival order
+    // across concurrent sessions is not guaranteed.
+    const seen = h.upstream.captured.map((c) => ({
+      raw: c.rawBody.toString("utf8"),
+      parsed: JSON.parse(c.rawBody.toString("utf8")) as { messages: EngineMessage[] },
+    }));
+    assert.equal(seen.length, 4, "four upstream requests expected");
+    const isA = (s: { raw: string }) => s.raw.includes("Session A system");
+    const isB = (s: { raw: string }) => s.raw.includes("Session B system");
+    const a1 = seen.find((s) => isA(s) && !s.raw.includes("More A"));
+    const a2 = seen.find((s) => isA(s) && s.raw.includes("More A"));
+    const b1 = seen.find((s) => isB(s) && !s.raw.includes("More B"));
+    const b2 = seen.find((s) => isB(s) && s.raw.includes("More B"));
+    assert.ok(a1 && a2 && b1 && b2, "each session's two requests must be captured");
+
+    const fwdA1 = a1!.parsed.messages[2].content as string;
+    const fwdB1 = b1!.parsed.messages[2].content as string;
+    const fwdA2 = a2!.parsed.messages[2].content as string;
+    const fwdB2 = b2!.parsed.messages[2].content as string;
+
+    // I2 within each session across the concurrent pair.
+    assert.equal(fwdA2, fwdA1, "session A prefix must be byte-stable");
+    assert.equal(fwdB2, fwdB1, "session B prefix must be byte-stable");
+    // Both compressed, and the sessions' CCR markers are distinct.
+    assert.ok(fwdA1.includes("[ctxroom:compressed"));
+    assert.ok(fwdB1.includes("[ctxroom:compressed"));
+    const hashOf = (s: string) => (/\[ctxroom:compressed ([0-9a-f]{12})/.exec(s) ?? [])[1];
+    assert.notEqual(hashOf(fwdA1), hashOf(fwdB1), "distinct originals ⇒ distinct hashes");
+    // No cross-session bleed: B's forwarded body never contains A's marker.
+    assert.ok(!b2!.raw.includes(hashOf(fwdA1) ?? "\u0000-nope"));
+  } finally {
+    await h.cleanup();
+  }
+});
+
+/** A 200 MiB body must stream through unbuffered — never a 502 (I5). */
+test("200 MiB body streams through byte-identical (oversized bypass)", { timeout: 120_000 }, async () => {
+  const home = mkdtempSync(join(tmpdir(), "ctxroom-proxy-big-"));
+  // Draining upstream: hashes the stream instead of buffering it.
+  const { createHash } = await import("node:crypto");
+  const captured: { bytes: number; hash: string; status: number }[] = [];
+  const upstreamServer = createServer((req, res) => {
+    const hash = createHash("sha256");
+    let bytes = 0;
+    req.on("data", (c: Buffer) => {
+      bytes += c.length;
+      hash.update(c);
+    });
+    req.on("end", () => {
+      captured.push({ bytes, hash: hash.digest("hex"), status: 200 });
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ ok: true, bytes }));
+    });
+  });
+  await new Promise<void>((r) => upstreamServer.listen(0, "127.0.0.1", () => r()));
+  const upPort = (upstreamServer.address() as { port: number }).port;
+
+  const cfg = resolveEngineConfig({ ccr: { enabled: true, dir: join(home, "cache") } }, {} as NodeJS.ProcessEnv);
+  const engine = new Engine(cfg, { ccr: new CcrStore({ dir: join(home, "cache") }) });
+  const stats = new StatsWriter(join(home, "stats"), home);
+  const proxy = await startProxy({
+    port: 0,
+    env: {},
+    upstreamBase: `http://127.0.0.1:${upPort}`,
+    engine,
+    stats,
+  });
+  try {
+    const size = 200 * 1024 * 1024;
+    const body = Buffer.alloc(size, "x");
+    const res = await fetch(`http://127.0.0.1:${proxy.port}/chat/completions`, {
+      method: "POST",
+      body: new Uint8Array(body),
+    });
+    assert.equal(res.status, 200, "oversized body must not fail the request");
+    const j = (await res.json()) as { ok: boolean; bytes: number };
+    assert.equal(j.ok, true);
+    assert.equal(j.bytes, size, "the upstream must receive every byte");
+    assert.equal(captured[0].bytes, size);
+    assert.equal(captured[0].hash, createHash("sha256").update(body).digest("hex"), "bytes must be identical, in order");
+  } finally {
+    await proxy.close();
+    await new Promise<void>((r) => upstreamServer.close(() => r()));
+    await rm(home, { recursive: true, force: true }).catch(() => {});
+  }
+});

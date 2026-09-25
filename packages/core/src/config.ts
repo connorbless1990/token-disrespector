@@ -63,6 +63,7 @@ export function resolveEngineConfig(
       ttlMs: ccr.ttlMs ?? envNum("CTXROOM_CCR_TTL_MS", 7 * 24 * 60 * 60 * 1000),
       maxEntryBytes:
         ccr.maxEntryBytes ?? envNum("CTXROOM_CCR_MAX_ENTRY", 20 * 1024 * 1024),
+      maxEntries: ccr.maxEntries ?? envNum("CTXROOM_CCR_MAX_ENTRIES", 10_000),
     },
     budget: {
       enabled: budget.enabled ?? envBool("CTXROOM_BUDGET", false),

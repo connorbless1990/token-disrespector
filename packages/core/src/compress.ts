@@ -65,6 +65,7 @@ export class Engine {
       dir: config.ccr.dir,
       ttlMs: config.ccr.ttlMs,
       maxEntryBytes: config.ccr.maxEntryBytes,
+      maxEntries: config.ccr.maxEntries,
     });
     this.router = options.router ?? ContentRouter.create();
   }

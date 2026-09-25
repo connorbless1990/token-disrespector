@@ -177,6 +177,54 @@ test("retrieve of an unknown hash is a tool error, not a crash", async () => {
   }
 });
 
+test("B6: full session over one real pipe — initialize → tools/list → tools/call(retrieve) found + not-found", async () => {
+  const { home, store } = await makeHome();
+  const found = await store.store(ORIGINAL);
+  assert.ok(found);
+  const client = new Client({ CTXROOM_HOME: home });
+  try {
+    // 1 — handshake
+    const init = (await client.rpc("initialize", {
+      protocolVersion: "2024-11-05",
+      capabilities: {},
+      clientInfo: { name: "b6-session" },
+    })) as { protocolVersion: string; serverInfo: { name: string } };
+    assert.equal(init.serverInfo.name, "ctxroom");
+    await client.notify("notifications/initialized");
+
+    // 2 — tools/list
+    const list = (await client.rpc("tools/list")) as { tools: { name: string }[] };
+    assert.deepEqual(list.tools.map((t) => t.name).sort(), ["ctxroom_retrieve", "ctxroom_stats"]);
+
+    // 3 — tools/call: retrieve the found handle (I9, byte-exact)
+    const hit = (await client.rpc("tools/call", { name: "ctxroom_retrieve", arguments: { hash: found! } })) as {
+      content: { text: string }[];
+      isError?: boolean;
+    };
+    assert.equal(hit.isError, undefined);
+    assert.equal(hit.content[0].text, ORIGINAL);
+
+    // 4 — tools/call: retrieve a not-found handle ⇒ tool error, session survives
+    const miss = (await client.rpc("tools/call", { name: "ctxroom_retrieve", arguments: { hash: "000000000000" } })) as {
+      content: { text: string }[];
+      isError?: boolean;
+    };
+    assert.equal(miss.isError, true, "not-found must be a tool error");
+    assert.match(miss.content[0].text, /no original found/);
+
+    // 5 — the server must still serve after the error (same pipe, same session)
+    const again = (await client.rpc("tools/call", { name: "ctxroom_retrieve", arguments: { hash: found! } })) as {
+      content: { text: string }[];
+      isError?: boolean;
+    };
+    assert.equal(again.isError, undefined);
+    assert.equal(again.content[0].text, ORIGINAL, "session survives the error and still resolves");
+  } finally {
+    await client.close();
+    await rmSync(home, { recursive: true, force: true });
+  }
+});
+
 test("ctxroom_stats reports cache size and per-day totals", async () => {
   const { home } = await makeHome();
   await new CcrStore({ dir: join(home, "cache") }).store("one");

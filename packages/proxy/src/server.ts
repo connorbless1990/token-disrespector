@@ -17,7 +17,7 @@
  * degrades to forwarding the original request bytes (I5 at the proxy layer).
  */
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { Readable } from "node:stream";
+import { PassThrough, Readable } from "node:stream";
 import type { ReadableStream } from "node:stream/web";
 import { Engine, resolveEngineConfig, type EngineConfig } from "@ctxroom/core";
 import { compressibleRoute, applyBody, parseBody } from "./normalize.ts";
@@ -118,15 +118,18 @@ export async function startProxy(options: ProxyOptions = {}): Promise<RunningPro
       return;
     }
 
-    const body = await readBody(req, maxBodyBytes);
+    const inbound = await readBody(req, maxBodyBytes);
+    const body = inbound.kind === "buffer" ? inbound.buf : null;
     const search = url.search;
 
     // --- Compression (only the LLM routes; anything else is byte-transparent)
-    let forwardBody = body;
+    let forwardBody: Buffer | null = body;
     let statsRow: RequestStats | null = null;
 
     const route = req.method === "POST" ? compressibleRoute(path) : null;
-    if (route && body.length > 0) {
+    // A body over maxBodyBytes (inbound.kind === "oversized") is not parsed
+    // at all — compression is skipped and it streams through verbatim (I5).
+    if (route && body !== null && body.length > 0) {
       try {
         const parsed = JSON.parse(body.toString("utf8")) as Record<string, unknown>;
         const normalized = parseBody(parsed, route);
@@ -183,13 +186,28 @@ export async function startProxy(options: ProxyOptions = {}): Promise<RunningPro
       headers[k] = Array.isArray(v) ? v.join(", ") : v;
     }
 
+    // Oversized inbound (headroom's body-limit bypass, node-flavored): the
+    // request is still LIVE when readBody resolves (it switched modes the
+    // moment the limit was crossed, before the client finished sending), so
+    // streaming `inbound.pass` to the upstream delivers every remaining
+    // byte in order — the proxy never buffers, and never fails, a body it
+    // chose not to parse (I5).
+    let streamBody: ReadableStream | undefined;
+    if (inbound.kind === "oversized" && (req.method === "POST" || req.method === "PUT")) {
+      streamBody = Readable.toWeb(inbound.pass) as ReadableStream;
+    }
+
     const upstreamUrl = `${upstreamBase}${path === "/" ? "" : path}${search}`;
     let upstream: Response;
     try {
       upstream = await fetch(upstreamUrl, {
         method: req.method ?? "GET",
         headers,
-        body: req.method === "POST" || req.method === "PUT" ? forwardBody : undefined,
+        body:
+          req.method === "POST" || req.method === "PUT"
+            ? streamBody ?? forwardBody ?? undefined
+            : undefined,
+        ...(streamBody ? { duplex: "half" } : {}),
         redirect: "manual",
       });
     } catch (e) {
@@ -235,20 +253,51 @@ export async function startProxy(options: ProxyOptions = {}): Promise<RunningPro
   };
 }
 
-function readBody(req: IncomingMessage, maxBytes: number): Promise<Buffer> {
+/**
+ * Read the request body up to `maxBytes`.
+ *
+ * A body LARGER than the limit is not an error (I5 — the proxy must never
+ * fail a request because of its own size budget). The moment the running
+ * size crosses the limit the reader switches to streaming mode: it resolves
+ * EARLY with a live PassThrough that receives the pre-consumed chunks plus
+ * every byte from that point on (backpressure-aware). The client is still
+ * sending, so the remaining body flows into `pass` as it arrives and
+ * `pass` ends exactly when the request ends — the caller can hand
+ * `Readable.toWeb(pass)` straight to the upstream.
+ */
+export type InboundBody =
+  | { kind: "buffer"; buf: Buffer }
+  | { kind: "oversized"; pass: PassThrough };
+
+function readBody(req: IncomingMessage, maxBytes: number): Promise<InboundBody> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     let size = 0;
+    let pass: PassThrough | null = null;
     req.on("data", (c: Buffer) => {
+      if (pass) {
+        // Streaming mode: forward everything; let backpressure reach the socket.
+        if (!pass.write(c)) {
+          req.pause();
+          pass.once("drain", () => req.resume());
+        }
+        return;
+      }
       size += c.length;
       if (size > maxBytes) {
-        reject(new Error("request body too large for ctxroom"));
-        req.destroy();
+        // Crossed the limit: switch modes NOW, mid-body, and resolve early.
+        pass = new PassThrough();
+        for (const ch of chunks) pass.write(ch);
+        pass.write(c); // the flipping chunk itself — it must not be dropped
+        resolve({ kind: "oversized", pass });
         return;
       }
       chunks.push(c);
     });
-    req.on("end", () => resolve(Buffer.concat(chunks)));
+    req.on("end", () => {
+      if (pass) pass.end();
+      else resolve({ kind: "buffer", buf: Buffer.concat(chunks) });
+    });
     req.on("error", reject);
   });
 }

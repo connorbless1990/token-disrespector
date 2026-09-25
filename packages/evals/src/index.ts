@@ -13,6 +13,7 @@
 import { execSync } from "node:child_process";
 import { summarize, writeReport, pct } from "./report.ts";
 import { runE1, e1ToReport } from "./e1.ts";
+import { runE4 } from "./e4.ts";
 import { DEFAULT_SEED } from "./corpus.ts";
 
 const git = ((): string => {
@@ -42,7 +43,7 @@ const E1: EvalDef = {
   },
 };
 
-// E4 (live) lands with the B7 harness; registered here so `--live` is stable.
+// E4 (live): real copilot + local model through the proxy (B7 harness).
 const E4: EvalDef = {
   id: "e4",
   live: true,
@@ -50,7 +51,8 @@ const E4: EvalDef = {
     if (!live) {
       return { pass: true, text: "E4 live compression+retrieve: SKIPPED (needs CTXROOM_LIVE_EVAL=1)" };
     }
-    return { pass: true, text: "E4 live compression+retrieve: not yet implemented (B7 pending)" };
+    const r = await runE4();
+    return { pass: r.pass, text: r.text };
   },
 };
 

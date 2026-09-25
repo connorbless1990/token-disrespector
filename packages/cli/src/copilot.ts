@@ -834,6 +834,46 @@ function insertionContainer(raw: string): { container: Container; placement: "ar
 }
 
 /**
+ * Append `sep` at the end of the last real JSON content on the line, i.e.
+ * BEFORE any trailing line or block comment. Splicing at the raw end of the
+ * line would land inside the comment and the comma would vanish.
+ * String-aware: `//` inside a string literal is content, not a comment.
+ */
+function spliceComma(s: string, sep: string): string {
+  if (sep === "") return s;
+  let last = 0; // index just past the last non-comment, non-ws character
+  let inString = false;
+  let stringChar = "";
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i]!;
+    if (inString) {
+      if (c === stringChar && s[i - 1] !== "\\") inString = false;
+      last = i + 1;
+      continue;
+    }
+    if (c === "/" && s[i + 1] === "/") {
+      // Line comment: skip to the end of THIS line only — later lines may
+      // carry content (the input is the whole prefix, not one line).
+      while (i < s.length - 1 && s[i + 1] !== "\n") i++;
+      continue;
+    }
+    if (c === "/" && s[i + 1] === "*") {
+      i++; // step to the '*'
+      while (i + 1 < s.length && !(s[i - 1] === "*" && s[i] === "/")) i++;
+      continue; // block comment: skipped
+    }
+    if (c === '"' || c === "'") {
+      inString = true;
+      stringChar = c;
+      last = i + 1;
+      continue;
+    }
+    if (!/[\s]/.test(c)) last = i + 1; // whitespace (any kind) is not content
+  }
+  return s.slice(0, last) + sep + s.slice(last);
+}
+
+/**
  * Insert the marked block as the LAST member of a container, preserving
  * every other byte. The block carries no comma of its own; a comma is
  * spliced after the previous member when one exists. Indentation follows
@@ -856,7 +896,7 @@ function insertBlockInContainer(raw: string, c: Container, placement: "array" | 
   const childIndent = indent + "  ";
   const block = renderBlock(entry, placement, childIndent);
   const sep = isEmpty ? "" : ",";
-  return baseNoNl + sep + "\n" + indent + block + "\n" + indent + raw.slice(c.closeIdx);
+  return spliceComma(baseNoNl, sep) + "\n" + indent + block + "\n" + indent + raw.slice(c.closeIdx);
 }
 
 /**
@@ -886,7 +926,12 @@ export function mergeMcpConfig(
       const head = raw.slice(0, m.index);
       const trail = head.match(/[ \t]*\r?$/)?.[0] ?? "";
       const childIndent = trail === "" ? "  " : trail + "  ";
-      next = raw.replace(BLOCK_RE, () => renderBlock(entry, detectPlacement(raw), childIndent));
+      // Placement must be detected on the block-LESS remainder: a file
+      // created from empty carries its own mcpServers INSIDE the block, and
+      // treating that as the real container would render a bare array
+      // element where the wrapper belongs (invalid JSONC → restore).
+      const withoutBlock = raw.replace(BLOCK_RE, "");
+      next = raw.replace(BLOCK_RE, () => renderBlock(entry, detectPlacement(withoutBlock), childIndent));
     } else if (raw.trim() === "") {
       next = "{\n" + renderBlock(entry, "root", "  ") + "\n}\n";
     } else {
@@ -944,7 +989,9 @@ export function unwrapMcpConfig(configPath: string): { ok: boolean; detail: stri
   // Preferred: restore the pristine pre-merge original.
   if (existsSync(backupPath)) {
     const backup = readFileSync(backupPath, "utf8");
-    if (!raw.includes(MCP_BEGIN) || jsoncValid(backup)) {
+    // A blank backup is the pristine original of a config that did not
+    // exist (or was empty) before the merge — restore it verbatim.
+    if (!raw.includes(MCP_BEGIN) || backup.trim() === "" || jsoncValid(backup)) {
       writeFileSync(configPath, backup);
       rmSync(backupPath);
       return { ok: true, detail: "restored the pre-merge original" };
@@ -974,7 +1021,7 @@ export function unwrapMcpConfig(configPath: string): { ok: boolean; detail: stri
   next = next.replace(/^\s*\n(?=\s*\})/, "") // cosmetic: drop the orphan line
     ;
 
-  if (!jsoncValid(next)) {
+    if (!jsoncValid(next)) {
     if (existsSync(backupPath)) writeFileSync(configPath, readFileSync(backupPath, "utf8"));
     return { ok: false, detail: "surgical removal produced invalid JSONC; original kept" };
   }

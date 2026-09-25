@@ -21,6 +21,8 @@ export interface CcrOptions {
   ttlMs?: number;
   /** Max single-entry size. Default 20 MiB. */
   maxEntryBytes?: number;
+  /** Max number of stored originals. Default 10_000; `0` disables the cap. */
+  maxEntries?: number;
   /** Resolve the home root; injectable for tests. */
   home?: string;
 }
@@ -45,8 +47,18 @@ export class CcrStore {
   readonly dir: string;
   readonly ttlMs: number;
   readonly maxEntryBytes: number;
+  /** Entry-count cap; oldest (by mtime) evicted first. 0 = unlimited. */
+  readonly maxEntries: number;
   /** prefix (>=12 hex) -> full hash, learned at runtime and at cold start. */
   private readonly prefixIndex = new Map<string, string>();
+  /**
+   * Cheap bookkeeping count of stored entries: -1 = unknown (cold), else the
+   * last-known count (true value after any full scan; adjusted on writes and
+   * evictions). Lets `enforceCap` skip the full directory scan while the
+   * store is comfortably under its cap — O(1) per store instead of O(n²)
+   * across a long session (the B4 10k scale finding).
+   */
+  private knownCount = -1;
   private evictionDue = 0;
   private coldScanDone = false;
 
@@ -55,6 +67,7 @@ export class CcrStore {
     this.dir = options.dir ? path.resolve(options.dir) : path.join(home, "cache");
     this.ttlMs = options.ttlMs ?? 7 * 24 * 60 * 60 * 1000;
     this.maxEntryBytes = options.maxEntryBytes ?? 20 * 1024 * 1024;
+    this.maxEntries = options.maxEntries ?? 10_000;
   }
 
   /** Resolve a short hash prefix (>= 6 chars) to a full sha256. */
@@ -87,7 +100,9 @@ export class CcrStore {
       const tmp = `${file}.tmp-${process.pid}-${Date.now()}`;
       await writeFile(tmp, original, "utf8");
       await rename(tmp, file);
+      if (this.knownCount >= 0) this.knownCount++;
       this.maybeEvict();
+      void this.enforceCap().catch(() => {});
       return short;
     } catch {
       return null;
@@ -128,31 +143,34 @@ export class CcrStore {
     };
   }
 
-  /** Remove expired originals. Cheap enough to run opportunistically. */
+  /**
+   * Remove expired originals. An explicit call always runs; only the
+   * opportunistic `maybeEvict` is throttled (at most hourly).
+   */
   async evictExpired(now = Date.now()): Promise<number> {
-    if (now < this.evictionDue) return 0;
-    this.evictionDue = now + 60 * 60 * 1000; // at most hourly
+    return this.runEvict(now);
+  }
+
+  private async runEvict(now: number): Promise<number> {
+    this.evictionDue = now + 60 * 60 * 1000; // at most hourly between opportunistic runs
     let removed = 0;
     const entries = await this.allEntries();
     for (const e of entries) {
-      const st = await stat(e.file).catch(() => null);
-      if (!st) continue;
-      if (now - st.mtimeMs > this.ttlMs) {
+      if (now - e.mtimeMs > this.ttlMs) {
         await unlink(e.file).catch(() => {});
         removed++;
       }
     }
+    if (removed > 0 && this.knownCount >= 0) this.knownCount = Math.max(0, this.knownCount - removed);
     return removed;
   }
 
   /** Store statistics (for /health and ctxroom_stats). */
   async stats(): Promise<{ entries: number; bytes: number }> {
     const entries = await this.allEntries();
+    this.knownCount = entries.length;
     let bytes = 0;
-    for (const e of entries) {
-      const st = await stat(e.file).catch(() => null);
-      if (st) bytes += st.size;
-    }
+    for (const e of entries) bytes += e.size;
     return { entries: entries.length, bytes };
   }
 
@@ -160,33 +178,59 @@ export class CcrStore {
     return path.join(this.dir, hash.slice(0, 2), hash);
   }
 
-  private async allEntries(): Promise<{ file: string }[]> {
-    const out: { file: string }[] = [];
+  private async allEntries(): Promise<{ file: string; mtimeMs: number; size: number }[]> {
+    const out: { file: string; mtimeMs: number; size: number }[] = [];
     const shards = await readdir(this.dir, { withFileTypes: true }).catch(() => [] as import("node:fs").Dirent[]);
     for (const shard of shards) {
       if (!shard.isDirectory()) continue;
       const names = await readdir(path.join(this.dir, shard.name)).catch(() => [] as string[]);
       for (const n of names) {
-        if (/^[0-9a-f]{64}$/.test(n)) out.push({ file: path.join(this.dir, shard.name, n) });
+        if (!/^[0-9a-f]{64}$/.test(n)) continue;
+        const file = path.join(this.dir, shard.name, n);
+        const st = await stat(file).catch(() => null);
+        if (st) out.push({ file, mtimeMs: st.mtimeMs, size: st.size });
       }
     }
     return out;
+  }
+
+  /**
+   * Keep the store within `maxEntries` by evicting the oldest entries first.
+   * The cheap `knownCount` ledger gates the expensive full scan: while the
+   * store is at or under its cap the call is O(1); a scan runs only when the
+   * ledger says the cap was crossed (or the count is unknown after a cold
+   * start), and the scan re-baselines the ledger.
+   */
+  private async enforceCap(): Promise<void> {
+    if (this.maxEntries <= 0) return;
+    if (this.knownCount >= 0 && this.knownCount <= this.maxEntries) return;
+    const entries = await this.allEntries();
+    this.knownCount = entries.length;
+    if (entries.length <= this.maxEntries) return;
+    entries.sort((a, b) => a.mtimeMs - b.mtimeMs);
+    const excess = entries.length - this.maxEntries;
+    for (let i = 0; i < excess; i++) {
+      const e = entries[i];
+      if (e) await unlink(e.file).catch(() => {});
+    }
+    this.knownCount -= excess;
   }
 
   private async coldScan(): Promise<void> {
     if (this.coldScanDone) return;
     this.coldScanDone = true;
     const entries = await this.allEntries();
+    this.knownCount = entries.length;
     for (const e of entries) {
       const base = path.basename(e.file);
       this.prefixIndex.set(base.slice(0, 12), base);
     }
-    await this.evictExpired().catch(() => 0);
+    void this.runEvict(Date.now()).catch(() => 0);
   }
 
   private maybeEvict(): void {
     if (Date.now() >= this.evictionDue) {
-      this.evictExpired().catch(() => 0);
+      void this.runEvict(Date.now()).catch(() => 0);
     }
   }
 }
