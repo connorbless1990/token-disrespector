@@ -6,7 +6,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
+import { appendFileSync, chmodSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, symlinkSync, writeFileSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -671,6 +671,97 @@ test("runCopilot: BYOK fallback warns and strips native-lane vars", async () => 
     assert.equal(seenEnv!.COPILOT_PROVIDER_BASE_URL, `http://127.0.0.1:${proxy.port}/v1`);
     assert.equal(seenEnv!.COPILOT_API_URL, undefined, "stale native-lane var stripped");
     assert.ok(warnings.some((w) => w.includes("BYOK")), "loud BYOK warning emitted");
+  } finally {
+    await proxy.close();
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("runCopilot A4: zero requests → loud diagnostic, exit code unchanged", async () => {
+  const home = mkdtempSync(join(tmpdir(), "ctxroom-a4-"));
+  const proxy = await startProxy({
+    port: 0,
+    env: {} as NodeJS.ProcessEnv,
+    config: { ccr: { enabled: true, dir: join(home, "cache") } },
+    stats: new StatsWriter(join(home, "stats"), home),
+  });
+  const logs: string[] = [];
+  try {
+    const code = await runCopilot({
+      port: proxy.port,
+      home,
+      copilotPath: "/fake/copilot",
+      scan: { supported: true, markers: { COPILOT_API_URL: false, COPILOT_PROVIDER_BASE_URL: true }, bundlePath: null, filesScanned: 1 },
+      mcpConfigPath: join(home, "mcp.json"),
+      spawnArgs: ["-p", "do something"],
+      spawn: async () => 0, // the run ends without any request reaching the proxy
+      log: (l) => logs.push(l),
+    });
+    assert.equal(code, 0, "exit code passes through untouched");
+    assert.ok(logs.some((l) => l.includes("ZERO requests")), "diagnostic emitted: " + logs.join("\n"));
+    assert.ok(logs.some((l) => l.includes("ctxroom doctor")), "points at doctor");
+  } finally {
+    await proxy.close();
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("runCopilot A4: requests recorded during the run → no diagnostic", async () => {
+  const home = mkdtempSync(join(tmpdir(), "ctxroom-a4b-"));
+  const proxy = await startProxy({
+    port: 0,
+    env: {} as NodeJS.ProcessEnv,
+    config: { ccr: { enabled: true, dir: join(home, "cache") } },
+    stats: new StatsWriter(join(home, "stats"), home),
+  });
+  const logs: string[] = [];
+  try {
+    const code = await runCopilot({
+      port: proxy.port,
+      home,
+      copilotPath: "/fake/copilot",
+      scan: { supported: true, markers: { COPILOT_API_URL: false, COPILOT_PROVIDER_BASE_URL: true }, bundlePath: null, filesScanned: 1 },
+      mcpConfigPath: join(home, "mcp.json"),
+      spawnArgs: ["-p", "do something"],
+      spawn: async () => {
+        // Simulate the proxy having seen the request (its async append).
+        const day = new Date().toISOString().slice(0, 10);
+        mkdirSync(join(home, "stats"), { recursive: true });
+        appendFileSync(join(home, "stats", `${day}.jsonl`), JSON.stringify({ ts: new Date().toISOString(), project: "default", model: "m", path: "/v1/chat/completions", tokensBefore: 10, tokensAfter: 5, tokensSaved: 5, transforms: [], ccrStored: 1, ms: 1 }) + "\n", "utf8");
+        return 0;
+      },
+      log: (l) => logs.push(l),
+    });
+    assert.equal(code, 0);
+    assert.ok(!logs.some((l) => l.includes("ZERO requests")), "no false alarm: " + logs.join("\n"));
+  } finally {
+    await proxy.close();
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+test("runCopilot A4: trivial --version exits with zero requests silently", async () => {
+  const home = mkdtempSync(join(tmpdir(), "ctxroom-a4c-"));
+  const proxy = await startProxy({
+    port: 0,
+    env: {} as NodeJS.ProcessEnv,
+    config: { ccr: { enabled: true, dir: join(home, "cache") } },
+    stats: new StatsWriter(join(home, "stats"), home),
+  });
+  const logs: string[] = [];
+  try {
+    const code = await runCopilot({
+      port: proxy.port,
+      home,
+      copilotPath: "/fake/copilot",
+      scan: { supported: true, markers: { COPILOT_API_URL: false, COPILOT_PROVIDER_BASE_URL: true }, bundlePath: null, filesScanned: 1 },
+      mcpConfigPath: join(home, "mcp.json"),
+      spawnArgs: ["--version"],
+      spawn: async () => 0,
+      log: (l) => logs.push(l),
+    });
+    assert.equal(code, 0);
+    assert.ok(!logs.some((l) => l.includes("ZERO requests")), "version probe is not a wiring failure");
   } finally {
     await proxy.close();
     rmSync(home, { recursive: true, force: true });

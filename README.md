@@ -150,7 +150,7 @@ npm install --omit=dev
 There are no runtime packages to download. This command only links the
 four local parts together.
 
-**Optional check** (86 tests, all run locally, about a minute):
+**Optional check** (143 tests, all run locally, about a minute):
 
 ```sh
 npm test
@@ -404,15 +404,23 @@ honestly:
 | `tokensSaved` is 0, `transforms` says `passthrough:…` | the agent's file tool delivered the content wrapped or cut into line chunks, so the block was no longer a clean JSON document. The request was inspected and safely left unchanged. The engine is fine; the shape arriving is the problem |
 | no line at all | the request never reached the proxy. Your copilot release ignored the redirect. See §11 |
 
-Two shapes that make Proof 3 work, and two that do not:
+Three shapes, two that work and one that does not:
 
 - Works: the whole file arrives as one valid JSON block (a single line,
-  or a small enough file that the read tool returns in one call).
-- Does not work: an indented file read in 700-line chunks (each chunk is
-  an invalid fragment), or a file whose content the agent's tool wraps
-  with a path prefix or truncation. In both cases the JSON check fails
-  and the block passes through unshrunk. That is the correct safe
-  behavior, just not the savings you hoped for.
+  or a small enough file that the read tool returns in one call). The
+  JSON compressor deduplicates the repeated records — the 300-record
+  file above shrinks by about 95%.
+- Works: an indented file read in chunks (the tool returns the file in
+  ~70-line windows, none of which is valid JSON on its own). The
+  fragment compressor recognizes the repeated record rows inside each
+  chunk, keeps the ends and one example of each shape, notes how many
+  rows were dropped, and saves the original. Measured on that file:
+  about 29% per chunk, and every dropped record stays retrievable.
+- Does not work: content with no repeated structure at all — a single
+  minified blob, a binary-ish dump, or a chunk so small that it holds
+  fewer than about eight complete records. The block is inspected and
+  left unchanged. That is the correct safe behavior, just not the
+  savings you hoped for.
 
 If the model quotes a marker, finish the proof by asking for a row the
 compressed form dropped:
@@ -537,7 +545,7 @@ npm run bench    # compress it and print the table
 | file | kind | compressor used | in (chars) | out (chars) | saved |
 |---|---|---|---|---|---|
 | json-api-results.json | JSON | json | 62,366 | 2,979 | 95.2% |
-| build-log.txt | log | log | 88,239 | 26,361 | 70.1% |
+| build-log.txt | log | log | 88,239 | 2,087 | 97.6% |
 | ripgrep.txt | search output | search | 49,949 | 33,920 | 32.1% |
 | metrics.csv | table | tabular | 5,958 | 1,348 | 77.4% |
 | multi.diff | diff | diff | 30,040 | 16,684 | 44.5% |
@@ -545,7 +553,7 @@ npm run bench    # compress it and print the table
 | config.yaml | config | config | 1,800 | 910 | 49.4% |
 | prose.md | prose | text | 9,838 | 3,476 | 64.7% |
 | code.ts | code | code | 4,057 | 2,831 | 30.2% |
-| **total** | | | **255,629** | **89,431** | **65.0%** |
+| **total** | | | **255,629** | **65,157** | **74.5%** |
 
 "chars" = characters. Characters are not tokens; the token savings are
 proportional for these files.
@@ -565,7 +573,8 @@ day of real use.
 | copilot works, but `ctxroom stats` has zero lines | your copilot release ignored the redirect variables, so its requests never reached the proxy | check `ctxroom doctor`; try `--lane byok` with `CTXROOM_COPILOT_API_URL` set |
 | `BYOK providers require an explicit model` | the BYOK lane needs a model name | add `--model NAME` (the name from `curl <endpoint>/v1/models`) |
 | `Failed to load models … 127.0.0.1` | the redirect works, but the model server is not reachable | start the server, or fix `CTXROOM_COPILOT_API_URL` |
-| the agent read a big file, but `tokensSaved` is 0 | two causes, both about the shape the agent's tool delivers: (a) indented files are read in line chunks that are not valid JSON on their own; (b) current copilot releases truncate very long tool output (they save the full output to a side file and put a shorter copy plus a notice into the conversation) — the copy in the request is no longer the clean document | for (a) re-save without indentation; for (b) keep files small enough to fit, or check the agent's side file. The engine is not at fault in either case |
+| the agent read a big file, but `tokensSaved` is 0 | two causes, both about the shape the agent's tool delivers: (a) the file's content has no repeated structure (minified blob, prose) and is below the size where the text compressor engages; (b) current copilot releases truncate very long tool output (they save the full output to a side file and put a shorter copy plus a notice into the conversation) — the short copy is below the size the compressors work on | for (a) re-save the file with indentation (JSON with one field per line) and read it in chunks — the fragment compressor then deduplicates the record rows; for (b) keep files small enough to fit, or check the agent's side file. The engine is not at fault in either case |
+| `ctxroom copilot` printed a `ZERO requests` note after your session | copilot exited, but none of its requests reached the proxy — the redirect wiring never engaged, so nothing was compressed | the note lists the likely causes in order (lane not honored, copilot failed before its first API call, unreachable upstream). Run `ctxroom doctor`, try `--lane byok` with `CTXROOM_COPILOT_API_URL` set, and re-run with a prompt that makes the agent do something |
 | `port 8788 in use` | something else listens on that port | use `--port 8899` on every command |
 | certificate errors against a corporate server | the firewall swaps in its own certificates | `export NODE_EXTRA_CA_CERTS=/path/to/ca.pem` before starting |
 | the model answers oddly after a turn | it saw the shrunk form and guessed | `ctxroom retrieve <handle>` — or raise `CTXROOM_MIN_INPUT_WORDS` so less gets shrunk |
@@ -603,6 +612,8 @@ day of real use.
 | `packages/mcp` | the retrieval tool as a small MCP server that copilot loads. No dependencies. |
 | `packages/cli` | the `ctxroom` command with all the subcommands in §6. No dependencies. |
 
-`npm test` (86 tests) · `npm run check` (type check) · `npm run bench`
+`npm test` (143 tests) · `npm run check` (type check) · `npm run bench`
 (corpus numbers) · `npm run e2e` (a fake copilot that proves the
-KV-cache promise).
+KV-cache promise) · `npm run eval` (the seven measurement evals:
+real-shape ratio, answer A/B, KV stability, fuzz, overhead, drift —
+all offline; the live one runs with `--live`).

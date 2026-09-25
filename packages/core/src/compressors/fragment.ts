@@ -25,7 +25,15 @@
 import type { BlockCompressor, CompressContext } from "../types.ts";
 
 const MIN_LINES = 25;
-const MIN_ROWS = 15;
+/**
+ * Minimum sibling-run rows before the row model applies. 8, not 15: a
+ * 70-line read of a record document yields 8–10 complete records (two get
+ * cut at the chunk boundaries), and a handful of same-shape rows IS
+ * dedupable — keep the ends + the shape, note the count; the rest stays
+ * retrievable via CCR. Below 8 runs (a <~60-line chunk) the dedup has
+ * nothing to work on and the block passes through.
+ */
+const MIN_ROWS = 8;
 const BOUNDARY_KEEP = 5;
 /** Max keep-set sizes at document scale; each is capped proportionally below. */
 const MAX_SHAPE_EXAMPLES = 15;

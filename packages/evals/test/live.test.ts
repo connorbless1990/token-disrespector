@@ -12,7 +12,7 @@ import { runE4 } from "../src/e4.ts";
 test(
   "B7: live end-to-end — copilot + model + proxy + CCR",
   {
-    timeout: 600_000,
+    timeout: 1_200_000,
     skip:
       process.env.CTXROOM_LIVE_EVAL === "1"
         ? false

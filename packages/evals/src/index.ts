@@ -13,7 +13,12 @@
 import { execSync } from "node:child_process";
 import { summarize, writeReport, pct } from "./report.ts";
 import { runE1, e1ToReport } from "./e1.ts";
+import { runE2, e2ToReport } from "./e2.ts";
+import { runE3, e3ToReport } from "./e3.ts";
 import { runE4 } from "./e4.ts";
+import { runE5, e5ToReport } from "./e5.ts";
+import { runE6, e6ToReport, E6_TARGET_P99_MS } from "./e6.ts";
+import { runE7, e7ToReport } from "./e7.ts";
 import { DEFAULT_SEED } from "./corpus.ts";
 
 const git = ((): string => {
@@ -43,6 +48,27 @@ const E1: EvalDef = {
   },
 };
 
+const E2: EvalDef = {
+  id: "e2",
+  live: false,
+  async run() {
+    const r = await runE2();
+    writeReport(e2ToReport(r, DEFAULT_SEED, git));
+    const miss = r.questions.filter((q) => !q.agree).length;
+    return { pass: r.pass, text: `E2 answer A/B ${pct(r.agreement)} (target ≥ ${pct(0.95)}): ${r.pass ? "PASS" : "FAIL"}${miss ? ` · ${miss} mismatch` : ""}` };
+  },
+};
+
+const E3: EvalDef = {
+  id: "e3",
+  live: false,
+  async run() {
+    const r = await runE3();
+    writeReport(e3ToReport(r, git));
+    return { pass: r.pass, text: `E3 KV-cache stability ${pct(r.stability)} (target 100%): ${r.pass ? "PASS" : "FAIL"} · ${r.stableMessages}/${r.totalMessages} messages` };
+  },
+};
+
 // E4 (live): real copilot + local model through the proxy (B7 harness).
 const E4: EvalDef = {
   id: "e4",
@@ -56,7 +82,37 @@ const E4: EvalDef = {
   },
 };
 
-const ALL: EvalDef[] = [E1, E4];
+const E5: EvalDef = {
+  id: "e5",
+  live: false,
+  async run() {
+    const r = await runE5();
+    writeReport(e5ToReport(r, git));
+    return { pass: r.pass, text: `E5 fuzz ${r.blocks} blocks ${pct(r.passRate)} (target 100%): ${r.pass ? "PASS" : "FAIL"}` };
+  },
+};
+
+const E6: EvalDef = {
+  id: "e6",
+  live: false,
+  async run() {
+    const r = await runE6();
+    writeReport(e6ToReport(r, git));
+    return { pass: r.pass, text: `E6 overhead p99 ${r.p99Ms.toFixed(1)}ms (target ≤ ${E6_TARGET_P99_MS}ms): ${r.pass ? "PASS" : "FAIL"}` };
+  },
+};
+
+const E7: EvalDef = {
+  id: "e7",
+  live: false,
+  async run() {
+    const r = await runE7();
+    writeReport(e7ToReport(r, git));
+    return { pass: r.pass, text: `E7 drift sentinel ${r.rows.filter((x) => x.stable).length}/${r.rows.length}: ${r.pass ? "PASS" : "FAIL"}` };
+  },
+};
+
+const ALL: EvalDef[] = [E1, E2, E3, E4, E5, E6, E7];
 
 async function main() {
   const args = process.argv.slice(2);

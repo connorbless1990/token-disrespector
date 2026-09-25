@@ -12,8 +12,10 @@
  */
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { StatsWriter } from "@ctxroom/proxy";
 import {
   DEFAULT_PORT,
   buildLaunchEnv,
@@ -103,6 +105,8 @@ export interface CopilotRunOptions {
   /** Force a lane (native | byok) instead of auto-detecting. */
   lane?: LaneMode;
   stopProxyOnExit?: boolean;
+  /** ctxroom home dir; defaults to $CTXROOM_HOME or ~/.ctxroom. */
+  home?: string;
   env?: Record<string, string | undefined>;
   spawn?: (cmd: string, args: string[], env: Record<string, string>) => Promise<number>;
   log?: (line: string) => void;
@@ -119,6 +123,7 @@ export interface CopilotRunOptions {
 export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> {
   const log = opts.log ?? ((l: string) => console.error(l));
   const port = opts.port ?? DEFAULT_PORT;
+  const home = opts.home ?? process.env.CTXROOM_HOME ?? path.join(os.homedir(), ".ctxroom");
 
   // 1. locate (--copilot flag / CTXROOM_COPILOT_PATH override the search;
   //    existence of a user-supplied path is validated by cmdCopilot, so
@@ -169,7 +174,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   }
 
   // 3. proxy
-  const ensured = await ensureProxy({ port, log });
+  const ensured = await ensureProxy({ port, home, log });
 
   // 4. launch env
   const baseEnv = opts.env ?? process.env;
@@ -195,7 +200,29 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
         child.on("error", () => resolve(1));
       }));
 
+  const writer = new StatsWriter(undefined, home);
+  const rowsBefore = (await writer.readAll(0)).length;
   const code = await doSpawn(copilotPath, opts.spawnArgs ?? [], launchEnv);
+
+  // 6.5 — A4: zero-requests diagnostic. copilot exited, but the proxy
+  // recorded nothing for this run ⇒ the wiring never engaged (the most
+  // common real-world mystery: "ctxroom ran, but I see no savings").
+  {
+    // The proxy appends stats rows fire-and-forget; give it a beat to flush.
+    await new Promise((r) => setTimeout(r, 250));
+    const rowsAfter = (await writer.readAll(0)).length;
+    const newRows = rowsAfter - rowsBefore;
+    const spawnArgs = opts.spawnArgs ?? [];
+    const trivial = spawnArgs.some((a) => a === "--version" || a === "-v" || a === "--help" || a === "-h");
+    if (newRows === 0 && !trivial) {
+      log(`note: copilot exited (code ${code}) but the ctxroom proxy recorded ZERO requests —`);
+      log("      nothing was compressed. Most likely causes, in order:");
+      log(`        1. this copilot build did not honor the ${mode === "byok" ? "COPILOT_PROVIDER_* (BYOK)" : "COPILOT_API_URL (native)"} env — check \`ctxroom doctor\`;`);
+      log("        2. copilot failed before its first API call (auth, missing model, bad flags) — see its output above;");
+      log(`        3. the upstream (${mode === "byok" ? process.env.CTXROOM_COPILOT_API_URL || "your endpoint" : "api.githubcopilot.com"}) is unreachable from this machine.`);
+      log(`      stats so far: ${rowsAfter} request(s) in ${home}/stats — \`ctxroom stats --days 1\``);
+    }
+  }
 
   // 7. proxy lifecycle
   if (opts.stopProxyOnExit) {

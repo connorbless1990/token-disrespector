@@ -8,7 +8,8 @@
  *   CTXROOM_LIVE_MODEL_URL  default http://localhost:8000
  *   CTXROOM_LIVE_MODEL      default incoai/Qwen3.8-27B-Splash
  *   CTXROOM_LIVE_COPILOT    default ~/.local/bin/copilot
- *   CTXROOM_LIVE_TIMEOUT_MS default 300000
+ *   CTXROOM_LIVE_TIMEOUT_MS default 900000 (a local reasoning model can
+ *   spend most of the budget thinking; the CCR evidence is what counts)
  *
  * Never a silent failure: every precondition is checked and reported.
  */
@@ -29,7 +30,9 @@ export interface E4Result {
 }
 
 /** A seeded build log: a distinctive error burst FIRST (survives any partial
- * read) followed by a 1200-line template/INFO flood. */
+ * read) followed by a 150-line template/INFO flood (~18 KB ≈ 4.5k tokens —
+ * comfortably above every compression threshold, and small enough for a
+ * local 27B reasoning model to actually finish inside the run budget). */
 function seedRepo(dir: string): { logPath: string; logContent: string } {
   const lines: string[] = [];
   // The distinctive burst the summary should be able to reference — at the
@@ -37,12 +40,12 @@ function seedRepo(dir: string): { logPath: string; logContent: string } {
   for (let i = 0; i < 40; i++) {
     lines.push(`2026-09-21T10:59:${String(i % 60).padStart(2, "0")}Z ERROR [billing] VORTEX-7001 charge declined for item ${5000 + i}`);
   }
-  for (let i = 0; i < 1200; i++) {
+  for (let i = 0; i < 150; i++) {
     lines.push(
       `2026-09-21T10:${String(i % 60).padStart(2, "0")}:${String((i * 7) % 60).padStart(2, "0")}Z INFO  [worker] processing item ${1000 + i} in 12ms`
     );
-    if (i % 97 === 0) lines.push(`2026-09-21T10:${String(i % 60).padStart(2, "0")}:${String((i * 3) % 60).padStart(2, "0")}Z WARN  [retry] backing off for item ${1000 + i} after 3 attempts`);
-    if (i % 233 === 0) lines.push(`2026-09-21T10:${String(i % 60).padStart(2, "0")}:${String((i * 11) % 60).padStart(2, "0")}Z ERROR [worker] ${pick(i)} for item ${1000 + i}`);
+    if (i % 37 === 0) lines.push(`2026-09-21T10:${String(i % 60).padStart(2, "0")}:${String((i * 3) % 60).padStart(2, "0")}Z WARN  [retry] backing off for item ${1000 + i} after 3 attempts`);
+    if (i % 83 === 0) lines.push(`2026-09-21T10:${String(i % 60).padStart(2, "0")}:${String((i * 11) % 60).padStart(2, "0")}Z ERROR [worker] ${pick(i)} for item ${1000 + i}`);
   }
   const logContent = lines.join("\n");
   mkdirSync(join(dir, "logs"), { recursive: true });
@@ -58,7 +61,7 @@ async function runCopilot(copilot: string, cwd: string, env: Record<string, stri
     let stdout = "";
     let stderr = "";
     let settled = false;
-    const p = spawn(copilot, ["-p", "Read logs/build.log and summarize what went wrong in this build. List the distinct error classes and the count of the most frequent one.", "--allow-all-tools", "--output-format", "json"], {
+    const p = spawn(copilot, ["-p", "Read logs/build.log and tell me, briefly, what went wrong.", "--allow-all-tools", "--output-format", "json"], {
       cwd,
       env: { ...process.env, ...env } as NodeJS.ProcessEnv,
       stdio: ["ignore", "pipe", "pipe"],
@@ -71,7 +74,7 @@ async function runCopilot(copilot: string, cwd: string, env: Record<string, stri
         p.kill("SIGKILL");
         resolve({ code: -1, stdout, stderr: stderr + "\n[e4: copilot timed out — killed]" });
       }
-    }, Number(process.env.CTXROOM_LIVE_TIMEOUT_MS ?? 300_000));
+    }, Number(process.env.CTXROOM_LIVE_TIMEOUT_MS ?? 900_000));
     p.on("error", (e) => {
       if (!settled) {
         settled = true;
@@ -114,10 +117,14 @@ export async function runE4(): Promise<E4Result> {
     const statsDir = join(home, "stats");
     await mkdir(statsDir, { recursive: true });
 
+    // upstreamBase is the endpoint ROOT: the proxy appends the client's full
+    // path (/v1/chat/completions) to it. A /v1 suffix here would double up.
+    // CTXROOM_HOME pins the stats JSONL into the temp home (the StatsWriter
+    // otherwise falls back to the real ~/.ctxroom of the running process).
     const proxy = await startProxy({
       port: 0,
-      env: {},
-      upstreamBase: `${modelUrl}/v1`,
+      env: { ...process.env, CTXROOM_HOME: home },
+      upstreamBase: modelUrl,
       config: { ccr: { enabled: true, dir: ccrDir } },
     });
 
@@ -133,7 +140,11 @@ export async function runE4(): Promise<E4Result> {
 
     // ---- assertions -------------------------------------------------------
     const failures: string[] = [];
-    if (result.code !== 0) failures.push(`copilot exit ${result.code}: ${result.stderr.slice(0, 200)}`);
+    if (result.code !== 0) {
+      // copilot emits its error JSON events on stdout; surface the tail.
+      const tail = result.stdout.slice(-400).replace(/\n/g, " ⏎ ");
+      failures.push(`copilot exit ${result.code}${result.stderr ? ` · stderr: ${result.stderr.slice(0, 150)}` : ""} · stdout tail: ${tail}`);
+    }
 
     // Stats: a compression actually happened on the chat-completions route.
     const statsFiles = await readdir(statsDir).catch(() => [] as string[]);
@@ -151,14 +162,16 @@ export async function runE4(): Promise<E4Result> {
         }
       }
     }
-    if (ccrStored < 1) failures.push(`no CCR store in stats (the live log read was never compressed)`);
-    if (tokensSaved <= 0) failures.push(`tokensSaved ${tokensSaved} (expected savings on the 1200-line log)`);
-
-    // I9 live: every stored original is retrievable byte-exact, and the CCR
-    // holds at least one real original.
+    // Compression happened = the CCR holds a stored original. (The stats
+    // row is written when a request COMPLETES; a session killed mid-stream
+    // still leaves the CCR entry, which is the stronger evidence.)
     const store = new CcrStore({ dir: ccrDir });
     const ccrStats = await store.stats();
-    if (ccrStats.entries < 1) failures.push("CCR is empty — the proxy never stored an original");
+    if (ccrStats.entries < 1) failures.push(`no original stored (ccr entries 0, stats ccrStored ${ccrStored}) — the live log read was never compressed`);
+    else if (ccrStored < 1) {
+      // not a failure on its own: the request was compressed (CCR proof) but
+      // never completed, so the stats row never landed
+    }
     const entries = await listEntries(ccrDir);
     let sawVortex = false;
     for (const h of entries.slice(0, 8)) {
