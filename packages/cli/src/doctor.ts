@@ -1,5 +1,5 @@
 /**
- * `ctxroom doctor` — a checklist of everything the copilot flow needs,
+ * `tds doctor` — a checklist of everything the copilot flow needs,
  * with each check injectable (paths, scan results) so it is unit-testable
  * without the real Copilot CLI or a login.
  *
@@ -100,7 +100,7 @@ export async function runDoctor(opts: DoctorOptions = {}): Promise<DoctorReport>
     ok: true,
     soft: true,
     label: "mcp config",
-    detail: `${mcpConfig} — ctxroom adds a marked block here and keeps a backup`,
+    detail: `${mcpConfig} — tds adds a marked block here and keeps a backup`,
   });
 
   // 4. Token (PAT lane is optional; github-native login is the norm).
@@ -115,13 +115,13 @@ export async function runDoctor(opts: DoctorOptions = {}): Promise<DoctorReport>
   // 5. Port state.
   const healthUrl = `http://127.0.0.1:${port}/health`;
   if (await healthOk(healthUrl)) {
-    items.push({ ok: true, label: `port ${port}`, detail: "in use by a healthy ctxroom proxy" });
+    items.push({ ok: true, label: `port ${port}`, detail: "in use by a healthy tds proxy" });
   } else {
     const free = await isPortFree(port);
     items.push({
       ok: free,
       label: `port ${port}`,
-      detail: free ? "free" : "occupied by something that is not a ctxroom proxy",
+      detail: free ? "free" : "occupied by something that is not a tds proxy",
     });
   }
 

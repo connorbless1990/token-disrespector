@@ -1,8 +1,8 @@
 {
-  "name": "ctxroom",
+  "name": "token-disrespector",
   "version": "0.1.0",
   "private": true,
-  "description": "Local-first context compression engine for AI coding agents: content-routed compression, reversible retrieval (CCR), KV-cache stability. Node.js, zero runtime dependencies.",
+  "description": "token-disrespector — local-first context compression for AI coding agents. It shrinks the conversation on the way to the model, keeps every original one fetch away, and never lets your bill or your KV cache feel it. Node.js, zero runtime dependencies.",
   "type": "module",
   "workspaces": [
     "packages/*"
@@ -18,7 +18,7 @@
     "gen": "node benchmarks/gen.ts",
     "e2e": "node e2e/run.ts",
     "eval": "node --experimental-strip-types packages/evals/src/index.ts",
-    "ctxroom": "node packages/cli/src/index.ts"
+    "tds": "node packages/cli/src/index.ts"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

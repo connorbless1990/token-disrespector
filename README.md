@@ -1,4 +1,4 @@
-# ctxroom
+# token-disrespector
 
 A tool that makes AI coding agents use fewer words.
 
@@ -9,7 +9,7 @@ It sits between two programs:
 
 Every time the agent asks the model a question, it sends the whole
 conversation again. Big text blocks — files, command output, search
-results — take up most of that. ctxroom shrinks those blocks on the way
+results — take up most of that. token-disrespector shrinks those blocks on the way
 out, saves the originals in a folder on your machine, and lets the model
 fetch the originals back when it needs them.
 
@@ -21,7 +21,18 @@ Three promises:
 2. **The model's answers are never changed.** Only the agent's requests
    are changed.
 3. **If anything fails, the request passes through unchanged.** You never
-   get wrong data because of ctxroom.
+   get wrong data because of token-disrespector.
+
+### A note on the name
+
+The product is **token-disrespector** and the command you type is **tds**.
+
+The machinery underneath keeps its earlier working name, `ctxroom`: the data
+folder is `~/.ctxroom`, the variables start with `CTXROOM_`, and the markers
+the model may quote still read `[ctxroom: …]`. The rename stops at the
+surface — the part you type, read, and quote — because a rename at the seams
+would break working installs for no gain. If you see `ctxroom` in the code
+or in a log, that is the working name, still doing its job.
 
 ---
 
@@ -50,16 +61,16 @@ words.
 | **lane** | which set of environment variables the copilot program is told to use. Two lanes exist: `native` and `byok` (below) |
 | **BYOK** | "bring your own key". Here: use a model of your choice (yours or a friend's) instead of GitHub's models |
 | **native** | the lane where copilot talks to GitHub's own Copilot service |
-| **CCR** | "cache and retrieve". A folder on your machine where ctxroom saves the original of every block it shrinks |
-| **original** | a block exactly as it was before ctxroom changed it |
+| **CCR** | "cache and retrieve". A folder on your machine where token-disrespector saves the original of every block it shrinks |
+| **original** | a block exactly as it was before token-disrespector changed it |
 | **handle** | a short code (12 characters) inside a marker that identifies a saved original |
-| **marker** | a short line ctxroom adds to a shrunk block. It tells the model: "the full text was saved; here is its handle" |
-| **passthrough** | sending a block unchanged. This is the default for any block ctxroom does not shrink |
+| **marker** | a short line token-disrespector adds to a shrunk block. It tells the model: "the full text was saved; here is its handle" |
+| **passthrough** | sending a block unchanged. This is the default for any block token-disrespector does not shrink |
 | **compressor** | a fixed program that shrinks one kind of text. There is one for JSON, one for logs, one for diffs, and so on |
 | **routing** | looking at a block's text and choosing the right compressor. A block that no compressor can shrink gets a passthrough |
 | **KV cache** | the model server's memory of the conversation so far. It only works when the bytes sent are identical to the bytes sent last turn |
 | **MCP** | "Model Context Protocol". A standard way for a model to call outside tools. copilot supports it |
-| **TTL** | "time to live". How long ctxroom keeps a saved original before deleting it. Default: 7 days |
+| **TTL** | "time to live". How long token-disrespector keeps a saved original before deleting it. Default: 7 days |
 | **JSON** | a common text format for data, built from `{ }` objects and `[ ]` lists |
 | **JSONL** | a file with one JSON object per line. Used for the stats file |
 | **port** | a number that identifies a service on a machine. The proxy listens on one, default 8788 |
@@ -86,7 +97,7 @@ words.
 | `--stop-proxy` | stop the background proxy when copilot exits, instead of leaving it running |
 | `--doctor` | run the checklist (§2) and stop, without starting copilot |
 | `--days N` | for `stats`: how many days back to look. Default 7 |
-| `--model NAME` | a **copilot** flag (not ctxroom's): name the model to use |
+| `--model NAME` | a **copilot** flag (not tds's): name the model to use |
 | `-p "text"` | a **copilot** flag: answer one prompt and exit, instead of starting a chat |
 | `--file PATH` | for `simulate`: which file holds the request to test |
 
@@ -94,7 +105,7 @@ words.
 
 | Variable | Meaning |
 |---|---|
-| `CTXROOM_HOME` | the folder ctxroom uses for its data. Default `~/.ctxroom` |
+| `CTXROOM_HOME` | the folder tds uses for its data. Default `~/.ctxroom` |
 | `CTXROOM_COPILOT_PATH` | where the copilot program lives. Same effect as `--copilot` |
 | `CTXROOM_COPILOT_LANE` | same effect as `--lane` |
 | `CTXROOM_COPILOT_API_URL` | the address the **proxy** forwards to. Example: `http://localhost:8000` |
@@ -110,8 +121,8 @@ words.
 | `CTXROOM_TOKEN_BUDGET` | the token count above which budget mode kicks in. Default 120000 |
 | `NODE_EXTRA_CA_CERTS` | path to extra trust certificates. For corporate networks. The proxy honors it |
 | `SSL_CERT_FILE` | same as above, the standard Node.js name for it |
-| `COPILOT_API_URL` | **copilot's own** variable. ctxroom sets it for the agent. Points at the proxy |
-| `COPILOT_PROVIDER_TYPE` / `COPILOT_PROVIDER_BASE_URL` / `COPILOT_PROVIDER_WIRE_API` | **copilot's own** BYOK variables. ctxroom sets them. Point at the proxy |
+| `COPILOT_API_URL` | **copilot's own** variable. tds sets it for the agent. Points at the proxy |
+| `COPILOT_PROVIDER_TYPE` / `COPILOT_PROVIDER_BASE_URL` / `COPILOT_PROVIDER_WIRE_API` | **copilot's own** BYOK variables. tds sets them. Point at the proxy |
 | `PATH` | from the Concepts table. You may need it to fix a "not found" error |
 
 ---
@@ -135,20 +146,19 @@ fnm install 24 && fnm use 24      # if you use fnm
 **Get the code** (either one):
 
 ```sh
-git clone <the-repo-url> ctxroom
+git clone <the-repo-url> token-disrespector
 # or, if you received a zip:
-unzip ctxroom.zip
+unzip token-disrespector.zip
 ```
 
 **Link the parts** (one command; works offline):
 
 ```sh
-cd ctxroom
+cd token-disrespector
 npm install --omit=dev
 ```
 
-There are no runtime packages to download. This command only links the
-four local parts together.
+There are no runtime packages to download. This command only links the four local parts together.
 
 **Optional check** (143 tests, all run locally, about a minute):
 
@@ -156,7 +166,7 @@ four local parts together.
 npm test
 ```
 
-From now on, "ctxroom" means this command:
+From now on, "tds" means this command:
 
 ```sh
 node packages/cli/src/index.ts
@@ -165,7 +175,7 @@ node packages/cli/src/index.ts
 If you use the tool often, make an alias in your shell config:
 
 ```sh
-alias ctxroom="node /full/path/to/ctxroom/packages/cli/src/index.ts"
+alias tds="node /full/path/to/token-disrespector/packages/cli/src/index.ts"
 ```
 
 ---
@@ -173,7 +183,7 @@ alias ctxroom="node /full/path/to/ctxroom/packages/cli/src/index.ts"
 ## 2. First run: the checklist
 
 ```sh
-ctxroom doctor
+tds doctor
 ```
 
 You get one line per check. The mark at the start tells you the state:
@@ -194,7 +204,7 @@ Example output:
   ! redirect lane — native — assumed (native binary — its knobs are compiled
     in compressed form, invisible to the string scan; verified working on
     current builds)
-  ✓ mcp config — ~/.copilot/mcp-config.json — ctxroom adds a marked block
+  ✓ mcp config — ~/.copilot/mcp-config.json — tds adds a marked block
     here and keeps a backup
   ! GH_TOKEN / GITHUB_TOKEN present — fine for github-native login; required
     for PAT mode
@@ -211,13 +221,13 @@ What the lines mean:
   means). That is why there is no build step.
 - **copilot CLI found** — your copilot program, and what it is built as
   (a native binary or a text script).
-- **redirect lane** — which lane ctxroom will use. For a native binary,
+- **redirect lane** — which lane tds will use. For a native binary,
   the setting strings are compiled into the file in compressed form, so
-  ctxroom cannot read them. It therefore *assumes* the lane. That
+  tds cannot read them. It therefore *assumes* the lane. That
   assumption has been verified working on current releases. If you see
   `neither lane detected`, your copilot release is older than both
   mechanisms. Upgrade copilot, or try `--lane byok`.
-- **mcp config** — the file where ctxroom registers its retrieval tool
+- **mcp config** — the file where tds registers its retrieval tool
   with copilot. It adds a marked block and keeps a backup (see §8).
 - **GH_TOKEN** — a GitHub token. Not needed for the BYOK lane.
 - **port** — the port must be free, or the proxy cannot start.
@@ -228,8 +238,8 @@ Common fixes:
 
 | You see | Do this |
 |---|---|
-| `✗ copilot CLI found — not found` | find it: `readlink -f "$(command -v copilot)"`. Then pass it: `ctxroom doctor --copilot /that/path` (or `export CTXROOM_COPILOT_PATH=/that/path`) |
-| `✗ port 8788 — in use` | use another port on every command: `ctxroom doctor --port 8899`, `ctxroom copilot --port 8899` |
+| `✗ copilot CLI found — not found` | find it: `readlink -f "$(command -v copilot)"`. Then pass it: `tds doctor --copilot /that/path` (or `export CTXROOM_COPILOT_PATH=/that/path`) |
+| `✗ port 8788 — in use` | use another port on every command: `tds doctor --port 8899`, `tds copilot --port 8899` |
 | `✗ CCR cache dir writable` | `export CTXROOM_HOME=/some/writable/folder` |
 | `! redirect lane — neither` | upgrade copilot, or add `--lane byok` |
 
@@ -259,8 +269,8 @@ Then two commands, in order:
 #    (/v1/chat/completions) and puts your root in front of it.
 export CTXROOM_COPILOT_API_URL=http://localhost:8000
 
-# 2. Start copilot through ctxroom, BYOK lane, naming your model.
-ctxroom copilot --lane byok --model incoai/Qwen3.8-27B-Splash
+# 2. Start copilot through tds, BYOK lane, naming your model.
+tds copilot --lane byok --model incoai/Qwen3.8-27B-Splash
 ```
 
 No login. No quota. Everything stays on your machine and network.
@@ -268,7 +278,7 @@ No login. No quota. Everything stays on your machine and network.
 For a one-shot question instead of a chat:
 
 ```sh
-ctxroom copilot --lane byok --model incoai/Qwen3.8-27B-Splash \
+tds copilot --lane byok --model incoai/Qwen3.8-27B-Splash \
   -p "explain the bug in packages/core/src/compress.ts"
 ```
 
@@ -280,9 +290,9 @@ Notes:
 - If your server does not use the `/v1` path, put the full path in
   `CTXROOM_COPILOT_API_URL` instead.
 - While copilot runs, everything you type is the normal copilot
-  experience. ctxroom only changes what travels to the model.
+  experience. token-disrespector only changes what travels to the model.
 - When copilot exits, the proxy keeps running in the background (see
-  §8). Stop it with `ctxroom copilot --stop-proxy` or `ctxroom unwrap`.
+  §8). Stop it with `tds copilot --stop-proxy` or `tds unwrap`.
 
 ---
 
@@ -297,11 +307,11 @@ copilot login
 Then:
 
 ```sh
-ctxroom copilot
+tds copilot
 ```
 
 That is the whole setup. The model picker works as usual. The `native`
-lane is used: ctxroom points copilot at the proxy, and the proxy
+lane is used: tds points copilot at the proxy, and the proxy
 forwards to `https://api.githubcopilot.com`.
 
 GitHub Enterprise or a business cloud? Set the usual copilot variables
@@ -322,10 +332,10 @@ certificate first:
 export NODE_EXTRA_CA_CERTS=/path/to/company-ca.pem
 ```
 
-Everything that is not a ctxroom flag is passed to copilot unchanged:
+Everything that is not a tds flag is passed to copilot unchanged:
 
 ```sh
-ctxroom copilot -p "explain this repo" --model gpt-5.1
+tds copilot -p "explain this repo" --model gpt-5.1
 ```
 
 ---
@@ -345,7 +355,7 @@ npm run bench    # compress it, print the savings table
 Or run the engine over one request file:
 
 ```sh
-ctxroom simulate --file your-request.json
+tds simulate --file your-request.json
 ```
 
 This needs no copilot, no model, no network. If the table shows the
@@ -353,11 +363,11 @@ numbers in §10, the engine works.
 
 ### Proof 2 — the loop (works today, about five minutes)
 
-This proves the requests actually travel through ctxroom to your model.
+This proves the requests actually travel through token-disrespector to your model.
 
 Terminal A: start a session (the §3 or §4 command for your mode).
 
-Terminal B, in the ctxroom folder:
+Terminal B, in the token-disrespector folder:
 
 ```sh
 tail -f ~/.ctxroom/stats/$(date +%F).jsonl
@@ -369,8 +379,8 @@ Ask the agent anything in terminal A, for example:
 
 A new line appears in terminal B. The `model` field is your model and the
 `path` is `/v1/chat/completions`. Every agent turn produces one such
-line. **If lines appear, ctxroom is in the loop.** (Stop the tail with
-Ctrl-C. Then `ctxroom stats` shows the same data grouped by day.)
+line. **If lines appear, token-disrespector is in the loop.** (Stop the tail with
+Ctrl-C. Then `tds stats` shows the same data grouped by day.)
 
 ### Proof 3 — a compression, live (best effort)
 
@@ -429,11 +439,11 @@ compressed form dropped:
 > `ctxroom_retrieve` with the handle from the marker, then quote it.
 
 If your copilot release does not expose MCP tools, copy the handle from
-the chat and run `ctxroom retrieve <handle>` in terminal B. If the
+the chat and run `tds retrieve <handle>` in terminal B. If the
 returned text matches the file, the save → fetch contract works end to
 end.
 
-Finally, chat a few more turns and run `ctxroom stats`. The client keeps
+Finally, chat a few more turns and run `tds stats`. The client keeps
 resending the original bytes every turn. If the rows keep showing the
 small token count, the KV-cache promise holds: the proxy re-sends
 identical replacement bytes, so the model server's memory of the
@@ -448,24 +458,24 @@ get touched.
 ## 6. Every command
 
 ```
-ctxroom copilot [args…]        start copilot through the proxy.
-                               All ctxroom flags below; everything else
+tds copilot [args…]        start copilot through the proxy.
+                               All tds flags below; everything else
                                is passed to copilot unchanged.
                                --port N | --lane native|byok
                                --copilot PATH | --config PATH
                                --stop-proxy | --doctor
-ctxroom doctor                 the checklist from §2.
+tds doctor                 the checklist from §2.
                                --port N | --copilot PATH | --lane …
-ctxroom proxy                  run just the proxy, in the foreground.
+tds proxy                  run just the proxy, in the foreground.
                                --port N | --ccr on|off | --budget N
-ctxroom stats                  token savings per day, per model, per project.
+tds stats                  token savings per day, per model, per project.
                                --days N | --model NAME
-ctxroom simulate --file PATH   run the compressor offline over one request
+tds simulate --file PATH   run the compressor offline over one request
                                file (JSON: {"messages":[…]} or an array).
                                No network. No copilot.
-ctxroom retrieve HANDLE [N]    fetch a saved original by its handle.
+tds retrieve HANDLE [N]    fetch a saved original by its handle.
                                N (optional argument) = max characters back.
-ctxroom unwrap                 remove the MCP registration, restore the
+tds unwrap                 remove the MCP registration, restore the
                                config backup, stop the proxy.
 ```
 
@@ -503,7 +513,7 @@ Everything else is optional.
 Remove everything:
 
 ```sh
-ctxroom unwrap       # config back to exactly how it was + proxy stopped
+tds unwrap       # config back to exactly how it was + proxy stopped
 rm -rf ~/.ctxroom    # the data folder
 ```
 
@@ -560,7 +570,7 @@ proportional for these files.
 
 Structured content (JSON, logs, tables) saves the most. Prose and code
 save less, because there is less structure to exploit. Your real savings
-depend on what your agent actually reads — check `ctxroom stats` after a
+depend on what your agent actually reads — check `tds stats` after a
 day of real use.
 
 ---
@@ -569,16 +579,16 @@ day of real use.
 
 | You see | What it means | Do this |
 |---|---|---|
-| `could not find the copilot binary` | copilot is not in a folder ctxroom searches | `readlink -f "$(command -v copilot)"`, then `ctxroom copilot --copilot /that/path` |
-| copilot works, but `ctxroom stats` has zero lines | your copilot release ignored the redirect variables, so its requests never reached the proxy | check `ctxroom doctor`; try `--lane byok` with `CTXROOM_COPILOT_API_URL` set |
+| `could not find the copilot binary` | copilot is not in a folder tds searches | `readlink -f "$(command -v copilot)"`, then `tds copilot --copilot /that/path` |
+| copilot works, but `tds stats` has zero lines | your copilot release ignored the redirect variables, so its requests never reached the proxy | check `tds doctor`; try `--lane byok` with `CTXROOM_COPILOT_API_URL` set |
 | `BYOK providers require an explicit model` | the BYOK lane needs a model name | add `--model NAME` (the name from `curl <endpoint>/v1/models`) |
 | `Failed to load models … 127.0.0.1` | the redirect works, but the model server is not reachable | start the server, or fix `CTXROOM_COPILOT_API_URL` |
 | the agent read a big file, but `tokensSaved` is 0 | two causes, both about the shape the agent's tool delivers: (a) the file's content has no repeated structure (minified blob, prose) and is below the size where the text compressor engages; (b) current copilot releases truncate very long tool output (they save the full output to a side file and put a shorter copy plus a notice into the conversation) — the short copy is below the size the compressors work on | for (a) re-save the file with indentation (JSON with one field per line) and read it in chunks — the fragment compressor then deduplicates the record rows; for (b) keep files small enough to fit, or check the agent's side file. The engine is not at fault in either case |
-| `ctxroom copilot` printed a `ZERO requests` note after your session | copilot exited, but none of its requests reached the proxy — the redirect wiring never engaged, so nothing was compressed | the note lists the likely causes in order (lane not honored, copilot failed before its first API call, unreachable upstream). Run `ctxroom doctor`, try `--lane byok` with `CTXROOM_COPILOT_API_URL` set, and re-run with a prompt that makes the agent do something |
+| `tds copilot` printed a `ZERO requests` note after your session | copilot exited, but none of its requests reached the proxy — the redirect wiring never engaged, so nothing was compressed | the note lists the likely causes in order (lane not honored, copilot failed before its first API call, unreachable upstream). Run `tds doctor`, try `--lane byok` with `CTXROOM_COPILOT_API_URL` set, and re-run with a prompt that makes the agent do something |
 | `port 8788 in use` | something else listens on that port | use `--port 8899` on every command |
 | certificate errors against a corporate server | the firewall swaps in its own certificates | `export NODE_EXTRA_CA_CERTS=/path/to/ca.pem` before starting |
-| the model answers oddly after a turn | it saw the shrunk form and guessed | `ctxroom retrieve <handle>` — or raise `CTXROOM_MIN_INPUT_WORDS` so less gets shrunk |
-| I want it all gone | — | `ctxroom unwrap` and `rm -rf ~/.ctxroom` |
+| the model answers oddly after a turn | it saw the shrunk form and guessed | `tds retrieve <handle>` — or raise `CTXROOM_MIN_INPUT_WORDS` so less gets shrunk |
+| I want it all gone | — | `tds unwrap` and `rm -rf ~/.ctxroom` |
 
 ---
 
@@ -610,7 +620,7 @@ day of real use.
 | `packages/core` | the engine: the nine compressors, the router, the CCR store. No dependencies. |
 | `packages/proxy` | the loopback proxy: applies the engine, keeps KV-cache stability, writes the stats file. No dependencies. |
 | `packages/mcp` | the retrieval tool as a small MCP server that copilot loads. No dependencies. |
-| `packages/cli` | the `ctxroom` command with all the subcommands in §6. No dependencies. |
+| `packages/cli` | the `tds` command with all the subcommands in §6. No dependencies. |
 
 `npm test` (143 tests) · `npm run check` (type check) · `npm run bench`
 (corpus numbers) · `npm run e2e` (a fake copilot that proves the

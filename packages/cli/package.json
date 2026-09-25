@@ -4,7 +4,7 @@
   "description": "CLI: run the compression proxy, wrap Copilot CLI, inspect savings.",
   "type": "module",
   "bin": {
-    "ctxroom": "src/index.ts"
+    "tds": "src/index.ts"
   },
   "main": "src/index.ts",
   "dependencies": {

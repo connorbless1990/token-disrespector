@@ -699,7 +699,7 @@ test("runCopilot A4: zero requests → loud diagnostic, exit code unchanged", as
     });
     assert.equal(code, 0, "exit code passes through untouched");
     assert.ok(logs.some((l) => l.includes("ZERO requests")), "diagnostic emitted: " + logs.join("\n"));
-    assert.ok(logs.some((l) => l.includes("ctxroom doctor")), "points at doctor");
+    assert.ok(logs.some((l) => l.includes("tds doctor")), "points at doctor");
   } finally {
     await proxy.close();
     rmSync(home, { recursive: true, force: true });

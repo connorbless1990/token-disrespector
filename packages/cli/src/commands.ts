@@ -1,5 +1,5 @@
 /**
- * Command runners: `ctxroom proxy | stats | simulate | retrieve`.
+ * Command runners: `tds proxy | stats | simulate | retrieve`.
  * Each takes already-parsed flag values (arg parsing lives in index.ts) so
  * they stay unit-testable.
  */
@@ -11,7 +11,7 @@ import { CcrStore, Engine, resolveEngineConfig, type EngineConfig, type EngineMe
 import { PROXY_VERSION, StatsWriter, startProxy } from "@ctxroom/proxy";
 
 // ---------------------------------------------------------------------------
-// ctxroom proxy [--port N] [--ccr on|off] [--budget N]
+// tds proxy [--port N] [--ccr on|off] [--budget N]
 // ---------------------------------------------------------------------------
 
 export interface ProxyFlags {
@@ -38,7 +38,7 @@ export async function runProxy(flags: ProxyFlags = {}): Promise<void> {
   const engine = running.engine;
   console.log(
     [
-      `ctxroom proxy v${PROXY_VERSION} listening on http://127.0.0.1:${running.port} (loopback only)`,
+      `tds proxy v${PROXY_VERSION} listening on http://127.0.0.1:${running.port} (loopback only)`,
       `  upstream:   ${running.upstreamBase}`,
       `  ccr:        ${engine.config.ccr.enabled ? `on (${engine.config.ccr.dir})` : "off (lossy compression disabled)"}`,
       `  budget:     ${engine.config.budget.enabled ? `on (${engine.config.budget.tokenBudget} tok)` : "off"}`,
@@ -59,7 +59,7 @@ export async function runProxy(flags: ProxyFlags = {}): Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
-// ctxroom stats [--days 7] [--model M]
+// tds stats [--days 7] [--model M]
 // ---------------------------------------------------------------------------
 
 export interface StatsFlags {
@@ -80,7 +80,7 @@ export async function runStats(flags: StatsFlags = {}): Promise<number> {
       console.log(`no proxied requests recorded in the last ${flags.days ?? 7} days (stats dir: ${writer.dir})`);
       return 0;
     }
-    console.log(`ctxroom stats — last ${flags.days ?? 7} day(s), ${s.requests} request(s), ${s.pct.toFixed(1)}% saved overall`);
+    console.log(`tds stats — last ${flags.days ?? 7} day(s), ${s.requests} request(s), ${s.pct.toFixed(1)}% saved overall`);
     console.log("");
     console.log("by day:");
     for (const [day, a] of Object.entries(s.byDay).sort((x, y) => (x[0] < y[0] ? 1 : -1))) {
@@ -108,7 +108,7 @@ export async function runStats(flags: StatsFlags = {}): Promise<number> {
 }
 
 // ---------------------------------------------------------------------------
-// ctxroom simulate --file prompt.json
+// tds simulate --file prompt.json
 // ---------------------------------------------------------------------------
 
 /**
@@ -156,7 +156,7 @@ export async function runSimulate(file: string): Promise<number> {
   const engine = new Engine(resolveEngineConfig());
   const result = await engine.compress(messages);
 
-  console.log(`ctxroom simulate — ${messages.length} message(s), ${result.replaced} compressed, ${result.ccrStored} CCR store(s)`);
+  console.log(`tds simulate — ${messages.length} message(s), ${result.replaced} compressed, ${result.ccrStored} CCR store(s)`);
   for (let i = 0; i < result.messages.length; i++) {
     const m = result.messages[i];
     const transforms = result.transforms.filter((t) => t.messageIndex === i);
@@ -171,7 +171,7 @@ export async function runSimulate(file: string): Promise<number> {
 }
 
 // ---------------------------------------------------------------------------
-// ctxroom retrieve <hash> [maxChars]
+// tds retrieve <hash> [maxChars]
 // ---------------------------------------------------------------------------
 
 export async function runRetrieve(hash: string, maxChars?: number): Promise<number> {

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * ctxroom — CLI entry point. Hand-rolled arg parsing (zero dependencies).
+ * tds (token-disrespector) — CLI entry point. Hand-rolled arg parsing (zero dependencies).
  *
- *   ctxroom copilot [args…]   run copilot through the compression proxy
- *   ctxroom unwrap            remove the marked MCP block; stop the proxy
- *   ctxroom doctor            environment checklist (exit 1 if broken)
- *   ctxroom proxy [--port N] [--ccr on|off] [--budget N]
- *   ctxroom stats [--days 7] [--model M]
- *   ctxroom simulate --file prompt.json
- *   ctxroom retrieve <hash> [maxChars]
+ *   tds copilot [args…]   run copilot through the compression proxy
+ *   tds unwrap            remove the marked MCP block; stop the proxy
+ *   tds doctor            environment checklist (exit 1 if broken)
+ *   tds proxy [--port N] [--ccr on|off] [--budget N]
+ *   tds stats [--days 7] [--model M]
+ *   tds simulate --file prompt.json
+ *   tds retrieve <hash> [maxChars]
  */
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
@@ -132,7 +132,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   if (!copilotPath) {
     log("error: could not find the `copilot` binary — searched every $PATH dir,");
     log("       ~/.local/bin, /opt/homebrew/bin, /usr/local/bin for an executable named 'copilot'.");
-    log("       point at yours:  ctxroom copilot --copilot /path/to/your/binary");
+    log("       point at yours:  tds copilot --copilot /path/to/your/binary");
     log("       (or export CTXROOM_COPILOT_PATH=/path/to/your/binary)");
     return 1;
   }
@@ -154,7 +154,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
       log("note: current native binary build — the redirect knobs are compiled into the");
       log("      executable (compressed) and invisible to the string scan. Proceeding on");
       log("      the NATIVE lane. For a local/self-hosted model, force BYOK:");
-      log("        ctxroom copilot --lane byok   (with CTXROOM_COPILOT_API_URL=<your endpoint>)");
+      log("        tds copilot --lane byok   (with CTXROOM_COPILOT_API_URL=<your endpoint>)");
     } else {
       log("error: this copilot build exposes neither COPILOT_API_URL nor COPILOT_PROVIDER_* —");
       log("       the proxy cannot be wired in. Try upgrading the CLI (headroom-style redirect).");
@@ -163,7 +163,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   }
   if (mode === "byok") {
     if (opts.lane) {
-      log("lane: BYOK (forced) — the provider base URL points at the ctxroom proxy;");
+      log("lane: BYOK (forced) — the provider base URL points at the tds proxy;");
       log("      set CTXROOM_COPILOT_API_URL to the endpoint the proxy should forward to");
       log("      (default: your normal Copilot upstream).");
     } else if (!native) {
@@ -187,7 +187,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   if (!merge.ok) {
     log(`warning: MCP config merge at ${configPath}: ${merge.detail} (continuing without MCP tools)`);
   } else {
-    log(`mcp: ctxroom registered in ${configPath} (${merge.detail})`);
+    log(`mcp: retrieval tool registered in ${configPath} (${merge.detail})`);
   }
 
   // 6. spawn + pass through the exit code
@@ -206,7 +206,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
 
   // 6.5 — A4: zero-requests diagnostic. copilot exited, but the proxy
   // recorded nothing for this run ⇒ the wiring never engaged (the most
-  // common real-world mystery: "ctxroom ran, but I see no savings").
+  // common real-world mystery: "tds ran, but I see no savings").
   {
     // The proxy appends stats rows fire-and-forget; give it a beat to flush.
     await new Promise((r) => setTimeout(r, 250));
@@ -215,12 +215,12 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
     const spawnArgs = opts.spawnArgs ?? [];
     const trivial = spawnArgs.some((a) => a === "--version" || a === "-v" || a === "--help" || a === "-h");
     if (newRows === 0 && !trivial) {
-      log(`note: copilot exited (code ${code}) but the ctxroom proxy recorded ZERO requests —`);
+      log(`note: copilot exited (code ${code}) but the tds proxy recorded ZERO requests —`);
       log("      nothing was compressed. Most likely causes, in order:");
-      log(`        1. this copilot build did not honor the ${mode === "byok" ? "COPILOT_PROVIDER_* (BYOK)" : "COPILOT_API_URL (native)"} env — check \`ctxroom doctor\`;`);
+      log(`        1. this copilot build did not honor the ${mode === "byok" ? "COPILOT_PROVIDER_* (BYOK)" : "COPILOT_API_URL (native)"} env — check \`tds doctor\`;`);
       log("        2. copilot failed before its first API call (auth, missing model, bad flags) — see its output above;");
       log(`        3. the upstream (${mode === "byok" ? process.env.CTXROOM_COPILOT_API_URL || "your endpoint" : "api.githubcopilot.com"}) is unreachable from this machine.`);
-      log(`      stats so far: ${rowsAfter} request(s) in ${home}/stats — \`ctxroom stats --days 1\``);
+      log(`      stats so far: ${rowsAfter} request(s) in ${home}/stats — \`tds stats --days 1\``);
     }
   }
 
@@ -228,7 +228,7 @@ export async function runCopilot(opts: CopilotRunOptions = {}): Promise<number> 
   if (opts.stopProxyOnExit) {
     await stopProxy({ port: ensured.port, log });
   } else if (ensured.started) {
-    log(`ctxroom proxy left running on 127.0.0.1:${ensured.port} (stop it with \`ctxroom copilot --stop-proxy\` or \`ctxroom unwrap\`)`);
+    log(`tds proxy left running on 127.0.0.1:${ensured.port} (stop it with \`tds copilot --stop-proxy\` or \`tds unwrap\`)`);
   }
   return code;
 }
@@ -245,13 +245,13 @@ export function laneOverride(flags: Record<string, string | number | boolean>, e
   return v === "native" || v === "byok" ? v : undefined;
 }
 
-/** The flags ctxroom itself consumes; everything else is forwarded to copilot. */
+/** The flags tds itself consumes; everything else is forwarded to copilot. */
 const CTXROOM_FLAGS = new Set(["port", "lane", "copilot", "config", "doctor", "stop-proxy"]);
 
 /**
  * What copilot actually receives: every positional plus every flag that is
- * NOT ctxroom's own. This is how `ctxroom copilot -p "…" --model x` works —
- * ctxroom's parser would otherwise swallow `--model`.
+ * NOT tds's own. This is how `tds copilot -p "…" --model x` works —
+ * tds's parser would otherwise swallow `--model`.
  */
 export function copilotSpawnArgs(flags: Record<string, string | number | boolean>, positional: string[]): string[] {
   const out = [...positional];
@@ -342,7 +342,7 @@ async function cmdSimulate(args: string[]): Promise<number> {
   const { flags } = parseArgs(args);
   const file = typeof flags.file === "string" ? (flags.file as string) : undefined;
   if (!file) {
-    console.error("usage: ctxroom simulate --file prompt.json");
+    console.error("usage: tds simulate --file prompt.json");
     return 1;
   }
   return runSimulate(file);
@@ -352,7 +352,7 @@ async function cmdRetrieve(args: string[]): Promise<number> {
   const { flags, positional } = parseArgs(args);
   const hash = positional[0];
   if (!hash) {
-    console.error("usage: ctxroom retrieve <hash> [maxChars]");
+    console.error("usage: tds retrieve <hash> [maxChars]");
     return 1;
   }
   const maxChars = flagNumber(flags, "max-chars") ?? (positional[1] ? Number(positional[1]) : undefined);
@@ -363,21 +363,21 @@ async function cmdRetrieve(args: string[]): Promise<number> {
 // main
 // ---------------------------------------------------------------------------
 
-export const USAGE = `ctxroom — local-first context compression for AI coding agents
+export const USAGE = `tds — token-disrespector · local-first context compression for AI coding agents
 
 Usage:
-  ctxroom copilot [args…]            run copilot through the compression proxy
+  tds copilot [args…]            run copilot through the compression proxy
                                      [--port N] [--stop-proxy] [--config PATH]
                                      [--doctor] [--copilot PATH] [--lane native|byok]
                                      (everything else — -p, --model, prompts — is
                                       forwarded to copilot verbatim)
-  ctxroom unwrap [--config PATH]     remove the marked MCP block, restore backup, stop proxy
-  ctxroom doctor [--port N]          environment checklist (exit 1 if broken)
+  tds unwrap [--config PATH]     remove the marked MCP block, restore backup, stop proxy
+  tds doctor [--port N]          environment checklist (exit 1 if broken)
                                      [--copilot PATH] [--lane native|byok]
-  ctxroom proxy [--port N] [--ccr on|off] [--budget N]
-  ctxroom stats [--days 7] [--model M]
-  ctxroom simulate --file prompt.json  offline engine run (no network)
-  ctxroom retrieve <hash> [maxChars]   fetch a compressed original from CCR
+  tds proxy [--port N] [--ccr on|off] [--budget N]
+  tds stats [--days 7] [--model M]
+  tds simulate --file prompt.json  offline engine run (no network)
+  tds retrieve <hash> [maxChars]   fetch a compressed original from CCR
 
 Environment:
   CTXROOM_HOME            base dir (default ~/.ctxroom): cache/ + stats/

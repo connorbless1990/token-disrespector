@@ -468,7 +468,7 @@ export interface EnsureProxyOptions {
 
 /**
  * Make sure a healthy proxy is listening on the port. If one is already
- * healthy, do nothing. Otherwise spawn a detached `ctxroom proxy`, record a
+ * healthy, do nothing. Otherwise spawn a detached `tds proxy`, record a
  * pidfile, and wait for /health.
  */
 export async function ensureProxy(opts: EnsureProxyOptions = {}): Promise<{ port: number; started: boolean; pid?: number }> {
@@ -497,7 +497,7 @@ export async function ensureProxy(opts: EnsureProxyOptions = {}): Promise<{ port
   // NOTE: this module is copilot.ts, NOT the entry — the detached proxy
   // must run the real CLI entry (index.ts), which auto-runs main().
   const cliPath = opts.cliPath ?? fileURLToPath(new URL("./index.ts", import.meta.url));
-  log(`starting ctxroom proxy on 127.0.0.1:${port} …`);
+  log(`starting tds proxy on 127.0.0.1:${port} …`);
   const child: ChildProcess = spawn(process.execPath, [cliPath, "proxy", "--port", String(port)], {
     detached: true,
     stdio: "ignore",
@@ -522,7 +522,7 @@ export async function ensureProxy(opts: EnsureProxyOptions = {}): Promise<{ port
     }
     await new Promise((r) => setTimeout(r, 150));
   }
-  throw new Error(`ctxroom proxy did not become healthy at ${healthUrl} within 15s — run \`ctxroom doctor\` to inspect`);
+  throw new Error(`tds proxy did not become healthy at ${healthUrl} within 15s — run \`tds doctor\` to inspect`);
 }
 
 export async function stopProxy(opts: { port?: number; home?: string; log?: (l: string) => void } = {}): Promise<{ stopped: boolean }> {
@@ -540,7 +540,7 @@ export async function stopProxy(opts: { port?: number; home?: string; log?: (l: 
 
   if (!pid || !isAlive(pid)) {
     if (await healthOk(`http://127.0.0.1:${port}/health`)) {
-      log(`note: 127.0.0.1:${port} is serving a ctxroom proxy we did not start; leaving it running`);
+      log(`note: 127.0.0.1:${port} is serving a tds proxy we did not start; leaving it running`);
       return { stopped: false };
     }
     try {
@@ -788,7 +788,7 @@ function entryLine(entry: Record<string, unknown>, indent: string): string {
  *  - "root" create  → a new "mcpServers" list (spec-literal shape).
  */
 function renderBlock(entry: Record<string, unknown>, placement: "array" | "object" | "root", indent: string): string {
-  const marker1 = `${indent}${MCP_BEGIN} — managed by ctxroom (add: \`ctxroom copilot\`, remove: \`ctxroom unwrap\`)`;
+  const marker1 = `${indent}${MCP_BEGIN} — managed by tds (add: \`tds copilot\`, remove: \`tds unwrap\`)`;
   const marker2 = `${indent}${MCP_END}`;
   if (placement === "root") {
     return [
@@ -1000,7 +1000,7 @@ export function unwrapMcpConfig(configPath: string): { ok: boolean; detail: stri
   }
 
   if (!raw.includes(MCP_BEGIN)) {
-    return { ok: true, detail: "no ctxroom block found; nothing to remove" };
+    return { ok: true, detail: "no tds block found; nothing to remove" };
   }
 
   const m = BLOCK_RE.exec(raw);
