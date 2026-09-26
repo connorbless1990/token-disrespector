@@ -5,3 +5,4 @@ dist/
 .ctxroom/
 coverage/
 evals/reports/
+packages/evals/reports/
