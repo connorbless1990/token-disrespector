@@ -346,9 +346,30 @@ DSH ([deepseek-harness](https://github.com/deepseek-ai/deepseek-harness))
 routes its model traffic by configuration, so the whole setup is two YAML
 edits plus the proxy. No DSH code change is needed.
 
-**1. Point a second DSH provider route at the proxy.** Edit
-`~/.dsh/settings.yaml`. Keep your existing route (e.g. `incoai`) and add a
-twin whose only difference is `baseURL`:
+One important property: **tds for DSH is opt-in and process-scoped.** The
+proxy is a plain foreground process — nothing installs a service, nothing
+auto-starts at login, and nothing comes back on its own. It is "on" exactly
+while you have left the step-1 command running, and "off" the moment you
+stop it.
+
+### Turning it on (three steps, in this order)
+
+**1. Start the proxy.** The endpoint root has **no** `/v1` (the proxy
+appends the client's full path; a `/v1` suffix would double up and 404):
+
+```sh
+CTXROOM_COPILOT_API_URL=http://127.0.0.1:8000 \
+  node /path/to/token-disrespector/packages/cli/src/index.ts proxy --port 8788
+```
+
+Leave that terminal open — the proxy lives only as long as it does.
+Confirm it: `curl http://127.0.0.1:8788/health` should print
+`{"ok":true, ...}`. (Port 8788 is the default; use another everywhere if
+it's taken.)
+
+**2. Point DSH at the proxy.** Edit `~/.dsh/settings.yaml`. Keep your
+existing route (e.g. `incoai`) and add a twin whose only difference is
+`baseURL`:
 
 ```yaml
 llm-pi-ai:
@@ -370,12 +391,16 @@ agent-default-model:
   model: incoai/Qwen3.8-27B-Splash
 ```
 
-The flip takes effect on the next request — no restart. To undo, set
-`provider: incoai` back.
+The flip takes effect on the next request — no DSH restart. In the web GUI
+the new model appears as a second selectable entry ("Splash (via tds)");
+your direct route keeps working for any model that still points at `:8000`.
 
-**2. Give the agent the retrieve tool.** The agent must be able to fetch
-stored originals back, so add one MCP row to the DSH profile's
-`cordis.patch.yml` (or pass it as a `--patch` overlay):
+**3. (Optional, recommended) Give the agent the retrieve tool.** tds
+compresses big blocks and stores each original; the agent should be able to
+fetch them back. `dsh-mcp-client` is **not** in DSH's shipped base bundle,
+so mount it with one insert row in the active profile's `cordis.patch.yml`
+(e.g. `~/.dsh/profiles/web/cordis.patch.yml`; for headless, the matching
+profile file) or as a `--patch` overlay:
 
 ```yaml
 - insert:
@@ -391,25 +416,40 @@ stored originals back, so add one MCP row to the DSH profile's
 ```
 
 The tools appear as `mcp__ctxroom__ctxroom_retrieve` and
-`mcp__ctxroom__ctxroom_stats`.
+`mcp__ctxroom__ctxroom_stats`. Without this step tds still compresses —
+the agent just cannot retrieve the shrunk originals.
 
-**3. Start the proxy** (as in §3, but note the endpoint root has **no**
-`/v1`):
+### Checking that it is actually on
 
-```sh
-CTXROOM_COPILOT_API_URL=http://127.0.0.1:8000 \
-  node /path/to/token-disrespector/packages/cli/src/index.ts proxy --port 8788
-```
+- `curl http://127.0.0.1:8788/health` → `{"ok":true,...}` (the proxy is up)
+- `tds stats --days 1` → requests are being recorded with tokens saved
+- your session transcript shows `[ctxroom:compressed …]` markers where big
+  blocks were shrunk
+- the model calls `mcp__ctxroom__ctxroom_retrieve` and gets the original
+  back byte-exact
 
-Then run DSH as usual — `dsh web` for the GUI, or
-`dsh --profile headless "your task"` for a one-shot.
+### Turning it off
 
-**Undo is one line:** `agent-default-model.provider: incoai` (plus stop the
-proxy). DSH settings hot-reload, so it applies to the next request.
+- Stop the proxy: `Ctrl-C` in its terminal (or kill it). The `incoai-tds`
+  route stops answering immediately; the direct route is unaffected.
+- Optionally set `agent-default-model.provider: incoai` back (DSH settings
+  hot-reload; the GUI can also just select the direct model).
+- Remove the `mcp-ctxroom` insert row to drop the retrieve/stats tools.
+- Delete the `incoai-tds` provider entry whenever you want the config clean.
 
-Measured behavior and the A/B numbers for this setup are in
-[docs/dsh-seams.md](docs/dsh-seams.md) and
-[docs/dsh-measured-gains.md](docs/dsh-measured-gains.md).
+All four are reversible and idempotent; none of them touches DSH's code.
+
+### After a reboot
+
+Nothing in DSH or tds is a service: a reboot ends the proxy process, and
+only that must be redone. The two YAML edits persist — re-run step 1 and
+you are back on tds.
+
+### The seam map and measurements
+
+The config seams this relies on (verified against the DSH checkout) are in
+[docs/dsh-seams.md](docs/dsh-seams.md); the A/B design for the shared-model
+workload is in [docs/dsh-ab.md](docs/dsh-ab.md).
 
 ---
 
