@@ -1,0 +1,11 @@
+# Shared A/B profile rows (applied to ALL arms — symmetric by construction).
+# compaction off in both arms: the 262k-window trigger sits at ~209k, above the
+# workload, and the summarization call would pollute per-turn timing and bust
+# tds's frozen-prefix byte-identity. See docs/dsh-ab.md §2.
+- id: compaction-basic
+  config:
+    auto: false
+- id: session-persistence-jsonl
+  config:
+    root: !!js dshHomePath('sessions')
+    compression: 'none'

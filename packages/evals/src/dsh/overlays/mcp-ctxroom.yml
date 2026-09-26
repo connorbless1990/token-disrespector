@@ -1,0 +1,12 @@
+# Arm T/P only: the ctxroom MCP server (retrieve + stats tools).
+- insert:
+    - id: mcp-ctxroom
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: ctxroom
+        transport: stdio
+        command: node
+        args: ["/Users/akshaysingh/Dev/Deepseek/packages/mcp/src/index.ts"]
+        env:
+          CTXROOM_HOME: /Users/akshaysingh/.ctxroom
+        failOnStartupError: true
