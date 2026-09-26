@@ -340,6 +340,79 @@ tds copilot -p "explain this repo" --model gpt-5.1
 
 ---
 
+## 4b. Use it with the DeepSeek Harness (DSH)
+
+DSH ([deepseek-harness](https://github.com/deepseek-ai/deepseek-harness))
+routes its model traffic by configuration, so the whole setup is two YAML
+edits plus the proxy. No DSH code change is needed.
+
+**1. Point a second DSH provider route at the proxy.** Edit
+`~/.dsh/settings.yaml`. Keep your existing route (e.g. `incoai`) and add a
+twin whose only difference is `baseURL`:
+
+```yaml
+llm-pi-ai:
+  providers:
+    incoai:
+      displayName: Splash
+      api: openai-completions
+      baseURL: http://127.0.0.1:8000/v1        # direct
+      models: [{ id: incoai/Qwen3.8-27B-Splash, name: Splash }]
+      apiKeyEnv: INCOAI_API_KEY
+    incoai-tds:
+      displayName: Splash (via tds)
+      api: openai-completions
+      baseURL: http://127.0.0.1:8788/v1        # through tds
+      models: [{ id: incoai/Qwen3.8-27B-Splash, name: Splash (via tds) }]
+      apiKeyEnv: INCOAI_API_KEY
+agent-default-model:
+  provider: incoai-tds                          # flip this to switch arms
+  model: incoai/Qwen3.8-27B-Splash
+```
+
+The flip takes effect on the next request — no restart. To undo, set
+`provider: incoai` back.
+
+**2. Give the agent the retrieve tool.** The agent must be able to fetch
+stored originals back, so add one MCP row to the DSH profile's
+`cordis.patch.yml` (or pass it as a `--patch` overlay):
+
+```yaml
+- insert:
+    - id: mcp-ctxroom
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: ctxroom
+        transport: stdio
+        command: node                          # Node >= 23.6 (runs .ts directly)
+        args: ["/path/to/token-disrespector/packages/mcp/src/index.ts"]
+        env:
+          CTXROOM_HOME: /Users/you/.ctxroom
+```
+
+The tools appear as `mcp__ctxroom__ctxroom_retrieve` and
+`mcp__ctxroom__ctxroom_stats`.
+
+**3. Start the proxy** (as in §3, but note the endpoint root has **no**
+`/v1`):
+
+```sh
+CTXROOM_COPILOT_API_URL=http://127.0.0.1:8000 \
+  node /path/to/token-disrespector/packages/cli/src/index.ts proxy --port 8788
+```
+
+Then run DSH as usual — `dsh web` for the GUI, or
+`dsh --profile headless "your task"` for a one-shot.
+
+**Undo is one line:** `agent-default-model.provider: incoai` (plus stop the
+proxy). DSH settings hot-reload, so it applies to the next request.
+
+Measured behavior and the A/B numbers for this setup are in
+[docs/dsh-seams.md](docs/dsh-seams.md) and
+[docs/dsh-measured-gains.md](docs/dsh-measured-gains.md).
+
+---
+
 ## 5. Proving it works
 
 There are three levels of proof, from "always works" to "works when the

@@ -33,7 +33,7 @@ export interface E4Result {
  * read) followed by a 150-line template/INFO flood (~18 KB ≈ 4.5k tokens —
  * comfortably above every compression threshold, and small enough for a
  * local 27B reasoning model to actually finish inside the run budget). */
-function seedRepo(dir: string): { logPath: string; logContent: string } {
+export function seedRepo(dir: string): { logPath: string; logContent: string } {
   const lines: string[] = [];
   // The distinctive burst the summary should be able to reference — at the
   // top of the file so every plausible Read of it contains it.

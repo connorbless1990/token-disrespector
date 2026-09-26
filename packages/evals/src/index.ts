@@ -19,6 +19,7 @@ import { runE4 } from "./e4.ts";
 import { runE5, e5ToReport } from "./e5.ts";
 import { runE6, e6ToReport, E6_TARGET_P99_MS } from "./e6.ts";
 import { runE7, e7ToReport } from "./e7.ts";
+import { runE8 } from "./e8.ts";
 import { DEFAULT_SEED } from "./corpus.ts";
 
 const git = ((): string => {
@@ -112,7 +113,20 @@ const E7: EvalDef = {
   },
 };
 
-const ALL: EvalDef[] = [E1, E2, E3, E4, E5, E6, E7];
+// E8 (live): real DSH (headless) + local model through the proxy + ctxroom MCP.
+const E8: EvalDef = {
+  id: "e8",
+  live: true,
+  async run(live: boolean) {
+    if (!live) {
+      return { pass: true, text: "E8 DSH live compression+retrieve: SKIPPED (needs CTXROOM_LIVE_EVAL=1)" };
+    }
+    const r = await runE8();
+    return { pass: r.pass, text: r.text };
+  },
+};
+
+const ALL: EvalDef[] = [E1, E2, E3, E4, E5, E6, E7, E8];
 
 async function main() {
   const args = process.argv.slice(2);
