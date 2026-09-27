@@ -463,6 +463,11 @@ export interface EnsureProxyOptions {
   home?: string;
   /** Absolute path to the CLI entry (for the detached spawn). Default: this file. */
   cliPath?: string;
+  /**
+   * Extra env for the detached spawn (applied over the inherited env, under
+   * CTXROOM_HOME). The DSH adapter uses this to pin the proxy's upstream.
+   */
+  env?: Record<string, string>;
   log?: (line: string) => void;
 }
 
@@ -501,7 +506,7 @@ export async function ensureProxy(opts: EnsureProxyOptions = {}): Promise<{ port
   const child: ChildProcess = spawn(process.execPath, [cliPath, "proxy", "--port", String(port)], {
     detached: true,
     stdio: "ignore",
-    env: { ...process.env, CTXROOM_HOME: home },
+    env: { ...process.env, CTXROOM_HOME: home, ...opts.env },
   });
   child.unref();
 

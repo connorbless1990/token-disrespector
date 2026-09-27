@@ -15,6 +15,7 @@ import process from "node:process";
 import { createServer } from "node:http";
 import { resolveUpstreamBase } from "@ctxroom/proxy";
 import { classifyBuild, copilotVersion, defaultMcpConfigPath, findCopilot, resolveCopilotRealPath, scanBundle, type BundleScanResult, type LaneMode } from "./copilot.ts";
+import { dshDoctorItems, dshHomeDir } from "./dsh.ts";
 
 export interface DoctorItem {
   ok: boolean;
@@ -41,6 +42,12 @@ export interface DoctorOptions {
   scan?: BundleScanResult | null;
   /** Injected process env. */
   env?: Record<string, string | undefined>;
+  /** Include the DSH section (default: when a DSH home exists). */
+  dsh?: boolean;
+  /** DSH home override (--dsh-home / $DSH_HOME). */
+  dshHome?: string;
+  /** Upstream the DSH proxy should forward to (for the doctor's match check). */
+  dshUpstream?: string;
 }
 
 export async function runDoctor(opts: DoctorOptions = {}): Promise<DoctorReport> {
@@ -135,6 +142,11 @@ export async function runDoctor(opts: DoctorOptions = {}): Promise<DoctorReport>
 
   // 7. Upstream base (informational — always ok).
   items.push({ ok: true, label: "upstream base", detail: resolveUpstreamBase(env) });
+
+  // 8. DSH section (opt-in: --dsh, or whenever a DSH home exists on this box).
+  if (opts.dsh ?? existsSync(dshHomeDir(undefined, env))) {
+    items.push(...(await dshDoctorItems({ port, upstream: opts.dshUpstream, dshHome: opts.dshHome, env })));
+  }
 
   return { items, broken: items.some((i) => !i.ok && !i.soft) };
 }

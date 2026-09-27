@@ -3,6 +3,8 @@
  * tds (token-disrespector) — CLI entry point. Hand-rolled arg parsing (zero dependencies).
  *
  *   tds copilot [args…]   run copilot through the compression proxy
+ *   tds dsh [--upstream URL] [--port N] [--provider P] [--model M] [--undo]
+ *                         wire DSH through tds (or undo it); opt-in, no daemons
  *   tds unwrap            remove the marked MCP block; stop the proxy
  *   tds doctor            environment checklist (exit 1 if broken)
  *   tds proxy [--port N] [--ccr on|off] [--budget N]
@@ -37,6 +39,7 @@ import {
 } from "./copilot.ts";
 import os from "node:os";
 import { printDoctor, runDoctor } from "./doctor.ts";
+import { runDsh, type DshRunOptions } from "./dsh.ts";
 import { runProxy, runRetrieve, runSimulate, runStats } from "./commands.ts";
 
 // ---------------------------------------------------------------------------
@@ -315,9 +318,28 @@ export async function cmdDoctor(args: string[]): Promise<number> {
     port: flagNumber(flags, "port"),
     copilotPath: copilotPathOverride(flags),
     lane: laneOverride(flags),
+    dsh: flags["dsh"] === true || flags["dsh"] === "true",
+    dshHome: typeof flags["dsh-home"] === "string" ? flags["dsh-home"] : undefined,
+    dshUpstream: typeof flags["dsh-upstream"] === "string" ? flags["dsh-upstream"] : undefined,
   });
   printDoctor(report);
   return report.broken ? 1 : 0;
+}
+
+/** `tds dsh` — wire DSH through tds (or undo it). */
+export async function cmdDsh(args: string[]): Promise<number> {
+  const { flags } = parseArgs(args);
+  return runDsh({
+    upstream: typeof flags["upstream"] === "string" ? flags["upstream"] : undefined,
+    port: flagNumber(flags, "port"),
+    provider: typeof flags["provider"] === "string" ? flags["provider"] : undefined,
+    model: typeof flags["model"] === "string" ? flags["model"] : undefined,
+    name: typeof flags["name"] === "string" ? flags["name"] : undefined,
+    noMcp: flags["no-mcp"] === true || flags["no-mcp"] === "true",
+    undo: flags["undo"] === true || flags["undo"] === "true",
+    dshHome: typeof flags["dsh-home"] === "string" ? flags["dsh-home"] : undefined,
+    ctxroomHomeDir: typeof flags["home"] === "string" ? flags["home"] : undefined,
+  });
 }
 
 async function cmdProxy(args: string[]): Promise<number> {
@@ -371,9 +393,15 @@ Usage:
                                      [--doctor] [--copilot PATH] [--lane native|byok]
                                      (everything else — -p, --model, prompts — is
                                       forwarded to copilot verbatim)
+  tds dsh [--upstream URL]       wire DSH through tds (opt-in; nothing runs
+        [--port N]               uninvited): ensures the proxy, adds the provider
+        [--provider P]           twin + agent-default flip to settings.yaml, and
+        [--model M]              the ctxroom MCP entry. After a reboot, re-run it.
+        [--undo]                 remove everything (restore backups, stop proxy)
   tds unwrap [--config PATH]     remove the marked MCP block, restore backup, stop proxy
   tds doctor [--port N]          environment checklist (exit 1 if broken)
                                      [--copilot PATH] [--lane native|byok]
+                                     [--dsh] [--dsh-home DIR] [--dsh-upstream URL]
   tds proxy [--port N] [--ccr on|off] [--budget N]
   tds stats [--days 7] [--model M]
   tds simulate --file prompt.json  offline engine run (no network)
@@ -405,6 +433,8 @@ export async function main(argv: string[]): Promise<number> {
       return cmdCopilot(rest);
     case "unwrap":
       return cmdUnwrap(rest);
+    case "dsh":
+      return cmdDsh(rest);
     case "doctor":
       return cmdDoctor(rest);
     case "proxy":
