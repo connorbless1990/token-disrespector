@@ -347,12 +347,53 @@ routes its model traffic by configuration, so the whole setup is two YAML
 edits plus the proxy. No DSH code change is needed.
 
 One important property: **tds for DSH is opt-in and process-scoped.** The
-proxy is a plain foreground process — nothing installs a service, nothing
+proxy is a plain detached process — nothing installs a service, nothing
 auto-starts at login, and nothing comes back on its own. It is "on" exactly
-while you have left the step-1 command running, and "off" the moment you
-stop it.
+while you started it, and "off" the moment you stop it (or `--undo` it).
 
-### Turning it on (three steps, in this order)
+### Turning it on (one command)
+
+```sh
+tds dsh --upstream http://127.0.0.1:8000
+```
+
+That is all. It does, in order:
+
+1. **Starts the proxy** on `127.0.0.1:8788`, pointed at your model
+   endpoint, as a detached child process (pidfile in `~/.ctxroom`), and
+   waits until it answers `/health`.
+2. **Adds the provider twin to `~/.dsh/settings.yaml`** — a marked block
+   with the twin provider (e.g. `incoai-tds`, `Splash (via tds)`, same
+   model, `baseURL` pointed at the proxy) and flips
+   `agent-default-model` onto it. A pristine
+   `~/.dsh/settings.yaml.ctxroom.bak` is written first, once.
+3. **Adds the ctxroom MCP entry** to the machine-local
+   `~/.dsh/cordis.patch.yml` (applies to every profile), again as a marked
+   block with its own one-time backup — this is what gives the agent the
+   `mcp__ctxroom__*` retrieve/stats tools.
+
+The file edits are surgical: every byte outside the marked blocks is
+preserved, the result is re-parsed and diffed before anything is written,
+and a file using syntax tds cannot represent (block scalars, anchors,
+tabs) is refused, not guessed. `tds dsh` is idempotent — running it again
+changes nothing.
+
+Useful flags: `--port N` (default 8788), `--provider NAME` (default:
+`<your-provider>-tds`), `--model ID`, `--dsh-home DIR` (also `$DSH_HOME`),
+`--no-mcp` (skip step 3). And:
+
+```sh
+tds dsh --undo
+```
+
+removes everything — restores both files from their backups and stops the
+proxy. One line, back to exactly how it was.
+
+### The same, by hand (or if the command refuses)
+
+If `tds dsh` refuses to edit your `settings.yaml` (it will say so, and
+change nothing), or you simply prefer to own both files, do the three
+steps yourself, in this order:
 
 **1. Start the proxy.** The endpoint root has **no** `/v1` (the proxy
 appends the client's full path; a `/v1` suffix would double up and 404):
@@ -430,20 +471,31 @@ the agent just cannot retrieve the shrunk originals.
 
 ### Turning it off
 
+One line:
+
+```sh
+tds dsh --undo
+```
+
+restores `settings.yaml` and `cordis.patch.yml` from their backups and
+stops the proxy. If you set it up by hand, or the backups are gone, the
+manual version is:
+
 - Stop the proxy: `Ctrl-C` in its terminal (or kill it). The `incoai-tds`
   route stops answering immediately; the direct route is unaffected.
 - Optionally set `agent-default-model.provider: incoai` back (DSH settings
   hot-reload; the GUI can also just select the direct model).
-- Remove the `mcp-ctxroom` insert row to drop the retrieve/stats tools.
+- Remove the `mcp-ctxroom` entry to drop the retrieve/stats tools.
 - Delete the `incoai-tds` provider entry whenever you want the config clean.
 
-All four are reversible and idempotent; none of them touches DSH's code.
+Either way it is fully reversible, and nothing touches DSH's code.
 
 ### After a reboot
 
 Nothing in DSH or tds is a service: a reboot ends the proxy process, and
-only that must be redone. The two YAML edits persist — re-run step 1 and
-you are back on tds.
+only that must be redone. The config edits persist — re-run
+`tds dsh --upstream http://127.0.0.1:8000` (it detects the existing config
+and only restarts the proxy) and you are back on tds.
 
 ### The seam map and measurements
 
@@ -577,8 +629,14 @@ tds copilot [args…]        start copilot through the proxy.
                                --port N | --lane native|byok
                                --copilot PATH | --config PATH
                                --stop-proxy | --doctor
+tds dsh                    wire the DeepSeek Harness through tds, or undo
+                               it: starts the proxy, adds the provider twin
+                               + MCP entry as marked, backed-up blocks.
+                               --upstream URL | --port N | --undo
+                               --provider NAME | --model ID | --no-mcp
 tds doctor                 the checklist from §2.
                                --port N | --copilot PATH | --lane …
+                               --dsh | --dsh-home DIR | --dsh-upstream URL
 tds proxy                  run just the proxy, in the foreground.
                                --port N | --ccr on|off | --budget N
 tds stats                  token savings per day, per model, per project.
@@ -604,8 +662,9 @@ use:
 
 | Variable | When | Example |
 |---|---|---|
-| `CTXROOM_COPILOT_API_URL` | always, for the BYOK lane | `http://localhost:8000` |
+| `CTXROOM_COPILOT_API_URL` | always, for the BYOK lane; `tds dsh` also reads it (or takes `--upstream`) | `http://localhost:8000` |
 | `CTXROOM_HOME` | if `~/.ctxroom` is not writable | `/data/ctxroom` |
+| `DSH_HOME` | if DSH lives elsewhere than `~/.dsh` | `/data/dsh` |
 
 Everything else is optional.
 
@@ -621,12 +680,17 @@ Everything else is optional.
 | `~/.copilot/mcp-config.json` | one marked block that registers the retrieval tool with copilot. Newer copilot releases read this file. |
 | `~/.copilot/mcp-config.json.ctxroom.bak` | the file as it was before, kept as a backup |
 | `~/.copilot/mcp.json` | same as above, for older copilot releases that read this file |
+| `~/.dsh/settings.yaml` | one marked block: the tds provider twin + the agent-default flip. Added by `tds dsh` (§4b) |
+| `~/.dsh/settings.yaml.ctxroom.bak` | the file as it was, kept as the undo for that block |
+| `~/.dsh/cordis.patch.yml` | one marked block: the ctxroom MCP entry (applies to every profile) |
+| `~/.dsh/cordis.patch.yml.ctxroom.bak` | the file as it was, kept as the undo for that block |
 | `127.0.0.1:8788` | the running proxy. Loopback only — other machines cannot reach it |
 
 Remove everything:
 
 ```sh
-tds unwrap       # config back to exactly how it was + proxy stopped
+tds unwrap           # copilot config back to exactly how it was + proxy stopped
+tds dsh --undo       # DSH config back to exactly how it was (proxy stopped too)
 rm -rf ~/.ctxroom    # the data folder
 ```
 
